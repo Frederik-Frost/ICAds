@@ -14,5 +14,8 @@
     <ProjectReference Include="..\ICAds.Data\ICAds.Data.csproj">
       <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
     </ProjectReference>
+    <ProjectReference Include="..\ICAds.Security\ICAds.Security.csproj">
+      <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
+    </ProjectReference>
   </ItemGroup>
 </Project>

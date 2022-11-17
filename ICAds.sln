@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ICAds", "ICAds\ICAds.csproj
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ICAds.Data", "ICAds.Data\ICAds.Data.csproj", "{8B2EAF67-DF2B-4599-A81A-1D83FF7F7438}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ICAds.Security", "ICAds.Security\ICAds.Security.csproj", "{BFA3FACB-508D-47A0-9398-761DC4A29BDD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{8B2EAF67-DF2B-4599-A81A-1D83FF7F7438}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8B2EAF67-DF2B-4599-A81A-1D83FF7F7438}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8B2EAF67-DF2B-4599-A81A-1D83FF7F7438}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BFA3FACB-508D-47A0-9398-761DC4A29BDD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BFA3FACB-508D-47A0-9398-761DC4A29BDD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BFA3FACB-508D-47A0-9398-761DC4A29BDD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BFA3FACB-508D-47A0-9398-761DC4A29BDD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
