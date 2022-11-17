@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 25.0.1703.8
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ICAds", "ICAds\ICAds.csproj", "{13779F37-B504-4804-84AF-87BABD1A8B2B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ICAds.Data", "ICAds.Data\ICAds.Data.csproj", "{8B2EAF67-DF2B-4599-A81A-1D83FF7F7438}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{13779F37-B504-4804-84AF-87BABD1A8B2B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{13779F37-B504-4804-84AF-87BABD1A8B2B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{13779F37-B504-4804-84AF-87BABD1A8B2B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{13779F37-B504-4804-84AF-87BABD1A8B2B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8B2EAF67-DF2B-4599-A81A-1D83FF7F7438}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8B2EAF67-DF2B-4599-A81A-1D83FF7F7438}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8B2EAF67-DF2B-4599-A81A-1D83FF7F7438}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8B2EAF67-DF2B-4599-A81A-1D83FF7F7438}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {EDB2B894-3DBA-4E9C-B95E-0C02537809BE}
+	EndGlobalSection
+EndGlobal
