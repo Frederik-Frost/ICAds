@@ -19,8 +19,18 @@ namespace ICAds.Data.Repositories
             newUser.Email = user.Email;
             newUser.PasswordHash = hashedPassword.Hash;
             newUser.PasswordSalt = hashedPassword.Salt;
+            //newUser.Active = true;
+            //newUser.IsAdmin = false;
 
-            return newUser;
+            using (var db = new AppDataContext())
+            {
+                db.Users.Add(newUser);
+                db.SaveChanges();
+
+                return newUser;
+            }
+
+
         }
 
         public static string LoginUser(LoginDTO credentials, UserModel user)
@@ -41,6 +51,16 @@ namespace ICAds.Data.Repositories
 
             // Return Token
             return token;
+        }
+
+
+        public static List<UserModel> GetAllUsers()
+        {
+            using (var db = new AppDataContext())
+            {
+                List<UserModel> users = db.Users.ToList();
+                return users;
+            }
         }
     }
 }

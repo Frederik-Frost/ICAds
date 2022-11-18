@@ -2,6 +2,9 @@
 using ICAds.Data.DTO;
 using ICAds.Data.Models;
 using ICAds.Data.Repositories;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
+
 namespace ICAds.Controllers;
 
 [ApiController]
@@ -38,6 +41,25 @@ public class UserController: ControllerBase
             return BadRequest("Wrong Password");
         }
         return Ok(token);
+    }
+
+
+    [Route("me")]
+    [HttpGet]
+    [Authorize]
+    public string GetMe()
+    {
+        // Get User id from JWT - bearer token
+        var id = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+        return id;
+    }
+
+    [Route("all")]
+    [HttpGet]
+    public async Task<List<UserModel>> GetAll()
+    {
+        var users = UserRepository.GetAllUsers();
+        return users;
     }
 }
 
