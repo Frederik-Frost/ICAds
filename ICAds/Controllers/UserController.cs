@@ -2,6 +2,7 @@
 using ICAds.Data.DTO;
 using ICAds.Data.Models;
 using ICAds.Data.Repositories;
+using ICAds.Data;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 
@@ -12,34 +13,33 @@ namespace ICAds.Controllers;
 public class UserController: ControllerBase
 {
 
-    public static UserModel user = new UserModel();
+    //public static UserModel user = new UserModel();
 
     [Route("register")]
     [HttpPost]
     public async Task<ActionResult<UserModel>> Register([FromBody] UserDTO request)
     {
-        //var user = UserRepository.CreateUser(request);
-        user = UserRepository.CreateUser(request);
+        if (!EmailValidation.IsValidEmail(request.Email)) return BadRequest("Not an email");
 
-        return Ok(user);
+        using (var db = new AppDataContext())
+        {
+            UserModel userCheck = await UserRepository.GetUserWithContext(request.Email, db);
+            if (userCheck != null) return BadRequest("User already exists");
+            else
+            {
+                var user = await UserRepository.CreateUser(request, db);
+                return user;
+            }
+        }
+
+
     }
     [Route("login")]
     [HttpPost]
     public async Task<IActionResult> Login([FromBody] LoginDTO request)
     {
-
-        // Check if user exists
-        if (user.Email != request.Email)
-        {
-            return BadRequest("User not found");
-        }
-
-        var token = UserRepository.LoginUser(request, user);
-
-        if(token == null)
-        {
-            return BadRequest("Wrong Password");
-        }
+        var token = await UserRepository.LoginUser(request);
+        if(token == null) return BadRequest("Wrong email or password");
         return Ok(token);
     }
 

@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using System.Text.Json.Serialization;
 using ICAds.Data;
 using ICAds.Security;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -11,6 +12,12 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllers();
+
+
+// To avoid object cycles
+builder.Services.AddControllersWithViews()
+                .AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 //builder.Services.AddSwaggerGen();
@@ -29,6 +36,7 @@ builder.Services.AddSwaggerGen(options =>
 
 Config.SetConfig(builder.Configuration);
 SecurityManager.SetConfig(builder.Configuration);
+
 
 // JWT Authentication - get 401 Unauthorized when no bearer token in headers
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

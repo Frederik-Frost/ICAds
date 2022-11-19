@@ -46,11 +46,12 @@ namespace ICAds.Security
 
         }
 
-        public static string CreateToken(Guid userId, string email)
+        public static string CreateToken(string userId, string orgId, string email)
         {
             List<Claim> claims = new List<Claim>
             {
-                new Claim(ClaimTypes.NameIdentifier, userId.ToString())
+                new Claim(ClaimTypes.NameIdentifier, userId.ToString()),
+                new Claim("OrganizationId", orgId.ToString())
             };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(
