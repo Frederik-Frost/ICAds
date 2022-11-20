@@ -22,6 +22,11 @@ namespace ICAds.Content.Integrations
             var resp = await ApiClient.GetAsync(new Uri(url));
             return resp;
         }
+
+        public void SetDefaultHeader(string name, string val)
+        {
+            ApiClient.DefaultRequestHeaders.Add(name, val);
+        }
     }
 }
 

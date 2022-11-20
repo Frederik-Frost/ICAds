@@ -4,6 +4,7 @@ using ICAds.Data.Models;
 using ICAds.Data.Repositories;
 using ICAds.Data;
 using System.Security.Claims;
+
 using Microsoft.AspNetCore.Authorization;
 
 namespace ICAds.Controllers;
@@ -53,6 +54,17 @@ public class UserController: ControllerBase
         var id = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
         return id;
     }
+
+    [Route("org")]
+    [HttpGet]
+    [Authorize]
+    public string GetOrg()
+    {
+        // Get Organization id from JWT - bearer token
+        var id = User.Claims.FirstOrDefault(c => c.Type == "OrganizationId")?.Value;
+        return id;
+    }
+    
 
     [Route("all")]
     [HttpGet]

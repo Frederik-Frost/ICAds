@@ -1,19 +1,19 @@
 ﻿using System;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json;
+
 namespace ICAds.Data.Models
 {
 	public class TemplateModel
 	{
         public string Id { get; set; }
-        public string Name { get; set; }
-        public DateTime Created { get; set; }
-        public DateTime Updated { get; set; }
-        public string CreatedBy { get; set; }
-        public string UpdatedBy { get; set; }
-        public bool IsPublic { get; set; }
-        public string TemplateJSON { get; set; }
+        [Column(TypeName = "jsonb")]
+        public JsonDocument TemplateJSON { get; set; }
 
-        public string OrganizationId { get; set; }
-        public OrganizationModel Organization { get; set; }
+        public string TemplateMetadataId { get; set; }
+        public TemplateMetadataModel TemplateMetadata { get; set; }
+
     }
 }
 

@@ -5,6 +5,9 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using Newtonsoft.Json;
+using ICAds.Data.Models;
+using Newtonsoft.Json.Linq;
+using System.Xml.Linq;
 
 namespace ICAds.Content.Integrations.Shopify
 {
@@ -12,7 +15,8 @@ namespace ICAds.Content.Integrations.Shopify
     {
 
         //readonly ShopifySettings settings = new ShopifySettings("https://ictesting.myshopify.com/", "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");
-        readonly ShopifySettings settings = new ShopifySettings("https://butler-loftet.dk/products.json", "");
+        //readonly ShopifySettings settings = new ShopifySettings("https://butler-loftet.dk/products.json", "");
+        readonly ShopifySettings settings = new ShopifySettings();
         readonly ApiHelper httpClient = new ApiHelper();
         //readonly ShopifySettings settings;
 
@@ -20,6 +24,16 @@ namespace ICAds.Content.Integrations.Shopify
         //{
         //    settings = config;
         //}
+
+        public ShopifyService(IntegrationModel integration)
+        {
+
+            settings.AccessToken = integration.AccessToken;
+            settings.Url = integration.Url;
+
+            httpClient.SetDefaultHeader("X-Shopify-Access-Token", settings.AccessToken);
+        }
+
 
         public static async Task<ShopifyProductListResult> GetContent(string url)
         {
@@ -32,7 +46,7 @@ namespace ICAds.Content.Integrations.Shopify
 
         public async Task<ShopifyProductListResult> GetProducts()
         {
-            string url = settings.URL;
+            string url = settings.Url;
             var result = await new ApiHelper().GetAsync(url);
             var json = result.Content.ReadAsStringAsync().Result;
 
@@ -71,18 +85,18 @@ namespace ICAds.Content.Integrations.Shopify
     {
         public ShopifySettings()
         {
-            URL = "";
+            Url = "";
             AccessToken = "";
         }
 
         public ShopifySettings(string url, string accessToken)
         {
-            URL = url;
+            Url = url;
             AccessToken = accessToken;
 
         }
 
-        public string URL { get; set; }
+        public string Url { get; set; }
         public string AccessToken { get; set; }
 
     }

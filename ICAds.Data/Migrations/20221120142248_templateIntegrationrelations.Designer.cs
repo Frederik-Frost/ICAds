@@ -4,6 +4,7 @@ using System.Text.Json;
 using ICAds.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -12,9 +13,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ICAds.Data.Migrations
 {
     [DbContext(typeof(AppDataContext))]
-    partial class AppDataContextModelSnapshot : ModelSnapshot
+    [Migration("20221120142248_templateIntegrationrelations")]
+    partial class templateIntegrationrelations
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -26,33 +29,26 @@ namespace ICAds.Data.Migrations
             modelBuilder.Entity("ICAds.Data.Models.IntegrationModel", b =>
                 {
                     b.Property<string>("Id")
-                        .HasMaxLength(36)
-                        .HasColumnType("character(36)")
-                        .IsFixedLength();
+                        .HasColumnType("text");
 
                     b.Property<string>("AccessToken")
                         .IsRequired()
-                        .HasMaxLength(40)
-                        .HasColumnType("character varying(40)");
+                        .HasColumnType("text");
 
                     b.Property<int>("IntegrationType")
                         .HasColumnType("integer");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(120)
-                        .HasColumnType("character varying(120)");
+                        .HasColumnType("text");
 
                     b.Property<string>("OrganizationId")
                         .IsRequired()
-                        .HasMaxLength(36)
-                        .HasColumnType("character(36)")
-                        .IsFixedLength();
+                        .HasColumnType("text");
 
                     b.Property<string>("Url")
                         .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("character varying(200)");
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -64,14 +60,11 @@ namespace ICAds.Data.Migrations
             modelBuilder.Entity("ICAds.Data.Models.OrganizationModel", b =>
                 {
                     b.Property<string>("Id")
-                        .HasMaxLength(36)
-                        .HasColumnType("character(36)")
-                        .IsFixedLength();
+                        .HasColumnType("text");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(120)
-                        .HasColumnType("character varying(120)");
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -81,49 +74,36 @@ namespace ICAds.Data.Migrations
             modelBuilder.Entity("ICAds.Data.Models.TemplateMetadataModel", b =>
                 {
                     b.Property<string>("Id")
-                        .HasMaxLength(36)
-                        .HasColumnType("character(36)")
-                        .IsFixedLength();
+                        .HasColumnType("text");
 
                     b.Property<DateTime>("Created")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("CreatedBy")
                         .IsRequired()
-                        .HasMaxLength(36)
-                        .HasColumnType("character(36)")
-                        .IsFixedLength();
+                        .HasColumnType("text");
 
                     b.Property<string>("IntegrationId")
                         .IsRequired()
-                        .HasMaxLength(36)
-                        .HasColumnType("character(36)")
-                        .IsFixedLength();
+                        .HasColumnType("text");
 
                     b.Property<bool>("IsPublic")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("boolean")
-                        .HasDefaultValue(false);
+                        .HasColumnType("boolean");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(120)
-                        .HasColumnType("character varying(120)");
+                        .HasColumnType("text");
 
                     b.Property<string>("OrganizationId")
                         .IsRequired()
-                        .HasMaxLength(36)
-                        .HasColumnType("character(36)")
-                        .IsFixedLength();
+                        .HasColumnType("text");
 
                     b.Property<DateTime>("Updated")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("UpdatedBy")
                         .IsRequired()
-                        .HasMaxLength(36)
-                        .HasColumnType("character(36)")
-                        .IsFixedLength();
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -137,9 +117,7 @@ namespace ICAds.Data.Migrations
             modelBuilder.Entity("ICAds.Data.Models.TemplateModel", b =>
                 {
                     b.Property<string>("Id")
-                        .HasMaxLength(36)
-                        .HasColumnType("character(36)")
-                        .IsFixedLength();
+                        .HasColumnType("text");
 
                     b.Property<JsonDocument>("TemplateJSON")
                         .IsRequired()
@@ -147,9 +125,7 @@ namespace ICAds.Data.Migrations
 
                     b.Property<string>("TemplateMetadataId")
                         .IsRequired()
-                        .HasMaxLength(36)
-                        .HasColumnType("character(36)")
-                        .IsFixedLength();
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -191,9 +167,7 @@ namespace ICAds.Data.Migrations
 
                     b.Property<string>("OrganizationId")
                         .IsRequired()
-                        .HasMaxLength(36)
-                        .HasColumnType("character(36)")
-                        .IsFixedLength();
+                        .HasColumnType("text");
 
                     b.Property<byte[]>("PasswordHash")
                         .IsRequired()
