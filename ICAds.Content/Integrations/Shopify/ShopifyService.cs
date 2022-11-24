@@ -18,6 +18,8 @@ namespace ICAds.Content.Integrations.Shopify
         //readonly ShopifySettings settings = new ShopifySettings("https://butler-loftet.dk/products.json", "");
         readonly ShopifySettings settings = new ShopifySettings();
         readonly ApiHelper httpClient = new ApiHelper();
+        
+
         //readonly ShopifySettings settings;
 
         //public ShopifyService(ShopifySettings config)
@@ -35,13 +37,31 @@ namespace ICAds.Content.Integrations.Shopify
         }
 
 
-        public static async Task<ShopifyProductListResult> GetContent(string url)
+        public async Task<SingleProduct> GetSingleProduct(string productId)
         {
-            var result = await new ApiHelper().GetAsync(url);
-            var json = result.Content.ReadAsStringAsync().Result;
 
-            return JsonConvert.DeserializeObject<ShopifyProductListResult>(json);
+            var result = await httpClient.GetAsync(getRestUrl(settings.Url, $"products/{productId}.json"));
+            var json = result.Content.ReadAsStringAsync().Result;
+            return JsonConvert.DeserializeObject<SingleProduct>(json);
         }
+
+        public async Task<GraphProductResponse> SearchProducts(string searchTerm)
+        {
+            // Query params/terms can be linked like below
+            // "has_only_default_variant:true:water"
+            var result = await httpClient.PostAsync(getGraphUrl(settings.Url), new StringContent("{products(first: 10, query: \"" + searchTerm + "\"){edges{node{id, title}}}}", Encoding.UTF8, "application/graphql"));
+            var json = result.Content.ReadAsStringAsync().Result;
+            return JsonConvert.DeserializeObject<GraphProductResponse>(json);
+        }
+
+
+        //public static async Task<ShopifyProductListResult> GetContent(string url)
+        //{
+        //    var result = await new ApiHelper().GetAsync();
+        //    var json = result.Content.ReadAsStringAsync().Result;
+
+        //    return JsonConvert.DeserializeObject<ShopifyProductListResult>(json);
+        //}
 
 
         public async Task<ShopifyProductListResult> GetProducts()
@@ -54,7 +74,7 @@ namespace ICAds.Content.Integrations.Shopify
         }
 
 
-        public async Task<IEnumerable<ShopifyProduct>> SearchProduct(string searchTerm)
+        public async Task<IEnumerable<ShopifyProduct>> SearchDemoProduct(string searchTerm)
         {
             var products = (await GetProducts()).Products;
 
@@ -64,7 +84,7 @@ namespace ICAds.Content.Integrations.Shopify
                     Id = p.Id,
                     Title = p.Title,
                     Vendor = p.Vendor,
-                    Tags = p.Tags,
+                    //Tags = p.Tags,
                     Variants = p.Variants,
                     Images = p.Images,
                     Price = p.Price
@@ -76,10 +96,27 @@ namespace ICAds.Content.Integrations.Shopify
 
         }
 
+        public Uri getGraphUrl(string url)
+        {
+            string scheme = url.StartsWith("https://") ? "" : "https://";
+            string apiPath = url.EndsWith("/") ? "admin/api/2022-10/graphql.json" : "/admin/api/2022-10/graphql.json";
+            string graphUrl = $"{scheme}{url}{apiPath}";
 
+            return new Uri(graphUrl);
+        }
 
+        
 
+        public string getRestUrl(string url, string path)
+        {
+            string scheme = url.StartsWith("https://") ? "" : "https://";
+            string apiPath = url.EndsWith("/") ? "admin/api/2022-10" : "/admin/api/2022-10";
+            string restUrl = $"{scheme}{url}{apiPath}/{path}";
+
+            return new string(restUrl);
+        }
     }
+
 
     public class ShopifySettings
     {

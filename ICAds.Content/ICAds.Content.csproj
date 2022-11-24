@@ -10,6 +10,9 @@
     <None Remove="Integrations\" />
     <None Remove="Integrations\Shopify\" />
     <None Remove="Microsoft.AspNetCore.Mvc.NewtonsoftJson" />
+    <None Remove="GraphQL.Client" />
+    <None Remove="GraphQL" />
+    <None Remove="GraphQL.Client.Serializer.Newtonsoft" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Integrations\" />

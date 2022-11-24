@@ -6,12 +6,17 @@ using static System.Net.Mime.MediaTypeNames;
 
 namespace ICAds.Content.Integrations.Shopify
 {
+    public class SingleProduct
+    {
+        public ShopifyProduct Product { get; set; }
+    }
+    
     public class ShopifyProduct
     {
         public long Id { get; set; }
         public string Title { get; set; }
         public string Vendor { get; set; }
-        public List<string> Tags { get; set; }
+        //public List<string> Tags { get; set; }
         public List<ProductVariant> Variants { get; set; }
         public List<ProductImage> Images { get; set; }
         public string Price { get; set; }

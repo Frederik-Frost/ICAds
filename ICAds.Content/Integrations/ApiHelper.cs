@@ -23,10 +23,17 @@ namespace ICAds.Content.Integrations
             return resp;
         }
 
+        public async Task<HttpResponseMessage> PostAsync(Uri url, StringContent body)
+        {
+            var resp = await ApiClient.PostAsync(url, body); 
+            return resp;
+        }
+
         public void SetDefaultHeader(string name, string val)
         {
             ApiClient.DefaultRequestHeaders.Add(name, val);
         }
     }
+
 }
 

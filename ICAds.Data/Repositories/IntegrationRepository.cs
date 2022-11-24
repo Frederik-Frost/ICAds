@@ -24,6 +24,24 @@ namespace ICAds.Data.Repositories
 				return newIntegration;
 			}
 		}
+
+        public static async Task<List<IntegrationModel>> GetIntegrations(string id)
+        {
+            using (var db = new AppDataContext())
+            {
+				return db.Integrations.Where(i => i.OrganizationId == id).ToList();
+            }
+
+        }
+
+        public static async Task<IntegrationModel> GetIntegrationById(string id)
+		{
+			using (var db = new AppDataContext())
+			{
+				return db.Integrations.FirstOrDefault(i => i.Id == id);
+			}
+			
+		}
 	}
 }
 
