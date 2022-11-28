@@ -16,6 +16,7 @@ namespace ICAds.Data.Models
         public string IntegrationId { get; set; }
         public IntegrationModel Integration { get; set; }
         public TemplateModel Template { get; set; }
+        public virtual UserModel CreatedByUser { get; set; }
     }
 }
 

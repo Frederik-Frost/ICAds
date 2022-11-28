@@ -33,7 +33,7 @@ namespace ICAds.Data.Repositories
         public static async Task<string> LoginUser(LoginDTO credentials)
         {
             // Check if user exists
-            var user = await GetUser(credentials.Email);
+            var user = await GetUserNyEmail(credentials.Email);
             if (user == null) return null;
 
             // Check if passwords match
@@ -46,11 +46,20 @@ namespace ICAds.Data.Repositories
             return token;
         }
 
-        public static async Task<UserModel> GetUser(string email)
+        public static async Task<UserModel> GetUserNyEmail(string email)
         {
             using (var db = new AppDataContext())
             {
                 var user = await db.Users.FirstOrDefaultAsync(u => u.Email.ToLower() == email.ToLower());
+                return user; 
+            }
+        }
+
+        public static async Task<UserModel> GetUserById(string id)
+        {
+            using (var db = new AppDataContext())
+            {
+                var user = await db.Users.FirstOrDefaultAsync(u => u.Id == id);
                 return user;
             }
         }

@@ -4,6 +4,7 @@ using System.Text.Json;
 using ICAds.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -12,9 +13,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ICAds.Data.Migrations
 {
     [DbContext(typeof(AppDataContext))]
-    partial class AppDataContextModelSnapshot : ModelSnapshot
+    [Migration("20221126215912_updateTemplateConstraints")]
+    partial class updateTemplateConstraints
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -31,6 +34,7 @@ namespace ICAds.Data.Migrations
                         .IsFixedLength();
 
                     b.Property<string>("AccessToken")
+                        .IsRequired()
                         .HasMaxLength(40)
                         .HasColumnType("character varying(40)");
 
@@ -38,6 +42,7 @@ namespace ICAds.Data.Migrations
                         .HasColumnType("integer");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasMaxLength(120)
                         .HasColumnType("character varying(120)");
 
@@ -48,6 +53,7 @@ namespace ICAds.Data.Migrations
                         .IsFixedLength();
 
                     b.Property<string>("Url")
+                        .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("character varying(200)");
 
@@ -105,6 +111,7 @@ namespace ICAds.Data.Migrations
                         .HasDefaultValue(false);
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasMaxLength(120)
                         .HasColumnType("character varying(120)");
 

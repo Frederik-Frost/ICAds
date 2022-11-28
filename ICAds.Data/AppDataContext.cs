@@ -52,9 +52,9 @@ namespace ICAds.Data
             modelBuilder.Entity<IntegrationModel>(entity =>
             {
                 entity.Property(e => e.Id).IsRequired().HasMaxLength(36).IsFixedLength();
-                entity.Property(e => e.Name).HasMaxLength(120);
-                entity.Property(e => e.Url).HasMaxLength(200);
-                entity.Property(e => e.AccessToken).HasMaxLength(40);
+                entity.Property(e => e.Name).IsRequired(false).HasMaxLength(120);
+                entity.Property(e => e.Url).IsRequired(false).HasMaxLength(200);
+                entity.Property(e => e.AccessToken).IsRequired(false).HasMaxLength(40);
                 entity.Property(e => e.OrganizationId).HasMaxLength(36).IsFixedLength();
 
                 entity.HasKey(e => e.Id);
@@ -66,13 +66,13 @@ namespace ICAds.Data
             modelBuilder.Entity<TemplateMetadataModel>(entity =>
             {
                 entity.Property(e => e.Id).IsRequired().HasMaxLength(36).IsFixedLength();
-                entity.Property(e => e.Name).HasMaxLength(120);
+                entity.Property(e => e.Name).IsRequired(false).HasMaxLength(120);
                 entity.Property(e => e.CreatedBy).HasMaxLength(36).IsFixedLength();
                 entity.Property(e => e.UpdatedBy).HasMaxLength(36).IsFixedLength();
                 entity.Property(e => e.IsPublic).HasDefaultValue(false);
-                entity.Property(e => e.IntegrationId).HasMaxLength(36).IsFixedLength();
+                entity.Property(e => e.IntegrationId).IsRequired(false).HasMaxLength(36).IsFixedLength();
                 entity.Property(e => e.OrganizationId).HasMaxLength(36).IsFixedLength();
-
+               
 
                 entity.HasKey(e => e.Id);
                 entity.HasOne(e => e.Integration)

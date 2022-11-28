@@ -14,6 +14,23 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 
 
+// Cors settings
+
+builder.Services.AddCors();
+//var AllowSpecificOrigins = "_AllowedOriginsForICAds";
+
+
+//builder.Services.AddCors(options =>
+//{
+//    options.AddPolicy(name: AllowSpecificOrigins,
+//        policy =>
+//        {
+//            policy.WithOrigins("http://127.0.0.1:5173/");
+//        });
+//});
+
+
+
 // To avoid object cycles
 builder.Services.AddControllersWithViews()
                 .AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
@@ -60,6 +77,12 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+//app.UseCors(AllowSpecificOrigins);
+app.UseCors(x => x.AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .SetIsOriginAllowed(origin => true)
+                    .AllowCredentials());
 
 app.UseHttpsRedirection();
 

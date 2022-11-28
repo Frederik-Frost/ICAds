@@ -1,35 +1,102 @@
 @import './base.css';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-#app {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
 
-  font-weight: normal;
-}
-
-a,
-.green {
-  text-decoration: none;
-  color: hsla(160, 100%, 37%, 1);
-  transition: 0.4s;
-}
-
-@media (hover: hover) {
-  a:hover {
-    background-color: hsla(160, 100%, 37%, 0.2);
+@layer base {
+  html{
+    @apply bg-offWhite
   }
+  th, td{
+    @apply text-start bg-offWhite  my-4 border;
+  }
+  th:first-of-type, td:first-of-type {
+    @apply rounded-l-lg;
+  }
+  th:last-of-type, td:last-of-type {
+    @apply rounded-r-lg;
+  }
+  /* tr{
+    @apply p-4 ;
+  } */
+
+  a{
+    @apply  text-primary2;
+  }
+  
 }
 
-@media (min-width: 1024px) {
-  body {
-    display: flex;
-    place-items: center;
+@layer components {
+    p, h1, h2, h3, h4, h5, span {
+      @apply text-charcoal;
+    }
+   
+    h2 {
+      @apply font-bold text-xl;
+    }
+    h3 {
+      @apply font-bold text-lg;
+    }
+    h4 {
+      @apply font-bold text-base;
+    }
+    p, span {
+      @apply m-0 text-sm;
+    }
+    input[type="text"], input[type="password"]{
+      @apply p-2 border rounded-md border-charcoal50 hover:border-charcoal focus:border-charcoal focus:outline-none text-sm;
+    }
+
+    label{
+      @apply text-sm p-0;
+    }
+
+    .menu-link{
+      @apply w-full flex justify-between items-center;
+    }
+    .menu-link .material-symbols-outlined{
+      @apply w-[60px] h-[60px] flex items-center justify-center rounded my-4;
+    }
+
+    .router-link-active.menu-link .material-symbols-outlined{
+      @apply bg-primary2;
+    }
+
+    .hover-menu{
+      @apply z-50 transition absolute left-[70px] h-[65px] p-4 bg-charcoal rounded text-alabaster font-bold flex items-center shadow-2xl  opacity-0 pointer-events-none -translate-x-4 group-hover:translate-x-0 group-hover:opacity-100;
+    }
+    #layoutList header div{
+        @apply flex items-center;
+    }
+    .form-group{
+      @apply flex flex-col text-charcoal;
+    }
+
+  };
+    
+
+
+
+  @layer utilities{
+    h1 {
+      @apply font-bold text-4xl;
+    }
+    button.btn-primary{
+      @apply w-max text-offWhite bg-primary2 px-4 py-1 rounded-lg hover:brightness-110; 
+    }
+    button.btn-secondary{
+      @apply w-max text-primary2 bg-offWhite px-4 py-1 rounded-lg border border-primary2; 
+    }
+    button.btn-danger{
+      @apply w-max text-flame bg-offWhite px-4 py-1 rounded-lg border border-flame; 
+    }
+    button.btn-tertiary{
+      @apply w-max text-charcoal50 border border-charcoal50 rounded-lg px-4 py-1 hover:border-charcoal75 hover:text-charcoal75;  
+    }
+    a.link{
+      @apply  text-primary2;
+    }
   }
 
-  #app {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    padding: 0 2rem;
-  }
-}
+

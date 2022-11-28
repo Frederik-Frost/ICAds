@@ -7,11 +7,12 @@ using ICAds.Data.DTO;
 using ICAds.Data.Models;
 using ICAds.Data;
 using ICAds.Data.Repositories;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ICAds.Controllers
 {
     [Route("[controller]")]
-    public class OrganizationController : Controller
+    public class OrganizationController : TokenController
     {
         
         [HttpPost]
@@ -35,6 +36,13 @@ namespace ICAds.Controllers
             }
         }
 
+        [Authorize]
+        [HttpGet]
+        public async Task<ActionResult<OrganizationModel>> GetOrganization()
+        {
+            var org = await OrganizationRepository.GetOrganizationFromId(GetOrgId());
+            return Ok(org);
+        }
  
     }
 }

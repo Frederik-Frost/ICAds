@@ -2,6 +2,7 @@
 using ICAds.Data.Models;
 using ICAds.Data.DTO;
 using ICAds.Security;
+using Microsoft.EntityFrameworkCore;
 
 namespace ICAds.Data.Repositories
 {
@@ -30,6 +31,16 @@ namespace ICAds.Data.Repositories
             await db.SaveChangesAsync();
 
             return newUser;
+        }
+
+        public static async Task<OrganizationModel> GetOrganizationFromId(string id)
+        {
+            using (var db = new AppDataContext())
+            {
+                var org = await db.Organizations.FirstOrDefaultAsync(o =>  o.Id == id);
+                return org;
+            }
+            
         }
 
     }

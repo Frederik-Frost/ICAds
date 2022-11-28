@@ -1,91 +1,85 @@
 <script setup>
-import { RouterLink, RouterView } from "vue-router";
-import HelloWorld from "./components/HelloWorld.vue";
+import { RouterLink, RouterView } from 'vue-router';
+import SideBar from './components/SideBar.vue';
+import HeaderMenu from './components/HeaderMenu.vue';
+// import BaseModal from './components/modals/BaseModal.vue'
+// const $vfm = inject('$vfm')
 </script>
 
 <template>
-  <header>
-    <img
-      alt="Vue logo"
-      class="logo"
-      src="@/assets/logo.svg"
-      width="125"
-      height="125"
-    />
-
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-      </nav>
+  <div id="app" class="flex">
+    <SideBar v-if="showSideBar" />
+    <div class="flex-1">
+      <HeaderMenu v-if="showHeaderMenu" :title="headerTitle"/>
+      <RouterView  class="max-w-screen-xl mx-auto mt-4 px-4"/>
     </div>
-  </header>
-
-  <RouterView />
+    
+    <!-- <BaseModal/> -->
+    <modals-container></modals-container>
+  </div>
 </template>
+<script>
 
-<style scoped>
-header {
-  line-height: 1.5;
-  max-height: 100vh;
-}
-
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
-
-nav {
-  width: 100%;
-  font-size: 12px;
-  text-align: center;
-  margin-top: 2rem;
-}
-
-nav a.router-link-exact-active {
-  color: var(--color-text);
-}
-
-nav a.router-link-exact-active:hover {
-  background-color: transparent;
-}
-
-nav a {
-  display: inline-block;
-  padding: 0 1rem;
-  border-left: 1px solid var(--color-border);
-}
-
-nav a:first-of-type {
-  border: 0;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
+import { ModalsContainer } from "vue-final-modal";
+export default {
+  components: { SideBar, HeaderMenu,  ModalsContainer },
+  methods: {
+    getList() {
+      this.axios.get('users/all').then((response) => {
+        console.log(response.data);
+      });
+      
+    },
+  },
+  computed:{
+    headerTitle(){
+      switch(this.$router.currentRoute.value.path){
+        case("/"): return "Image layout";
+        case("/export"): return "Export Creatives";
+        case("/account"): return "Organization";
+      }
+    },
+    showSideBar(){
+      return !["login"].includes(this.$router.currentRoute.value.path) && !this.$router.currentRoute.value.path.includes("editor")
+    },
+    showHeaderMenu(){
+      return !["login"].includes(this.$router.currentRoute.value.path)
+    },
+    router(){
+      return this.$router.currentRoute
+    },
+    
+  },
+  mounted() {
+    console.log(this.$router.currentRoute.value)
+    this.getList();
   }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-
-  nav {
-    text-align: left;
-    margin-left: -1rem;
-    font-size: 1rem;
-
-    padding: 1rem 0;
-    margin-top: 1rem;
-  }
+};
+</script>
+<style>
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  position: relative;
+  font-weight: normal;
 }
+
+
+@font-face {
+  font-family: "3954";
+  src: url("./fonts/futura/3954.eot");
+  src: local("3954"), url("./fonts/futura/3954.woff") format("woff"), url("./fonts/futura/3954.ttf") format("truetype");
+}
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: futura-pt, sans-serif;
+    font-family: "3954";
+    text-transform: uppercase;
+  }
 </style>

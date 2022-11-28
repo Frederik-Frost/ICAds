@@ -10,8 +10,8 @@ using Microsoft.AspNetCore.Authorization;
 namespace ICAds.Controllers;
 
 [ApiController]
-[Route("[controller]")]
-public class UserController: ControllerBase
+[Route("users")]
+public class UserController: TokenController
 {
 
     //public static UserModel user = new UserModel();
@@ -35,24 +35,24 @@ public class UserController: ControllerBase
 
 
     }
+
     [Route("login")]
     [HttpPost]
     public async Task<IActionResult> Login([FromBody] LoginDTO request)
     {
         var token = await UserRepository.LoginUser(request);
-        if(token == null) return BadRequest("Wrong email or password");
+        if (token == null)  return StatusCode(400, new { Message = "Username or password is incorrect" });
         return Ok(token);
     }
-
 
     [Route("me")]
     [HttpGet]
     [Authorize]
-    public string GetMe()
+    public async Task<ActionResult<UserModel>> GetMe()
     {
         // Get User id from JWT - bearer token
-        var id = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
-        return id;
+        var user = await UserRepository.GetUserById(GetUserId());
+        return Ok(user);
     }
 
     [Route("org")]
