@@ -1,6 +1,6 @@
 import { createApp, markRaw } from 'vue';
 import { createPinia } from 'pinia';
-import { vfmPlugin , $vfm} from 'vue-final-modal'
+import { vfmPlugin, $vfm } from 'vue-final-modal';
 
 import App from './App.vue';
 import router from './router';
@@ -20,12 +20,10 @@ pinia.use(({ store }) => {
   store.$router = markRaw(router);
 });
 
-
-
 app.use(pinia);
 app.use(router);
 app.use(VueAxios, axios);
-app.use(vfmPlugin)
+app.use(vfmPlugin);
 
 import { useMainStore } from './stores/main';
 import { useUserStore } from './stores/user';
@@ -35,31 +33,24 @@ const store = useMainStore();
 const userStore = useUserStore();
 const orgStore = useOrgStore();
 
+// Chec for token authorization on each router navigation
 router.beforeEach((to, from, next) => {
-  console.log(    store.token      )
   if (store.token) {
-    console.log("CALLING GETUSER")
+    // CALLING GET USER
     Promise.all([userStore.getUser(), orgStore.getOrganization()]).then((values) => {
-      console.log(values);
       next();
     });
-    
-    // userStore.getUser().then((res) => {
-    //   next();
-    // });
   } else if (!['login'].includes(to.name)) next('/login');
   else next();
 });
 
+// HTTP Request settings
 axios.defaults.baseURL = 'https://localhost:7093/';
 axios.interceptors.request.use(function (config) {
-
-  console.log(router.currentRoute.value.name)
-  // if(!["login"].includes(router.currentRoute.value.name)){
-  if(!config.url.includes("login")){
+  if (!config.url.includes('login')) {
+    // Set bearer token on all requests
     config.headers['Authorization'] = 'Bearer ' + store.token;
   }
-  console.log(config);
   return config;
 });
 
@@ -69,8 +60,8 @@ axios.interceptors.response.use(
   },
   (error) => {
     if (error.response.status == 401) {
-      console.log('GO TO LOGIN');
-      store.logout()
+      // if Unauthorized === no token or no valid token in request headers. go to login screen
+      store.logout();
     } else return Promise.reject(error);
   }
 );

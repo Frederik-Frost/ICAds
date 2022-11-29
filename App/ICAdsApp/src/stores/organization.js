@@ -8,6 +8,8 @@ export const useOrgStore = defineStore({
     organization: null,
     layouts: [],
     integrations: [],
+    layout: null,
+    selectedProduct: null
   }),
 
   getters: () => ({}),
@@ -37,7 +39,7 @@ export const useOrgStore = defineStore({
         if (this.layouts.length > 0) resolve(this.layouts);
         else {
           axios
-            .get('templates')
+            .get('templates/metadata')
             .then((res) => {
               console.log(res);
               this.layouts = res.data;
@@ -48,6 +50,16 @@ export const useOrgStore = defineStore({
               reject(e);
             });
         }
+      });
+    },
+
+    getLayout(id) {
+      return new Promise((resolve, reject) => {
+        axios.get(`templates/${id}`).then((res) => {
+          console.log(res);
+          this.layout = res.data;
+          resolve(res);
+        });
       });
     },
 
@@ -67,10 +79,10 @@ export const useOrgStore = defineStore({
       });
     },
 
-    updateLayout(layout){
+    updateLayout(layout) {
       return new Promise(async (resolve, reject) => {
         axios
-          .put(`templates/${layout.id}`, layout)
+          .put(`templates/${layout.id}/metadata`, layout)
           .then((res) => {
             console.log(res);
             resolve(res.data);
@@ -98,6 +110,27 @@ export const useOrgStore = defineStore({
             console.log(e);
             reject(e);
           });
+      });
+    },
+
+    searchProduct(query) {
+      return new Promise((resolve, reject) => {
+        axios
+          .get(`templates/${this.$router.currentRoute.value.params.layoutId}/products/search?query=${query}`)
+          .then((res) => {
+            console.log(res);
+            resolve(res.data);
+          });
+      });
+    },
+
+    getProduct(id) {
+      return new Promise((resolve, reject) => {
+        axios.get(`templates/${this.$router.currentRoute.value.params.layoutId}/products/${id}`).then((res) => {
+          console.log(res);
+          this.selectedProduct = res.data.product;
+          resolve(this.selectedProduct);
+        });
       });
     },
 

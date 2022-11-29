@@ -1,5 +1,5 @@
 <template>
-  <main>
+  <main class="max-w-screen-xl mx-auto mt-4 px-4">
     <div class="flex justify-between items-end mb-4">
       <div>
         <h1 class="text-4xl">Hey {{ user.firstname }}</h1>
@@ -74,12 +74,10 @@ const show = ref(false);
 const sidepanel = ref(false);
 
 onMounted(() => {
-  // load layouts
+  // load layouts and integrations
   Promise.all([orgStore.getLayouts(), orgStore.getIntegrations()]).then((values) => {
     console.log(values);
   });
-
-  console.log(user);
 });
 
 const addIntegration = () => {

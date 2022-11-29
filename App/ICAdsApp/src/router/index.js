@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 import HomeView from '../views/HomeView.vue';
 import LoginView from '../views/LoginView.vue';
 import { useUserStore } from '../stores/user';
+import { useOrgStore } from '../stores/organization';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -33,8 +34,14 @@ const router = createRouter({
       name: 'editor',
       component: () => import('../views/EditorView.vue'),
       beforeEnter: (from, to, next) => {
-        console.log("GOING EDITOR")
-        next();
+        console.log(from.params.layoutId)
+        const store = useOrgStore();
+        store.getLayout(from.params.layoutId).then((res) => {
+          console.log(res);
+          next();
+        })
+        
+        
       }
     },
 

@@ -59,7 +59,7 @@ namespace ICAds.Controllers
         {
             var integration = await IntegrationRepository.DeleteIntegration(integrationId);
             if (integration == false) return NotFound("No Integration with this id found");
-            else return Ok("Deleted integratio");
+            else return Ok("Deleted integration");
         }
 
 

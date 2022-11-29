@@ -32,7 +32,7 @@
         <div class="flex items-center pl-4">
           <span class="material-symbols-outlined"> chevron_right </span>
           <button
-            class="link underline pl-4"
+            class="link underline pl-4 text-primary2"
             @click="$router.push({ name: 'editor', params: { layoutId: layout.id } })"
           >
             {{ layout.name }}

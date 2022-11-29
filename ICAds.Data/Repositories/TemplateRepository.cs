@@ -79,6 +79,30 @@ namespace ICAds.Data.Repositories
             }
         }
 
+        public static async Task<TemplateMetadataModel> GetTemplate(string orgId, string templateId)
+        {
+            using (var db = new AppDataContext())
+            {
+
+                var query = await db.TemplatesMetadata.Where(td => td.Id == templateId && td.OrganizationId == orgId)
+                    .Include(td => td.Template)
+                    .Include(td => td.Integration)
+                    .FirstOrDefaultAsync();
+
+                return query; 
+
+                //var templateMetadata = await db.TemplatesMetadata.FirstOrDefaultAsync(td => td.Id == templateId && td.OrganizationId == orgId);
+                //var template = await db.Templates.FirstOrDefaultAsync(t => t.TemplateMetadataId == templateId);
+
+            }
+
+        }
+
+        //public static async Task<IntegrationModel> GetTemplateIntegration(string orgId, string templateId)
+        //{
+
+        //}
+
 
         public class NewTemplate
         {

@@ -13,10 +13,12 @@
     <None Remove="GraphQL.Client" />
     <None Remove="GraphQL" />
     <None Remove="GraphQL.Client.Serializer.Newtonsoft" />
+    <None Remove="Image\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Integrations\" />
     <Folder Include="Integrations\Shopify\" />
+    <Folder Include="Image\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="6.0.11" />

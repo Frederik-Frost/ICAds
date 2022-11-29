@@ -8,6 +8,7 @@ using ICAds.Data.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualBasic;
+using ICAds.Content.Integrations.Shopify;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -17,6 +18,7 @@ namespace ICAds.Controllers
     [Authorize]
     public class TemplateController : TokenController
     {
+        [Route("metadata")]
         [HttpGet]
         public async Task<ActionResult<List<TemplateMetadataModel>>> GetTemplates()
         {
@@ -24,6 +26,14 @@ namespace ICAds.Controllers
             return Ok(templates);
         }
 
+        [HttpPut]
+        [Route("{templateId}/metadata")]
+        public async Task<ActionResult<TemplateMetadataModel>> UpdateTemplateMetadata([FromBody] TemplateDTO templateInfo, string templateId)
+        {
+            var template = await TemplateRepository.UpdateTemplateMetadata(GetOrgId(), templateId, templateInfo);
+            return Ok(template);
+
+        }
 
         [HttpPost]
         public async Task<ActionResult<TemplateMetadataModel>> CreateTemplate([FromBody] TemplateDTO templateInfo)
@@ -32,16 +42,6 @@ namespace ICAds.Controllers
             return Ok(template);
         }
 
-        [HttpPut]
-        [Route("{templateId}")]
-        public async Task<ActionResult<TemplateMetadataModel>> UpdateTemplateMetadata([FromBody] TemplateDTO templateInfo , string templateId)
-        {
-            var template = await TemplateRepository.UpdateTemplateMetadata(GetOrgId(), templateId, templateInfo);
-            return Ok(template);
-
-        }
-
-
         [HttpDelete]
         [Route("{templateId}")]
         public async Task<ActionResult> DeleteTemplate(string templateId)
@@ -49,6 +49,35 @@ namespace ICAds.Controllers
             var template = await TemplateRepository.DeleteTemplate(GetOrgId(), templateId);
             if (template == false) return NotFound("No layout with this id found");
             else return Ok("Deleted layout");
+        }
+
+        [HttpGet]
+        [Route("{templateId}")]
+        public async Task<ActionResult<TemplateMetadataModel>> GetTemplate(string templateId)
+        {
+            var template = await TemplateRepository.GetTemplate(GetOrgId(), templateId);
+            if (template == null) return NotFound("No layout with this id found");
+            else return Ok(template);
+        }
+
+        [HttpGet]
+        [Route("{templateId}/products/search")]
+        public async Task<ActionResult<GraphProductResponse>> SearchTemplateProduct(string templateId, string query)
+        {
+            var template = await TemplateRepository.GetTemplate(GetOrgId(), templateId);
+            if (template == null) return NotFound("Could not find integration");
+
+            return await new ShopifyService(template.Integration).SearchProducts(query);    
+        }
+
+        [HttpGet]
+        [Route("{templateId}/products/{productId}")]
+        public async Task<ActionResult<SingleProduct>> GetProductFromId(string templateId, string productId)
+        {
+            var template = await TemplateRepository.GetTemplate(GetOrgId(), templateId);
+            if (template == null) return NotFound("Could not find integration");
+
+            return await new ShopifyService(template.Integration).GetSingleProduct(productId);
         }
 
     }
