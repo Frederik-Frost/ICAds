@@ -1,0 +1,36 @@
+{
+    "width" : 1080,
+    "height" : 1080,
+    "layers": [
+      {
+        "layerType": "TextLayer",
+        "text": "UDSALG!",
+        "textSize": 40,
+        "textColor": "#ed7d31",
+        "fontFamiliy": "Arial",
+        "posX": 40,
+        "posY": 100,
+        "hasBackground" : true,
+        "inflateX": 40,
+        "inflateY": 20,
+        "backgroundStyle": "Fill",
+        "backgroundColor": "#383838",
+        "borderRadius": 10
+      },
+      {
+        "layerType": "TextLayer",
+        "text": "KØB NU",
+        "textSize": 80,
+        "textColor": "#eb5e34",
+        "fontFamiliy": "Roboto",
+        "posX": 40,
+        "posY": 900,
+        "hasBackground" : true,
+        "inflateX": 20,
+        "inflateY": 20,
+        "backgroundStyle": "Fill",
+        "backgroundColor": "#383838",
+        "borderRadius": 5
+      }
+    ]
+  }

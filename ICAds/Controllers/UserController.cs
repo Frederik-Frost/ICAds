@@ -4,6 +4,7 @@ using ICAds.Data.Models;
 using ICAds.Data.Repositories;
 using ICAds.Data;
 using System.Security.Claims;
+using ICAds.Content.Image;
 
 using Microsoft.AspNetCore.Authorization;
 
@@ -73,5 +74,28 @@ public class UserController: TokenController
         var users = UserRepository.GetAllUsers();
         return users;
     }
+
+    [Route("image")]
+    [HttpGet]
+    public string DrawImage()
+    {
+
+        //ImageTransformation.CreateTextImageWithBg();
+        ImageTransformation.PaintOnImage();
+
+        return "Done";
+    }
+    [Route("scale")]
+    [HttpGet]
+    public string ScaleImage()
+    {
+
+        //ImageTransformation.CreateTextImageWithBg();
+        ImageTransformation.ScaleImage();
+
+        return "Done";
+    }
+    
+
 }
 

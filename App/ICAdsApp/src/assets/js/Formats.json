@@ -1,0 +1,7 @@
+[
+    {"name": "Square" ,"x": 1, "y": 1, "minWidth": 600, "minHeigth" : 600, "maxWidth" : 1936, "MaxHeight": 1936},
+    {"name": "Landscape" ,"x": 191, "y": 100, "minWidth": 600, "minHeigth" : 315, "maxWidth" : 1936, "MaxHeight": 1936 },
+    {"name": "Vertical" ,"x": 4, "y": 5, "minWidth": 600, "minHeigth" : 315, "maxWidth" : 1936, "MaxHeight": 1936 },
+    {"name": "Horizontal" ,"x": 9, "y": 16, "minWidth": 500, "minHeigth" : 888, "maxWidth" : null, "MaxHeight": null },
+    {"name": "Carousel feed" ,"x": 1, "y": 1, "minWidth": 600, "minHeigth" : 600, "maxWidth" : null, "MaxHeight": null, "recommendedWidth" : 1080, "recommendedHeight": 1080 }  
+]

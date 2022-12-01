@@ -14,14 +14,24 @@
     <None Remove="GraphQL" />
     <None Remove="GraphQL.Client.Serializer.Newtonsoft" />
     <None Remove="Image\" />
+    <None Remove="SkiaSharp" />
+    <None Remove="SkiaSharp.Views.Forms" />
+    <None Remove="SkiaSharp.Views" />
+    <None Remove="SkiaSharp.Views.WPF" />
+    <None Remove="SkiaSharp.Views.Forms.WPF" />
+    <None Remove="Models\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Integrations\" />
     <Folder Include="Integrations\Shopify\" />
     <Folder Include="Image\" />
+    <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="6.0.11" />
+    <PackageReference Include="SkiaSharp" Version="2.88.3" />
+    <PackageReference Include="SkiaSharp.Views.WPF" Version="2.88.3" />
+    <PackageReference Include="SkiaSharp.Views.Forms.WPF" Version="2.88.3" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ICAds.Data\ICAds.Data.csproj" />

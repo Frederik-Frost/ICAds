@@ -194,5 +194,33 @@ export const useOrgStore = defineStore({
           });
       });
     },
+
+
+
+    testGenerateTemp(template){
+      return new Promise((resolve, reject) => {
+        // axios.post('editor',{template: template, productData: this.selectedProduct}, {responseType: 'arraybuffer'}).then(res => {
+        axios.post('editor',{template: template, productData: this.selectedProduct}).then(res => {
+          console.log(res)
+          resolve(res.data)
+        }).catch(e => {
+          console.log(e)
+          reject(e)
+        })
+      })
+    },
+
+    testfind(template) {
+      var url = axios.defaults.baseURL +'editor';
+      return fetch(url, {
+          method: 'POST',
+          body: {template: template, productData: this.selectedProduct},
+          headers: {
+              'Accept': 'image/png',
+              'ResponseType': 'arraybuffer'
+          }
+      }).then(res => res.blob());
+  }
+    
   },
 });
