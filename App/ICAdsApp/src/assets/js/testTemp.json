@@ -3,11 +3,12 @@
     "height" : 1080,
     "layers": [
       {
+        "name" : "First layer",
         "layerType": "TextLayer",
         "text": "UDSALG!",
         "textSize": 40,
         "textColor": "#ed7d31",
-        "fontFamiliy": "Arial",
+        "fontFamily": "Arial",
         "posX": 40,
         "posY": 100,
         "hasBackground" : true,
@@ -18,11 +19,12 @@
         "borderRadius": 10
       },
       {
+        "name" : "Second layer",
         "layerType": "TextLayer",
         "text": "KØB NU",
         "textSize": 80,
         "textColor": "#eb5e34",
-        "fontFamiliy": "Roboto",
+        "fontFamily": "Roboto",
         "posX": 40,
         "posY": 900,
         "hasBackground" : true,

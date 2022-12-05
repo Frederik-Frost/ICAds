@@ -8,6 +8,7 @@ using Newtonsoft.Json;
 using ICAds.Data.Models;
 using Newtonsoft.Json.Linq;
 using System.Xml.Linq;
+using ICAds.Content.Models;
 
 namespace ICAds.Content.Integrations.Shopify
 {
@@ -53,6 +54,65 @@ namespace ICAds.Content.Integrations.Shopify
             var json = result.Content.ReadAsStringAsync().Result;
             return JsonConvert.DeserializeObject<GraphProductResponse>(json);
         }
+
+
+        //Task<List<Variable>>
+        public async Task<List<Variable>> GetProductVariables(string productId)
+        {
+
+            var product = await GetSingleProduct(productId);
+
+            List<Variable> variables = new List<Variable>();
+
+            foreach (var variant in product.Product.Variants)
+            {
+                var count = 1;
+                foreach(var varProp in variant.GetType().GetProperties())
+                {
+
+                    var name = $"variant{count}_";
+                    System.Diagnostics.Debug.WriteLine("_____ VARIANT ELEMENT ______");
+                    System.Diagnostics.Debug.WriteLine(varProp.Name);
+                    System.Diagnostics.Debug.WriteLine(varProp.GetValue(variant));
+                    // name, value
+                    variables.Add(new Variable($"{name}{varProp.Name}", varProp.GetValue(variant).ToString()));
+                    count++;
+                }
+
+
+            }
+
+            foreach (var image in product.Product.Images)
+            {
+                var count = 1;
+                foreach (var imgProp in image.GetType().GetProperties())
+                {
+                    var name = $"image{count}_";
+                    System.Diagnostics.Debug.WriteLine("_____ VARIANT ELEMENT ______");
+                    System.Diagnostics.Debug.WriteLine(imgProp.Name);
+                    System.Diagnostics.Debug.WriteLine(imgProp.GetValue(image));
+
+                    variables.Add(new Variable($"{name}{imgProp.Name}", imgProp.GetValue(image).ToString()));
+                    count++;
+                }
+
+            }
+
+            foreach (var prop in product.Product.GetType().GetProperties())
+            {
+                System.Diagnostics.Debug.WriteLine("_____ BASE ELEMENT ______");
+                System.Diagnostics.Debug.WriteLine(prop.Name);
+                System.Diagnostics.Debug.WriteLine(prop.GetValue(product.Product));
+                if(prop.Name != "Images" && prop.Name != "Variants" && prop.GetValue(product.Product) != null)
+                {
+                    variables.Add(new Variable(prop.Name, prop.GetValue(product.Product).ToString()));
+                }
+            }
+
+            return variables;
+
+        }
+
 
 
         //public static async Task<ShopifyProductListResult> GetContent(string url)

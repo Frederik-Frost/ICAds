@@ -76,7 +76,8 @@ const searchProduct = (query) => {
 
 const getProduct = (id) => {
   console.log(id)
-  orgStore.getProduct(id).then(res => {
+  // orgStore.getProduct(id).then(res => {
+  orgStore.testVars(id).then(res => {
     console.log(res)
   })
 }

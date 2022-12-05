@@ -44,7 +44,7 @@
     p, span {
       @apply m-0 text-sm;
     }
-    input[type="text"], input[type="password"]{
+    input[type="text"], input[type="password"], input[type="number"]{
       @apply p-2 border rounded-md border-charcoal50 hover:border-charcoal focus:border-charcoal focus:outline-none text-sm;
     }
 
@@ -70,7 +70,16 @@
         @apply flex items-center;
     }
     .form-group{
-      @apply flex flex-col text-charcoal;
+      @apply flex flex-col text-charcoal ;
+    }
+    .form-group-y{
+      @apply flex flex-row text-charcoal items-center gap-2 justify-between;
+    }
+    .form-group-y > input{
+      @apply w-[200px];
+    }
+    .selected-layer {
+      @apply border border-charcoal shadow-lg;
     }
 
   };

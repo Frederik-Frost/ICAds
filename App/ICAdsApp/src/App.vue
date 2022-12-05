@@ -46,13 +46,16 @@ export default {
     },
     showSideBar() {
       return (
-        !['login'].includes(this.$router.currentRoute.value.path) &&
+        !['/login'].includes(this.$router.currentRoute.value.path) &&
         !this.$router.currentRoute.value.path.includes('editor')
       );
     },
     showHeaderMenu() {
-      return !['login'].includes(this.$router.currentRoute.value.path);
+      return !['/login'].includes(this.$router.currentRoute.value.path);
     },
+    path(){
+      return this.$router.currentRoute.value.path
+    }
   },
   mounted() {
     // this.getList();

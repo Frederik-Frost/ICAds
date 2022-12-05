@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualBasic;
 using ICAds.Content.Integrations.Shopify;
+using ICAds.Content.Models;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -78,6 +79,17 @@ namespace ICAds.Controllers
             if (template == null) return NotFound("Could not find integration");
 
             return await new ShopifyService(template.Integration).GetSingleProduct(productId);
+        }
+
+        [HttpGet]
+        [Route("{templateId}/products/{productId}/variables")]
+        public async Task<ActionResult<List<Variable>>> GetProductVariablesFromId(string templateId, string productId)
+        //public async Task<ActionResult<string>> GetProductVariablesFromId(string templateId, string productId)
+        {
+            var template = await TemplateRepository.GetTemplate(GetOrgId(), templateId);
+            if (template == null) return NotFound("Could not find integration");
+            
+            return await new ShopifyService(template.Integration).GetProductVariables(productId);
         }
 
     }

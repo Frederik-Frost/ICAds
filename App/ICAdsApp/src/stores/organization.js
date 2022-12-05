@@ -9,7 +9,8 @@ export const useOrgStore = defineStore({
     layouts: [],
     integrations: [],
     layout: null,
-    selectedProduct: null
+    selectedProduct: null,
+    layoutTemplate: null
   }),
 
   getters: () => ({}),
@@ -134,6 +135,16 @@ export const useOrgStore = defineStore({
       });
     },
 
+    testVars(id) {
+      return new Promise((resolve, reject) => {
+        axios.get(`templates/${this.$router.currentRoute.value.params.layoutId}/products/${id}/variables`).then((res) => {
+          console.log(res);
+          this.selectedProduct = res.data.product;
+          resolve(this.selectedProduct);
+        });
+      });
+    },
+
     getIntegrations() {
       return new Promise(async (resolve, reject) => {
         axios
@@ -220,7 +231,8 @@ export const useOrgStore = defineStore({
               'ResponseType': 'arraybuffer'
           }
       }).then(res => res.blob());
-  }
+  },
+
     
   },
 });

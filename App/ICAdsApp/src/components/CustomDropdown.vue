@@ -1,16 +1,17 @@
 <template>
   <div class="dropdown relative">
     <div
-      class="cursor-pointer  flex rounded items-center p-3"
+      class="cursor-pointer "
       @click="show = !show"
     >
         <slot name="toggle"></slot>
     </div>
     <div
-      class="absolute rounded shadow bg-white overflow-hidden peer-checked:flex flex-col w-full mt-1 border border-gray-200"
+      class="absolute rounded shadow bg-white overflow-hidden w-full mt-1 "
       v-if="show"
+      @click="show = !show"
     >
-      <slot />
+      <slot  />
     </div>
   </div>
 </template>

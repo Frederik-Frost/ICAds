@@ -1,7 +1,7 @@
 <template>
-  <div class="fixed w-screen h-screen bg-charcoal bg-opacity-50 top-0 left-0" @click.self="$emit('close')">
+  <div class="fixed w-screen h-screen bg-charcoal bg-opacity-50 top-0 left-0 z-50  " @click.self="$emit('close')">
     <transition enter-active-class="duration-300 ease-out" enter-from-class="translate-x-[100px]">
-      <aside class="w-[400px] h-screen bg-white absolute right-0 overflow-auto" v-if="showSidepanel">
+      <aside class="w-[400px] h-screen bg-white absolute right-0 overflow-auto " v-if="showSidepanel">
         <slot name="content"></slot>
       </aside>
     </transition>
