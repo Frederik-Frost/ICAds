@@ -69,13 +69,13 @@ const addLayer = (layerType) => {
   });
 };
 
-onMounted(() => {
-  const template = new Template(testTemp);
-  console.log(template);
-  store.$patch((state) => {
-    state.layoutTemplate = template;
-  });
-});
+// onMounted(() => {
+//   const template = new Template(testTemp);
+//   console.log(template);
+//   store.$patch((state) => {
+//     state.layoutTemplate = template;
+//   });
+// });
 
 const success = ref(false);
 const generatedImg = ref('');

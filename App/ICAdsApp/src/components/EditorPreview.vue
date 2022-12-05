@@ -12,12 +12,12 @@
           v-if="selectedProduct"
           :style="{ width: canvasMeasurements??width + 'px', height: canvasMeasurements??height + 'px' }"
         >
-          <img
+          <!-- <img
             :src="selectedProduct.images[0].src"
             alt="Preview image"
             :style="{ width: (canvasMeasurements ?? width) + 'px' }"
             class="object-cover"
-          />
+          /> -->
         </div>
         <div
           v-for="(layer, index) in layoutTemplate.layers"

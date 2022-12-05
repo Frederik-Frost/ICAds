@@ -10,7 +10,8 @@ export const useOrgStore = defineStore({
     integrations: [],
     layout: null,
     selectedProduct: null,
-    layoutTemplate: null
+    layoutTemplate: null,
+    productVariables: null,
   }),
 
   getters: () => ({}),
@@ -135,13 +136,15 @@ export const useOrgStore = defineStore({
       });
     },
 
-    testVars(id) {
+    getProductVariables(id) {
       return new Promise((resolve, reject) => {
-        axios.get(`templates/${this.$router.currentRoute.value.params.layoutId}/products/${id}/variables`).then((res) => {
-          console.log(res);
-          this.selectedProduct = res.data.product;
-          resolve(this.selectedProduct);
-        });
+        axios
+          .get(`templates/${this.$router.currentRoute.value.params.layoutId}/products/${id}/variables`)
+          .then((res) => {
+            console.log(res);
+            this.productVariables = res.data;
+            resolve(res.data);
+          });
       });
     },
 
@@ -206,33 +209,48 @@ export const useOrgStore = defineStore({
       });
     },
 
-
-
-    testGenerateTemp(template){
+    testGenerateTemp(template) {
       return new Promise((resolve, reject) => {
         // axios.post('editor',{template: template, productData: this.selectedProduct}, {responseType: 'arraybuffer'}).then(res => {
-        axios.post('editor',{template: template, productData: this.selectedProduct}).then(res => {
-          console.log(res)
-          resolve(res.data)
-        }).catch(e => {
-          console.log(e)
-          reject(e)
-        })
-      })
+        axios
+          .post('editor', { template: template, productData: this.selectedProduct })
+          .then((res) => {
+            console.log(res);
+            resolve(res.data);
+          })
+          .catch((e) => {
+            console.log(e);
+            reject(e);
+          });
+      });
     },
 
     testfind(template) {
-      var url = axios.defaults.baseURL +'editor';
+      var url = axios.defaults.baseURL + 'editor';
       return fetch(url, {
-          method: 'POST',
-          body: {template: template, productData: this.selectedProduct},
-          headers: {
-              'Accept': 'image/png',
-              'ResponseType': 'arraybuffer'
-          }
-      }).then(res => res.blob());
-  },
+        method: 'POST',
+        body: { template: template, productData: this.selectedProduct },
+        headers: {
+          Accept: 'image/png',
+          ResponseType: 'arraybuffer',
+        },
+      }).then((res) => res.blob());
+    },
 
-    
+    saveChanges() {
+      return new Promise((resolve, reject) => {
+        // axios.post('editor',{template: template, productData: this.selectedProduct}, {responseType: 'arraybuffer'}).then(res => {
+        axios
+          .put(`templates/${this.$router.currentRoute.value.params.layoutId}/save`, this.layoutTemplate)
+          .then((res) => {
+            console.log(res);
+            resolve(res.data);
+          })
+          .catch((e) => {
+            console.log(e);
+            reject(e);
+          });
+      });
+    },
   },
 });

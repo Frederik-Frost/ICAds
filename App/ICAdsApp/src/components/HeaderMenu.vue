@@ -13,7 +13,7 @@
     </div>
     <main class="flex flex-row justify-between items-center" :class="{ 'flex-1': editor }">
       <div v-if="editor" class="ml-4">
-        <SearchDropdown @update="searchProduct" @select="getProduct" :results="products"/>
+        <SearchDropdown @update="searchProduct" @select="getProductVariables" :results="products" />
       </div>
 
       <div class="flex gap-4">
@@ -64,23 +64,25 @@ const props = defineProps({
   router: Object,
 });
 
-
-let products = ref([])
+let products = ref([]);
 const searchProduct = (query) => {
-  console.log(query)
-  orgStore.searchProduct(query).then(res => {
-    console.log(res)
-    products.value = res.data.products.edges
-  })
-}
+  console.log(query);
+  orgStore.searchProduct(query).then((res) => {
+    console.log(res);
+    products.value = res.data.products.edges;
+  });
+};
 
-const getProduct = (id) => {
-  console.log(id)
-  // orgStore.getProduct(id).then(res => {
-  orgStore.testVars(id).then(res => {
-    console.log(res)
-  })
-}
+const getProductVariables = (product) => {
+  console.log(product);
+  orgStore.$patch((state) => {
+    state.selectedProduct = product
+  });
+  orgStore.getProductVariables(product.id).then(res => {
+  
+    console.log(res);
+  });
+};
 
 const editor = computed(() => props.router.currentRoute.value.path.includes('editor'));
 </script>

@@ -22,7 +22,7 @@
       >
         <button
           type="button"
-          @click="selectResult(result.node.id)"
+          @click="selectResult(result.node)"
           class="text-left whitespace-nowrap overflow-hidden text-ellipsis max-w-full focus:outline-none"
         >
           {{ result.node.title }}
@@ -67,8 +67,8 @@ watch(
   }
 );
 
-const selectResult = (id) => {
-  emit('select', id);
+const selectResult = (node) => {
+  emit('select', node);
   showResults.value = false;
 };
 </script>

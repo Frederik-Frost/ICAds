@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualBasic;
 using ICAds.Content.Integrations.Shopify;
 using ICAds.Content.Models;
+using System.Text.Json;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -59,6 +60,15 @@ namespace ICAds.Controllers
             var template = await TemplateRepository.GetTemplate(GetOrgId(), templateId);
             if (template == null) return NotFound("No layout with this id found");
             else return Ok(template);
+        }
+
+        [HttpPut]
+        [Route("{templateId}/save")]
+        public async Task<ActionResult<TemplateMetadataModel>> SaveTemplateJson([FromBody] JsonDocument templateJson, string templateId)
+        {
+            var template = await TemplateRepository.SaveTemplateJson(GetOrgId(), GetUserId(), templateId, templateJson);
+            if (template == null) return NotFound("No layout with this id found");
+            return Ok(template);
         }
 
         [HttpGet]

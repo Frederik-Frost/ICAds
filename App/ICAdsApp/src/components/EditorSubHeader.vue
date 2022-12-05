@@ -1,9 +1,13 @@
 <template>
   <transition enter-active-class="duration-300 ease-out" enter-from-class="translate-y-[50px]">
     <div class="bg-white h-12 px-4 flex items-center justify-between shadow-sm">
-      <p class="text-lg text-charcoal75">
-        {{ orgStore.layout.name }}
-      </p>
+      <div class="flex gap-4">
+        <p class="text-lg text-charcoal75">
+          {{ orgStore.layout.name }} - 
+        </p>
+
+        <button class="btn-primary text-xs" @click="saveChanges">Save layout</button>
+      </div>
 
       <p class="">
         {{ orgStore.selectedProduct ? orgStore.selectedProduct.title : 'No product data loaded' }}
@@ -15,6 +19,13 @@
 <script setup>
 import { useOrgStore } from './../stores/organization';
 const orgStore = useOrgStore();
+
+
+const saveChanges = () => {
+  orgStore.saveChanges().then((res) => {
+    console.log(res)
+  })
+}
 </script>
 
 <style></style>

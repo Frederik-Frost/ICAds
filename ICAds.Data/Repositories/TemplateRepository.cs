@@ -98,6 +98,26 @@ namespace ICAds.Data.Repositories
 
         }
 
+        public static async Task<TemplateMetadataModel> SaveTemplateJson(string orgId, string userId, string templateId, JsonDocument templateJson)
+        {
+            using (var db = new AppDataContext())
+            {
+
+                var existing = await db.TemplatesMetadata.Where(td => td.Id == templateId && td.OrganizationId == orgId)
+                    .Include(td => td.Template)
+                    .FirstOrDefaultAsync();
+                if(existing != null)
+                {
+                    existing.Template.TemplateJSON = templateJson;
+                    existing.UpdatedBy = userId;
+                    existing.Updated = DateTime.UtcNow;
+                }
+                await db.SaveChangesAsync();
+                return existing;
+            }
+
+        }
+
         //public static async Task<IntegrationModel> GetTemplateIntegration(string orgId, string templateId)
         //{
 

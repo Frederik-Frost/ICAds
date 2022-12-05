@@ -24,9 +24,6 @@ const router = createRouter({
     {
       path: '/account',
       name: 'account',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
       component: () => import('../views/AccountView.vue'),
     },
     {
@@ -38,13 +35,11 @@ const router = createRouter({
         const store = useOrgStore();
         store.getLayout(from.params.layoutId).then((res) => {
           console.log(res);
+          store.$patch((state) => state.layoutTemplate = res.data.template.templateJSON)
           next();
         })
-        
-        
-      }
+      } 
     },
-
     {
       path: '/login',
       name: 'login',
