@@ -5,9 +5,9 @@ import ShapeLayer from './ShapeLayer';
 
 export default class Template {
   constructor(template) {
-    this.height = template.height;
-    this.width = template.width;
-    this.layers = this.setLayers(template.layers);
+    this.height = template.height || 500 ;
+    this.width = template.width || 500;
+    this.layers = template.layers ? this.setLayers(template.layers) : [];
   }
 
   get ratio() {

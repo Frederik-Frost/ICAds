@@ -14,7 +14,12 @@ namespace ICAds.Content.Models
             }
             set
             {
-                _name = "{" + value + "}";
+                if (value.Contains("{")) {
+                    _name = value;
+                }
+                else{
+                    _name = "{" + value + "}";
+                }
             }
         }
 

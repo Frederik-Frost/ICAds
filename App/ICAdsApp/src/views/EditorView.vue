@@ -9,32 +9,39 @@
         :selectedProduct="store.selectedProduct"
         class="col-span-4"
       />
+
+      <!-- <div class="col-span-2 flex flex-col"> -->
+      <!-- <EditorBaseEditor :layout="store.layoutTemplate" /> -->
       <!-- Editing area here  -->
       <EditorLayerEditor
-        :layer="store.layoutTemplate.layers[selectedLayerIndex]"
+        :layer="selectedLayerIndexIsSet ? store.layoutTemplate.layers[selectedLayerIndex] : null"
         :selectedLayerIndex="selectedLayerIndex"
         class="col-span-2"
       />
+      <!-- </div> -->
       <!-- Layers area here  -->
-      <EditorLayers
-        :layoutTemplate="store.layoutTemplate"
-        :selectedLayerIndex="selectedLayerIndex"
-        class="col-span-2"
-        @selectLayer="
-          (index) => {
-            selectedLayerIndex = index;
-          }
-        "
-        @newLayer="(layerType) => addLayer(layerType)"
-        @removeLayer="
-          (index) => {
-            removeLayer(index);
-          }
-        "
-      />
+      <div class="col-span-2 flex flex-col">
+        <EditorBaseEditor :layout="store.layoutTemplate" />
+        <EditorLayers
+          :layoutTemplate="store.layoutTemplate"
+          :selectedLayerIndex="selectedLayerIndex"
+          
+          @selectLayer="
+            (index) => {
+              selectedLayerIndex = index;
+            }
+          "
+          @newLayer="(layerType) => addLayer(layerType)"
+          @removeLayer="
+            (index) => {
+              removeLayer(index);
+            }
+          "
+        />
+      </div>
     </main>
 
-    <button @click="testVariables()">Click to test</button>
+    <button @click="testGenerate()">Click to test</button>
     <!-- <button @click="testGeneration()">Click to test</button> -->
     <div v-if="success">
       <img :src="generatedImg" alt="" />
@@ -47,14 +54,18 @@ import EditorSubHeader from './../components/EditorSubHeader.vue';
 import EditorPreview from './../components/EditorPreview.vue';
 import EditorLayerEditor from './../components/EditorLayerEditor.vue';
 import EditorLayers from './../components/EditorLayers.vue';
-import { ref, onMounted, nextTick } from 'vue';
+import EditorBaseEditor from './../components/EditorBaseEditor.vue';
+import { ref, onMounted, nextTick, computed } from 'vue';
 import { useOrgStore } from './../stores/organization';
 import Template from './../assets/js/Template';
 import TextLayer from './../assets/js/TextLayer';
 import testTemp from './../assets/js/testTemp.json';
 const searchTerm = ref('');
-const selectedLayerIndex = ref(0);
 const store = useOrgStore();
+const selectedLayerIndex = ref(null);
+const selectedLayerIndexIsSet = computed(() => {
+  return selectedLayerIndex.value != null;
+});
 
 const removeLayer = (index) => {
   selectedLayerIndex.value = 0;
@@ -102,11 +113,17 @@ const testGeneration = () => {
   // success.value = true
   // });
 };
+const testGenerate = () => {
+store.testGenerateTemp(store.layoutTemplate.export())
+
+
+  
+}
 
 
 const testVariables = () => {
-  store.testVars().then(res => console.log(res))
-}
+  store.testVars().then((res) => console.log(res));
+};
 
 // const searchProducts = (e) => {
 //   store.searchProduct(searchTerm.value)

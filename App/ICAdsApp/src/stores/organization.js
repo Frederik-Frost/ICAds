@@ -213,7 +213,7 @@ export const useOrgStore = defineStore({
       return new Promise((resolve, reject) => {
         // axios.post('editor',{template: template, productData: this.selectedProduct}, {responseType: 'arraybuffer'}).then(res => {
         axios
-          .post('editor', { template: template, productData: this.selectedProduct })
+          .post('editor/generate', { template: template, variables: this.productVariables })
           .then((res) => {
             console.log(res);
             resolve(res.data);
@@ -253,4 +253,22 @@ export const useOrgStore = defineStore({
       });
     },
   },
+
+  // testVars(){
+  //   return new Promise((resolve, reject) => {
+      
+  //     axios
+  //       .post('editor', { template: template, productData: this.selectedProduct })
+  //       .then((res) => {
+  //         console.log(res);
+  //         resolve(res.data);
+  //       })
+  //       .catch((e) => {
+  //         console.log(e);
+  //         reject(e);
+  //       });
+  //   });
+  // }
+
+
 });

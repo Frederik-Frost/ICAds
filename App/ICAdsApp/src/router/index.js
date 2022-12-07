@@ -3,6 +3,7 @@ import HomeView from '../views/HomeView.vue';
 import LoginView from '../views/LoginView.vue';
 import { useUserStore } from '../stores/user';
 import { useOrgStore } from '../stores/organization';
+import Template from './../assets/js/Template';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -35,7 +36,7 @@ const router = createRouter({
         const store = useOrgStore();
         store.getLayout(from.params.layoutId).then((res) => {
           console.log(res);
-          store.$patch((state) => state.layoutTemplate = res.data.template.templateJSON)
+          store.$patch((state) => state.layoutTemplate = new Template(res.data.template.templateJSON))
           next();
         })
       } 

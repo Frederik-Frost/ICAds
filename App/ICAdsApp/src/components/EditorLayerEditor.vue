@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h3>Layer {{ props.selectedLayerIndex + 1 }}</h3>
+    <h3>Layer {{ props.selectedLayerIndex != null ? props.selectedLayerIndex + 1 : ': None selected' }}</h3>
     <div v-if="layer">
       <div class="bg-white p-2 rounded shadow">
         <TextLayerEditor v-if="layer.layerType == 'TextLayer'" :layer="layer" class="flex flex-col gap-2" />

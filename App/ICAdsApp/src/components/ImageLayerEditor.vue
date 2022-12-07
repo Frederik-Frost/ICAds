@@ -7,15 +7,19 @@
       </div>
       <div class="form-group-y">
         <label for="width">width</label>
-        <input type="number" name="width" v-model="layer.imageWidth" />
+        <input type="number" name="width" v-model="layer.width" />
       </div>
       <div class="form-group-y">
         <label for="height">height</label>
-        <input type="number" name="height" v-model="layer.imageHeight" />
+        <input type="number" name="height" v-model="layer.height" />
       </div>
-      <div class="form-group">
-        <label for="fit">Image fit</label>
-        <input type="text" name="fit" v-model="layer.imageHeight" />
+      <div class="form-group-y">
+        <label for="posX">Position X</label>
+        <input type="number" name="posX" v-model="layer.posX" />
+      </div>
+      <div class="form-group-y">
+        <label for="posY">Position Y</label>
+        <input type="number" name="posY" v-model="layer.posY" />
       </div>
       <div class="flex gap-4">
         <!-- <label class="text-charcoal">Background style</label> -->

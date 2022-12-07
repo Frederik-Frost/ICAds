@@ -10,6 +10,7 @@ using ICAds.Content.Integrations.Shopify;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SkiaSharp;
+using Newtonsoft.Json;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -20,17 +21,55 @@ namespace ICAds.Controllers
     public class EditorController : TokenController
     {
         
-        [HttpPost]
-        public async Task<Stream> GenerateFromTemplate([FromBody] GenerateTemplateDTO generationData)
+        //[HttpPost]
+        //public async Task<Stream> GenerateFromTemplate([FromBody] GenerateTemplateDTO generationData)
+        //{
+
+        //    var res = await ImageProcessor.GenerateFromTemplate(generationData.Template, generationData.ProductData);
+        //    //return res.ToArray();
+        //    return res.AsStream();
+
+        //}
+
+        [HttpGet]
+        public string TestLoops()
         {
 
-            var res = await ImageProcessor.GenerateFromTemplate(generationData.Template, generationData.ProductData);
+            //Layer.ImageLayer first = new ImageLayer();
+            //Layer.TextLayer sec = new TextLayer();
+            //Layer.ShapeLayer third = new ShapeLayer();
+            //Layer.TextLayer fourth = new TextLayer();
+            //first.LayerType = "ImageLayer";
+            //sec.LayerType = "TextLayer";
+            //third.LayerType = "ShapeLayer";
+            //TemplateStructure dummy = new TemplateStructure();
+            //dummy.Layers = new List<Layer>();
+            //dummy.Layers.Add(first);
+            //dummy.Layers.Add(sec);
+            //dummy.Layers.Add(third);
+            //dummy.Layers.Add(fourth);
+
+
+            //ImageProcessor.TestLoop(dummy);
+            
+            //var res = await ImageProcessor.GenerateFromTemplate(generationData.Template, generationData.ProductData);
             //return res.ToArray();
-            return res.AsStream();
+            return "hello";
 
         }
 
+        [Route("generate")]
+        [HttpPost]
+        public async Task<string> GenerateFromTemplate2([FromBody] GenerateTemplateDTO generationData)
+        {
+
+            var res = ImageProcessor.GenerateFromTemplate2(generationData.Template, generationData.Variables);
+            //return res.ToArray();
+            return "s";
+
+        }
     }
+
 
     
 }
