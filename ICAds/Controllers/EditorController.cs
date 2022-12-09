@@ -20,12 +20,12 @@ namespace ICAds.Controllers
     [Route("editor")]
     public class EditorController : TokenController
     {
-        
+
         //[HttpPost]
         //public async Task<Stream> GenerateFromTemplate([FromBody] GenerateTemplateDTO generationData)
         //{
 
-        //    var res = await ImageProcessor.GenerateFromTemplate(generationData.Template, generationData.ProductData);
+        //var res = await ImageProcessor.GenerateFromTemplate(generationData.Template, generationData.ProductData);
         //    //return res.ToArray();
         //    return res.AsStream();
 
@@ -60,12 +60,27 @@ namespace ICAds.Controllers
 
         [Route("generate")]
         [HttpPost]
-        public async Task<string> GenerateFromTemplate2([FromBody] GenerateTemplateDTO generationData)
+        public async Task<byte[]> GenerateFromTemplate2([FromBody] GenerateTemplateDTO generationData)
         {
 
-            var res = ImageProcessor.GenerateFromTemplate2(generationData.Template, generationData.Variables);
-            //return res.ToArray();
-            return "s";
+            var imageData = await ImageProcessor.GenerateFromTemplate2(generationData.Template, generationData.Variables);
+
+            byte[] imageArray = imageData.ToArray();
+
+            //MemoryStream memoryStream = new MemoryStream(imageArray);
+            //HttpResponseMessage res = new HttpResponseMessage(System.Net.HttpStatusCode.OK);
+
+            //res.Content = new StreamContent(memoryStream);
+            //res.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("image/png");
+
+
+            return imageArray;
+
+            //using (var memoryStream = new MemoryStream())
+            //{
+
+            //}
+
 
         }
     }

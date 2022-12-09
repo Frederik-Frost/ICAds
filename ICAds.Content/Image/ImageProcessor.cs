@@ -15,7 +15,7 @@ namespace ICAds.Content.Image
 	public class ImageProcessor
 	{
 
-        public static async Task<string> GenerateFromTemplate2(TemplateStructure template, List<Variable> variables)
+        public static async Task<SKData> GenerateFromTemplate2(TemplateStructure template, List<Variable> variables)
         {
             // Create canvas with the template width and heigth first
             SKSurface surface = SKSurface.Create(new SKImageInfo(template.Width, template.Height));
@@ -65,80 +65,40 @@ namespace ICAds.Content.Image
                     }
                     SKBitmap scaledImage = scaleImageBg(initialImage, resizeFactor);
 
-                    // TO center image
-                    //float imgX = 0;
-                    //float imgY = 0;
-                    float imgX = il.PosX;
-                    float imgY = il.PosY;
+                    float cropPosX = 0;
+                    float cropPosY = 0;
 
-
-                    //////// PLEASE MAKE ME PRETTY ////////////
-                    if (productImageIsLandscape)
+                    switch (il.AlignHorizontal)
                     {
-                        if(il.AlignHorizontal == "Left")
-                        {
-                            //imgX = 0;
-                        }
-                        if (il.AlignHorizontal == "Center")
-                        {
-                            imgX = imgX - Math.Abs(((float)scaledImage.Width - (float)template.Width) / (float)2);
-                        }
-                        if (il.AlignHorizontal == "Right")
-                        {
-                            imgX = imgX - Math.Abs(((float)scaledImage.Width - (float)template.Width));
-                        }
-
-
-                        if (il.AlignVertical == "Top")
-                        {
-                            //imgY = 0;
-                        }
-                        if (il.AlignVertical == "Center")
-                        {
-                            imgY = Math.Abs(((float)scaledImage.Height - (float)template.Height) / (float)2);
-                        }
-                        if (il.AlignVertical == "Bottom")
-                        {
-                            imgY = Math.Abs(((float)scaledImage.Height - (float)template.Height));
-                        }
+                        case "Left":
+                            cropPosX = 0;
+                            break;
+                        case "Center":
+                            cropPosX = productImageIsLandscape ? - Math.Abs(((float)scaledImage.Width - (float)il.Width) / (float)2) : Math.Abs(((float)scaledImage.Width - (float)il.Width) / (float)2);
+                            break;
+                        case "Right":
+                            cropPosX = productImageIsLandscape  ? - Math.Abs(((float)scaledImage.Width - (float)il.Width)) : Math.Abs(((float)scaledImage.Width - (float)il.Width));
+                            break;
                     }
-                    else
+
+                    switch (il.AlignVertical)
                     {
-                        if (il.AlignHorizontal == "Left")
-                        {
-                            imgX = 0;
-                        }
-                        if (il.AlignHorizontal == "Center")
-                        {
-                            imgX = imgX + Math.Abs(((float)scaledImage.Width - (float)template.Width) / (float)2);
-                        }
-                        if (il.AlignHorizontal == "Right")
-                        {
-                            imgX = imgX + Math.Abs(((float)scaledImage.Width - (float)template.Width));
-                        }
-
-
-
-                        if (il.AlignVertical == "Top")
-                        {
-                            //imgY = 0;
-                        }
-                        if (il.AlignVertical == "Center")
-                        {
-                            imgY = imgY - Math.Abs(((float)scaledImage.Height - (float)template.Height) / (float)2);
-                        }
-                        if (il.AlignVertical == "Bottom")
-                        {
-                            imgY = imgY - Math.Abs(((float)scaledImage.Height - (float)template.Height));
-                        }
+                        case "Top":
+                            cropPosY = 0;
+                            break;
+                        case "Center":
+                            cropPosY = productImageIsLandscape ? Math.Abs(((float)scaledImage.Height - (float)il.Height) / (float)2) : - Math.Abs(((float)scaledImage.Height - (float)il.Height) / (float)2);
+                            break;
+                        case "Bottom":
+                            cropPosY = productImageIsLandscape ? Math.Abs(((float)scaledImage.Height - (float)il.Height)) : - Math.Abs(((float)scaledImage.Height - (float)il.Height));
+                            break;
                     }
-                    //////// PLEASE MAKE ME PRETTY ////////////
-                    
-                    //imgY = imgY + layer.PosY;
-                    //imgX = imgX + layer.PosX;
+
+                    SKBitmap cropped = new SKBitmap(new SKImageInfo((int)il.Width, (int)il.Height));
+                    scaledImage.ExtractSubset(cropped, SKRectI.Create((int)cropPosX, (int)cropPosY, (int)il.Width, (int)il.Height));
 
                     // Actually drawing the image to the canvas
-                    canvas.DrawBitmap(scaledImage, imgX, imgY);
+                    canvas.DrawBitmap(cropped, il.PosX, il.PosY);
                 }
 
 
@@ -169,7 +129,6 @@ namespace ICAds.Content.Image
                 if (layer.LayerType == "ShapeLayer")
                 {
                     // Handle adding Shape layers to the canvas here
-
                     ShapeLayer sl = new ShapeLayer();
                     sl.LayerType = layer.LayerType;
                     sl.Height = layer.Height;
@@ -181,18 +140,17 @@ namespace ICAds.Content.Image
                     sl.PosY = layer.PosY;
 
 
-                    //SKRect shape = new SKRect();
-
                     SKRect shape = SKRect.Create(sl.PosX, sl.PosY, sl.Width, sl.Height);
 
                     //SKRect shape = new SKRect();
                     //shape.Offset(sl.PosX, sl.PosY);
+
                     SKPaint framePaint = new SKPaint
                     {
-                        Style = layer.BackgroundStyle == "Fill" ? SKPaintStyle.Fill : SKPaintStyle.Stroke,
-                        Color = SKColor.Parse(layer.BackgroundColor)
+                        Style = sl.BackgroundStyle == "Fill" ? SKPaintStyle.Fill : SKPaintStyle.Stroke,
+                        Color = SKColor.Parse(sl.BackgroundColor ?? "#000")
                     };
-
+                    
                     canvas.DrawRoundRect(shape, sl.BorderRadius, sl.BorderRadius, framePaint);
 
                 }
@@ -207,10 +165,9 @@ namespace ICAds.Content.Image
             
             SaveImage(data, "generated.png");
 
-            return "DONE";
-
-            
+            return data;   
         }
+
 
         public static string ExtractVariableValues(string text, List<Variable> variables)
         {
@@ -351,7 +308,7 @@ namespace ICAds.Content.Image
             if (layer.HasBackground == true)
             {
                 SKRect frameRect = textBounds;
-                frameRect.Offset(layer.PosX, layer.PosY);
+                frameRect.Offset(layer.PosX, (layer.PosY + layer.TextSize));
                 frameRect.Inflate(layer.InflateX, layer.InflateY);
 
                 SKPaint framePaint = new SKPaint
@@ -363,7 +320,7 @@ namespace ICAds.Content.Image
                 canvas.DrawRoundRect(frameRect, layer.BorderRadius, layer.BorderRadius, framePaint);
             }
 
-            canvas.DrawText(layer.Text, layer.PosX, layer.PosY, paint);
+            canvas.DrawText(layer.Text, layer.PosX, (layer.PosY + layer.TextSize) , paint);
             //canvas.DrawText(layer.Text, layer.PosX, yIgnorBelowBaseline, paint);
             return canvas;
         }

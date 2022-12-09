@@ -1,8 +1,8 @@
 <template>
   <div>
     <EditorSubHeader />
-
-    <main class="grid grid-cols-8 gap-2 p-2" v-if="store.layoutTemplate">
+    <!-- bg-hoverWhite shadow rounded-md p-4  -->
+    <main class="grid grid-cols-8 gap-2 max-w-screen-2xl mx-auto mt-8 p-4" v-if="store.layoutTemplate">
       <!-- Image area here  -->
       <EditorPreview
         :layoutTemplate="store.layoutTemplate"
@@ -25,7 +25,6 @@
         <EditorLayers
           :layoutTemplate="store.layoutTemplate"
           :selectedLayerIndex="selectedLayerIndex"
-          
           @selectLayer="
             (index) => {
               selectedLayerIndex = index;
@@ -43,9 +42,10 @@
 
     <button @click="testGenerate()">Click to test</button>
     <!-- <button @click="testGeneration()">Click to test</button> -->
-    <div v-if="success">
+    <div ref="main"></div>
+    <!-- <div v-if="success" ref="main">
       <img :src="generatedImg" alt="" />
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -61,6 +61,7 @@ import Template from './../assets/js/Template';
 import TextLayer from './../assets/js/TextLayer';
 import testTemp from './../assets/js/testTemp.json';
 const searchTerm = ref('');
+const main = ref();
 const store = useOrgStore();
 const selectedLayerIndex = ref(null);
 const selectedLayerIndexIsSet = computed(() => {
@@ -114,22 +115,44 @@ const testGeneration = () => {
   // });
 };
 const testGenerate = () => {
-store.testGenerateTemp(store.layoutTemplate.export())
+  store.testGenerateTemp(store.layoutTemplate.export()).then((res) => {
+    const baseStr = `data:image/png;base64,${res}`;
 
 
-  
+
+    // downloadFromBase64(baseStr, store.selectedProduct?.id || "image") 
+
+    Base64ToImage(baseStr, function (img) {
+      main.value.innerHTML = "";
+      main.value.appendChild(img);
+      // var log = 'w=' + img.width + ' h=' + img.height;
+      // document.getElementById('log').value = log;
+    });
+  });
+};
+
+const Base64ToImage = (base64img, callback) => {
+  var img = new Image();
+  img.onload = function () {
+    callback(img);
+  };
+  img.src = base64img;
+};
+
+
+const downloadFromBase64 = (base64, fileName) => {
+    let link = document.createElement('a');
+    link.href = base64;
+    link.download = `${fileName}.png`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
 }
-
 
 const testVariables = () => {
   store.testVars().then((res) => console.log(res));
 };
 
-// const searchProducts = (e) => {
-//   store.searchProduct(searchTerm.value)
-//   console.log(e)
-//   console.log(searchTerm.value)
-// }
 </script>
 
 <style></style>
