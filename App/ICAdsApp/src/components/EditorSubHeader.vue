@@ -7,9 +7,10 @@
         </p>
 
         <button class="btn-primary text-xs" @click="saveChanges">Save layout</button>
+        <button class="btn-secondary text-xs" @click="browseVariables">Browse variables</button>
       </div>
 
-      <p class="">
+      <p>
         {{ orgStore.selectedProduct ? orgStore.selectedProduct.title : 'No product data loaded' }}
       </p>
     </div>

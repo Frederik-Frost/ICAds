@@ -1,0 +1,1 @@
+import{_ as e,o as s,c as t,a as c}from"./index.72139b06.js";const o={},a={class:"max-w-screen-xl mx-auto mt-4 px-4"},n=c("h1",null,"This is an about page",-1),_=[n];function r(i,d){return s(),t("div",a,_)}const m=e(o,[["render",r]]);export{m as default};

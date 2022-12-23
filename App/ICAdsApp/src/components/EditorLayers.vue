@@ -19,14 +19,24 @@
         </button>
       </div>
 
-      <CustomDropdown title="test">
+      <CustomDropdown title="addLayer">
         <template v-slot:toggle>
-          <div class="text-left p-2 rounded shadow w-full text-charcoal bg-white hover:bg-alabaster font-bold">+ Layer</div>
+          <div class="text-left p-2 rounded shadow w-full text-charcoal bg-white hover:bg-alabaster font-bold">
+            + Layer
+          </div>
         </template>
         <div class="flex flex-col justify-start">
-          <button class="text-left p-2 hover:bg-alabaster" @click="$emit('newLayer', 'ImageLayer')">Image Layer</button>
+          <button
+            v-for="(type, index) in ['ImageLayer', 'TextLayer', 'ShapeLayer']"
+            :key="index"
+            @click="$emit('newLayer', type)"
+            class="text-left p-2 hover:bg-alabaster"
+          >
+            {{ getPrettyName(type) }}
+          </button>
+          <!-- <button class="text-left p-2 hover:bg-alabaster" @click="$emit('newLayer', 'ImageLayer')">Image Layer</button>
           <button class="text-left p-2 hover:bg-alabaster" @click="$emit('newLayer', 'TextLayer')">Text Layer</button>
-          <button class="text-left p-2 hover:bg-alabaster" @click="$emit('newLayer', 'ShapeLayer')">Shape Layer</button>
+          <button class="text-left p-2 hover:bg-alabaster" @click="$emit('newLayer', 'ShapeLayer')">Shape Layer</button> -->
         </div>
       </CustomDropdown>
       <!-- <button class="btn-tertiary" @click="$emit('newLayer')">+ Layer</button> -->
@@ -39,7 +49,7 @@ import { ref, onMounted, defineProps, computed } from 'vue';
 const props = defineProps({
   layoutTemplate: Object,
   selectedLayerIndex: Number,
-});
+}); 
 </script>
 
 <style></style>

@@ -76,7 +76,6 @@ namespace ICAds.Security
     public class EncryptedPassword
     {
 
-
         public byte[] Salt { get; set; }
         public byte[] Hash { get; set; }
 

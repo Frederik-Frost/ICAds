@@ -7,25 +7,9 @@ namespace ICAds.Content.Models
 {
     public class TemplateStructure
     {
-        //public TemplateStructure(JsonDocument t)
-        //{
-        //    t.RootElement.TryGetProperty("height", out JsonElement height);
-        //    t.RootElement.TryGetProperty("width", out JsonElement width);
-        //    t.RootElement.TryGetProperty("layers", out JsonElement layers)
-
-        //        foreach (JsonElement)
-
-
-        //    Height = height.GetInt32();
-        //    Width = width.GetInt32();
-        //    Layers = t.Layers;
-
-        //}
-
         public int Height { get; set; }
         public int Width { get; set; }
         public List<Layer> Layers { get; set; }
-        //public List<Dictionary<string, object>> Layers { get; set; }
     }
 
     public class TemplateStructureDTO

@@ -33,7 +33,7 @@ const store = useMainStore();
 const userStore = useUserStore();
 const orgStore = useOrgStore();
 
-// Chec for token authorization on each router navigation
+// Check for token authorization on each router navigation
 router.beforeEach((to, from, next) => {
   if (store.token) {
     // CALLING GET USER

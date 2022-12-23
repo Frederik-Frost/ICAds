@@ -17,7 +17,7 @@ namespace ICAds.Content.Image
 
         public static async Task<SKData> GenerateFromTemplate2(TemplateStructure template, List<Variable> variables)
         {
-            // Create canvas with the template width and heigth first
+            // Create canvas with the template width and height first
             SKSurface surface = SKSurface.Create(new SKImageInfo(template.Width, template.Height));
             SKCanvas canvas = surface.Canvas;
 
@@ -74,11 +74,20 @@ namespace ICAds.Content.Image
                             cropPosX = 0;
                             break;
                         case "Center":
-                            cropPosX = productImageIsLandscape ? - Math.Abs(((float)scaledImage.Width - (float)il.Width) / (float)2) : Math.Abs(((float)scaledImage.Width - (float)il.Width) / (float)2);
+                            cropPosX = -Math.Abs(((float)scaledImage.Width - (float)il.Width) / (float)2); 
                             break;
                         case "Right":
-                            cropPosX = productImageIsLandscape  ? - Math.Abs(((float)scaledImage.Width - (float)il.Width)) : Math.Abs(((float)scaledImage.Width - (float)il.Width));
+                            cropPosX = -Math.Abs(((float)scaledImage.Width - (float)il.Width));
                             break;
+                            //case "Left":
+                            //    cropPosX = 0;
+                            //    break;
+                            //case "Center":
+                            //    cropPosX = productImageIsLandscape ? - Math.Abs(((float)scaledImage.Width - (float)il.Width) / (float)2) : Math.Abs(((float)scaledImage.Width - (float)il.Width) / (float)2);
+                            //    break;
+                            //case "Right":
+                            //    cropPosX = productImageIsLandscape  ? - Math.Abs(((float)scaledImage.Width - (float)il.Width)) : Math.Abs(((float)scaledImage.Width - (float)il.Width));
+                            //    break;
                     }
 
                     switch (il.AlignVertical)
@@ -87,11 +96,20 @@ namespace ICAds.Content.Image
                             cropPosY = 0;
                             break;
                         case "Center":
-                            cropPosY = productImageIsLandscape ? Math.Abs(((float)scaledImage.Height - (float)il.Height) / (float)2) : - Math.Abs(((float)scaledImage.Height - (float)il.Height) / (float)2);
+                            cropPosY =  Math.Abs(((float)scaledImage.Height - (float)il.Height) / (float)2);
                             break;
                         case "Bottom":
-                            cropPosY = productImageIsLandscape ? Math.Abs(((float)scaledImage.Height - (float)il.Height)) : - Math.Abs(((float)scaledImage.Height - (float)il.Height));
+                            cropPosY =  Math.Abs(((float)scaledImage.Height - (float)il.Height));
                             break;
+                            //case "Top":
+                            //    cropPosY = 0;
+                            //    break;
+                            //case "Center":
+                            //    cropPosY = productImageIsLandscape ? Math.Abs(((float)scaledImage.Height - (float)il.Height) / (float)2) : - Math.Abs(((float)scaledImage.Height - (float)il.Height) / (float)2);
+                            //    break;
+                            //case "Bottom":
+                            //    cropPosY = productImageIsLandscape ? Math.Abs(((float)scaledImage.Height - (float)il.Height)) : - Math.Abs(((float)scaledImage.Height - (float)il.Height));
+                            //    break;
                     }
 
                     SKBitmap cropped = new SKBitmap(new SKImageInfo((int)il.Width, (int)il.Height));

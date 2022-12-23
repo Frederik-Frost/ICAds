@@ -5,6 +5,8 @@
     <main class="grid grid-cols-8 gap-2 max-w-screen-2xl mx-auto mt-8 p-4" v-if="store.layoutTemplate">
       <!-- Image area here  -->
       <EditorPreview
+        :base64ImgString="base64ImgString"
+        :base64StringLoaded="base64StringLoaded"
         :layoutTemplate="store.layoutTemplate"
         :selectedProduct="store.selectedProduct"
         class="col-span-4"
@@ -114,40 +116,39 @@ const testGeneration = () => {
   // success.value = true
   // });
 };
+
+const base64ImgString = ref('');
+const base64StringLoaded = ref(false);
 const testGenerate = () => {
   store.testGenerateTemp(store.layoutTemplate.export()).then((res) => {
-    const baseStr = `data:image/png;base64,${res}`;
-
-
-
+    // const baseStr = `data:image/png;base64,${res}`;
     // downloadFromBase64(baseStr, store.selectedProduct?.id || "image") 
-
-    Base64ToImage(baseStr, function (img) {
-      main.value.innerHTML = "";
-      main.value.appendChild(img);
-      // var log = 'w=' + img.width + ' h=' + img.height;
-      // document.getElementById('log').value = log;
-    });
+    base64ImgString.value = `data:image/png;base64,${res}`;
+    nextTick(() => base64StringLoaded.value = true)
+    // Base64ToImage(baseStr, function (img) {
+    //   main.value.innerHTML = "";
+    //   main.value.appendChild(img);
+    // });
   });
 };
 
-const Base64ToImage = (base64img, callback) => {
-  var img = new Image();
-  img.onload = function () {
-    callback(img);
-  };
-  img.src = base64img;
-};
+// const Base64ToImage = (base64img, callback) => {
+//   var img = new Image();
+//   img.onload = function () {
+//     callback(img);
+//   };
+//   img.src = base64img;
+// };
 
 
-const downloadFromBase64 = (base64, fileName) => {
-    let link = document.createElement('a');
-    link.href = base64;
-    link.download = `${fileName}.png`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-}
+// const downloadFromBase64 = (base64, fileName) => {
+//     let link = document.createElement('a');
+//     link.href = base64;
+//     link.download = `${fileName}.png`;
+//     document.body.appendChild(link);
+//     link.click();
+//     document.body.removeChild(link);
+// }
 
 const testVariables = () => {
   store.testVars().then((res) => console.log(res));
