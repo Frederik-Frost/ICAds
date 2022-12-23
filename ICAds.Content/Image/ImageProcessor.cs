@@ -181,7 +181,7 @@ namespace ICAds.Content.Image
             SKData data = bitmap.Encode(SKEncodedImageFormat.Png, 100);
 
             
-            SaveImage(data, "generated.png");
+            //SaveImage(data, "generated.png");
 
             return data;   
         }
