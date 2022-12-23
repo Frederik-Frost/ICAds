@@ -60,13 +60,13 @@ namespace ICAds.Controllers
 
         [Route("generate")]
         [HttpPost]
-        //public async Task<byte[]> GenerateFromTemplate2([FromBody] GenerateTemplateDTO generationData)
-        public async Task<string> GenerateFromTemplate2([FromBody] GenerateTemplateDTO generationData)
+        public async Task<byte[]> GenerateFromTemplate2([FromBody] GenerateTemplateDTO generationData)
         {
 
-            var imageData = await ImageProcessor.GenerateFromTemplate2(generationData.Template, generationData.Variables);
+            //var imageData = await ImageProcessor.GenerateFromTemplate2(generationData.Template, generationData.Variables);
 
-            byte[] imageArray = imageData.ToArray();
+            //byte[] imageArray = imageData.ToArray();
+            byte[] imageArray = new byte[2];
 
             //MemoryStream memoryStream = new MemoryStream(imageArray);
             //HttpResponseMessage res = new HttpResponseMessage(System.Net.HttpStatusCode.OK);
@@ -74,8 +74,8 @@ namespace ICAds.Controllers
             //res.Content = new StreamContent(memoryStream);
             //res.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("image/png");
 
-            //imageArray
-            return "trying now";
+
+            return imageArray;
 
             //using (var memoryStream = new MemoryStream())
             //{
