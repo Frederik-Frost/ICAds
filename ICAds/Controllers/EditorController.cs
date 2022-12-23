@@ -16,7 +16,7 @@ using Newtonsoft.Json;
 
 namespace ICAds.Controllers
 {
-    //[Authorize]
+    [Authorize]
     [Route("editor")]
     public class EditorController : TokenController
     {
