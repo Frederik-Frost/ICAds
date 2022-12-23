@@ -65,8 +65,8 @@ namespace ICAds.Controllers
 
             var imageData = await ImageProcessor.GenerateFromTemplate2(generationData.Template, generationData.Variables);
 
-            //byte[] imageArray = imageData.ToArray();
-            byte[] imageArray = new byte[2];
+            byte[] imageArray = imageData.ToArray();
+            //byte[] imageArray = new byte[2];
 
             //MemoryStream memoryStream = new MemoryStream(imageArray);
             //HttpResponseMessage res = new HttpResponseMessage(System.Net.HttpStatusCode.OK);
