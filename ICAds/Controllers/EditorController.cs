@@ -63,7 +63,7 @@ namespace ICAds.Controllers
         public async Task<byte[]> GenerateFromTemplate2([FromBody] GenerateTemplateDTO generationData)
         {
 
-            //var imageData = await ImageProcessor.GenerateFromTemplate2(generationData.Template, generationData.Variables);
+            var imageData = await ImageProcessor.GenerateFromTemplate2(generationData.Template, generationData.Variables);
 
             //byte[] imageArray = imageData.ToArray();
             byte[] imageArray = new byte[2];
