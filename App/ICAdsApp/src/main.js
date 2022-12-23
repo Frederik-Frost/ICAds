@@ -46,6 +46,9 @@ router.beforeEach((to, from, next) => {
 
 // HTTP Request settings
 axios.defaults.baseURL = window.location.href.includes("127.0.0.1") ? 'https://localhost:7093/' : 'https://icads-api.azurewebsites.net';
+// axios.defaults.baseURL = 'https://icads-api.azurewebsites.net'
+// axios.defaults.baseURL = 'https://localhost:7093/'
+
 console.log(axios.defaults.baseURL)
 axios.interceptors.request.use(function (config) {
   if (!config.url.includes('login')) {
