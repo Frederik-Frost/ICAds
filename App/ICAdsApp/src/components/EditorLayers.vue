@@ -25,19 +25,22 @@
             + Layer
           </div>
         </template>
-        <div class="flex flex-col justify-start">
-          <button
-            v-for="(type, index) in ['ImageLayer', 'TextLayer', 'ShapeLayer']"
-            :key="index"
-            @click="$emit('newLayer', type)"
-            class="text-left p-2 hover:bg-alabaster"
-          >
-            {{ getPrettyName(type) }}
-          </button>
-          <!-- <button class="text-left p-2 hover:bg-alabaster" @click="$emit('newLayer', 'ImageLayer')">Image Layer</button>
+
+        <template v-slot:content>
+          <div class="flex flex-col justify-start">
+            <button
+              v-for="(type, index) in ['ImageLayer', 'TextLayer', 'ShapeLayer']"
+              :key="index"
+              @click="$emit('newLayer', type)"
+              class="text-left p-2 hover:bg-alabaster"
+            >
+              {{ getPrettyName(type) }}
+            </button>
+            <!-- <button class="text-left p-2 hover:bg-alabaster" @click="$emit('newLayer', 'ImageLayer')">Image Layer</button>
           <button class="text-left p-2 hover:bg-alabaster" @click="$emit('newLayer', 'TextLayer')">Text Layer</button>
           <button class="text-left p-2 hover:bg-alabaster" @click="$emit('newLayer', 'ShapeLayer')">Shape Layer</button> -->
-        </div>
+          </div>
+        </template>
       </CustomDropdown>
       <!-- <button class="btn-tertiary" @click="$emit('newLayer')">+ Layer</button> -->
     </div>
@@ -49,7 +52,18 @@ import { ref, onMounted, defineProps, computed } from 'vue';
 const props = defineProps({
   layoutTemplate: Object,
   selectedLayerIndex: Number,
-}); 
+});
+
+const getPrettyName = (type) => {
+  switch (type) {
+    case 'ImageLayer':
+      return 'Image Layer';
+    case 'TextLayer':
+      return 'Text Layer';
+    case 'ShapeLayer':
+      return 'Shape Layer';
+  }
+};
 </script>
 
 <style></style>

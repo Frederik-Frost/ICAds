@@ -14,7 +14,7 @@
     <div class="flex-grow overflow-y-auto">
       <slot name="content" :params="params"></slot>
     </div>
-    <div class="flex-shrink-0 flex justify-center items-center pt-4">
+    <div class="flex-shrink-0 flex justify-center items-center pt-4" v-if="!hideActions">
       <button class="vfm-btn" @click="$emit('confirm', close)">confirm</button>
       <button class="vfm-btn" @click="$emit('cancel', close)">cancel</button>
     </div>
@@ -22,8 +22,11 @@
   </vue-final-modal>
 </template>
 <script setup>
-import { onMounted, ref } from '@vue/runtime-core';
+import { onMounted, ref, defineProps} from '@vue/runtime-core';
 const name = ref('')
+const props = defineProps({
+  hideActions: Boolean
+})
 onMounted(() => {
   console.log("first")
   

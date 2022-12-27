@@ -11,7 +11,7 @@
       >
         <div
           ref="previewimg"
-          :style="{ width:  canvasMeasurements?.width + 'px', height: canvasMeasurements?.height + 'px' }"
+          :style="{ width: canvasMeasurements?.width + 'px', height: canvasMeasurements?.height + 'px' }"
           class="absolute z-0"
         ></div>
 
@@ -35,7 +35,7 @@ const ready = ref(false);
 const props = defineProps({
   layoutTemplate: Object,
   selectedProduct: Object,
-  base64ImgString: String
+  base64ImgString: String,
 });
 
 const test = ref(false);

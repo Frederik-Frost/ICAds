@@ -7,11 +7,11 @@
         <slot name="toggle"></slot>
     </div>
     <div
-      class="absolute rounded shadow bg-white overflow-hidden w-full mt-1 "
+      class="absolute rounded shadow bg-white overflow-hidden w-full mt-1 z-50"
       v-if="show"
       @click="show = !show"
     >
-      <slot  />
+      <slot name="content" />
     </div>
   </div>
 </template>

@@ -1,0 +1,58 @@
+ /* based on: https://medium.freecodecamp.org/a-step-by-step-guide-to-making-pure-css-tooltips-3d5a3e237346 */
+ [tooltip]:not([tooltip=""]) {
+  position: relative;
+ }
+ [tooltip]:not([tooltip=""]):hover::after, [tooltip]:hover::before {
+  display: block;
+ }
+
+
+ [tooltip]:not([tooltip=""])::after{
+  content: attr(tooltip);
+  position: absolute;
+  font-style: initial;
+  left: 50%;
+  top: -6px;
+  transform: translateX(-50%) translateY(-100%);
+  background:#222;
+  color: #fff;
+  font-size: 12px;
+  font-weight: normal;
+  border-radius: 2px;
+  pointer-events: none;
+  font-family: 'Roboto', sans-serif;
+  display: none;
+  padding: 8px;
+  line-height: 1.3em;
+  white-space: normal;
+  z-index: 999;
+  max-width: 300px;
+  white-space: nowrap;
+
+ }
+ [tooltip]:not([tooltip=""])[tooltip-placement='top']::after {
+  left: 50%;
+  text-align: center;
+}
+ [tooltip]:not([tooltip=""])[tooltip-placement='right']::after {
+  left: 100%;
+  top: 50%;
+  margin-left: 8px;
+  transform: translateX(0%) translateY(-50%);
+  text-align: left;
+}
+ [tooltip]:not([tooltip=""])[tooltip-placement='bottom']::after {
+  top: 100%;
+  margin-top: 8px;
+  transform: translateX(-50%) translateY(0%);
+  text-align: center;
+}
+ [tooltip]:not([tooltip=""])[tooltip-placement='left']::after {
+  left: 0%;
+  top: 50%;
+  margin-left: -8px;
+  transform: translateX(-100%) translateY(-50%);
+  text-align: left;
+}
+
+ 
