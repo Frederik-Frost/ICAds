@@ -1,7 +1,6 @@
 <template>
   <div>
     <h3>Layers</h3>
-
     <div class="pb-2">
       <div
         v-for="(layer, index) in layoutTemplate.layers"
@@ -36,13 +35,9 @@
             >
               {{ getPrettyName(type) }}
             </button>
-            <!-- <button class="text-left p-2 hover:bg-alabaster" @click="$emit('newLayer', 'ImageLayer')">Image Layer</button>
-          <button class="text-left p-2 hover:bg-alabaster" @click="$emit('newLayer', 'TextLayer')">Text Layer</button>
-          <button class="text-left p-2 hover:bg-alabaster" @click="$emit('newLayer', 'ShapeLayer')">Shape Layer</button> -->
           </div>
         </template>
       </CustomDropdown>
-      <!-- <button class="btn-tertiary" @click="$emit('newLayer')">+ Layer</button> -->
     </div>
   </div>
 </template>

@@ -1,6 +1,20 @@
 <template>
   <div class="">
-    <h3>preview</h3>
+    <div class="flex flex-row gap-4">
+      <h3>preview</h3>
+      <div>
+        <button type="button" @click="showGeneratedPreivew = false" :class="{ 'text-primary2': !showGeneratedPreivew }">
+          Layout
+        </button>
+        <button
+          type="button"
+          @click="(showGeneratedPreivew = true), generatePreview()"
+          :class="{ 'text-primary2': showGeneratedPreivew }"
+        >
+          Generate preview
+        </button>
+      </div>
+    </div>
     <div class="relative max-h-[700px] flex">
       <div
         id="templateCanvas"
@@ -10,17 +24,32 @@
         class="border border-charcoal border-dashed overflow-hidden relative"
       >
         <div
+          v-if="showGeneratedPreivew"
           ref="previewimg"
           :style="{ width: canvasMeasurements?.width + 'px', height: canvasMeasurements?.height + 'px' }"
           class="absolute z-0"
-        ></div>
-
-        <div v-for="(layer, index) in layoutTemplate.layers" :key="index" class="">
-          <div v-if="layer.layerType == 'TextLayer'" class="absolute z-0" :style="getTextLayerStyles(layer)">
-            {{ layer.text }}
+        >
+          <span
+            v-if="generating"
+            class="material-symbols-outlined text-5xl flex flex-col justify-center items-center h-full"
+          >
+            pending
+          </span>
+          <div v-else-if="generateError" class="flex flex-col justify-center items-center h-full">
+            <span class="material-symbols-outlined text-flame text-5xl"> error </span>
+            <p class="text-center w-[300px]">
+              Could not load the preview image - Some variables might be missing in the available data
+            </p>
           </div>
-          <div v-if="layer.layerType == 'ImageLayer'" class="absolute z-0" :style="getImageLayerStyles(layer)"></div>
-          <div v-if="layer.layerType == 'ShapeLayer'" class="absolute z-0" :style="getShapeLayerStyles(layer)"></div>
+        </div>
+        <div v-else>
+          <div v-for="(layer, index) in layoutTemplate.layers" :key="index" class="">
+            <div v-if="layer.layerType == 'TextLayer'" class="absolute z-0" :style="getTextLayerStyles(layer)">
+              {{ layer.text }}
+            </div>
+            <div v-if="layer.layerType == 'ImageLayer'" class="absolute z-0" :style="getImageLayerStyles(layer)"></div>
+            <div v-if="layer.layerType == 'ShapeLayer'" class="absolute z-0" :style="getShapeLayerStyles(layer)"></div>
+          </div>
         </div>
       </div>
     </div>
@@ -29,6 +58,7 @@
 
 <script setup>
 import EditorHelper from './../assets/js/EditorHelper';
+import { useOrgStore } from './../stores/organization';
 import { ref, onMounted, defineProps, computed, onBeforeUnmount, nextTick, watch } from 'vue';
 const canvas = ref();
 const ready = ref(false);
@@ -38,7 +68,6 @@ const props = defineProps({
   base64ImgString: String,
 });
 
-const test = ref(false);
 const canvasMeasurements = computed(() => {
   return canvas.value ? canvas.value.getBoundingClientRect() : null;
 });
@@ -46,19 +75,6 @@ const canvasMeasurements = computed(() => {
 const factor = computed(() => {
   return canvasMeasurements.value ? canvasMeasurements.value.width / props.layoutTemplate.width : 1;
 });
-
-watch(
-  () => props.base64ImgString,
-  () => handleAddPreviewImg(props.base64ImgString)
-);
-
-const previewimg = ref();
-const handleAddPreviewImg = (baseString) => {
-  EditorHelper.Base64ToImage(baseString, function (img) {
-    previewimg.value.innerHTML = '';
-    previewimg.value.appendChild(img);
-  });
-};
 
 const getTextLayerStyles = (layer) => {
   let styles = {
@@ -126,8 +142,46 @@ onMounted(() => {
 onBeforeUnmount(() => {
   window.removeEventListener('resize', rearrangeLayout);
 });
-</script>
 
+const showGeneratedPreivew = ref(false);
+// watch(
+//   () => showGeneratedPreivew.value,
+//   (val, oldVal) => {
+//     if (val === true) generatePreview();
+//   }
+// );
+
+const store = useOrgStore();
+const generating = ref(false);
+const generateError = ref(false);
+const base64StringLoaded = ref(false);
+const generatePreview = () => {
+  generating.value = true;
+  generateError.value = false;
+  store
+    .testGenerateTemp(store.layoutTemplate.export())
+    .then((res) => {
+      nextTick(() => handleAddPreviewImg(`data:image/png;base64,${res}`));
+      generating.value = false;
+    })
+    .catch((e) => {
+      generating.value = false;
+      generateError.value = true;
+    });
+};
+const previewimg = ref();
+const handleAddPreviewImg = (baseString) => {
+  EditorHelper.Base64ToImage(baseString, function (img) {
+    previewimg.value.innerHTML = '';
+    previewimg.value.appendChild(img);
+  });
+};
+
+// watch(
+//   () => props.base64ImgString,
+//   () => handleAddPreviewImg(props.base64ImgString)
+// );
+</script>
 <style>
 #templateCanvas {
   max-width: clamp(400px, 100%, 700px);
