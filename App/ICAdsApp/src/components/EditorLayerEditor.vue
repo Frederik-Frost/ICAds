@@ -18,8 +18,7 @@
 import TextLayerEditor from './TextLayerEditor.vue'
 import ImageLayerEditor from './ImageLayerEditor.vue'
 import ShapeLayerEditor from './ShapeLayerEditor.vue'
-import { ref, onMounted, defineProps, computed } from 'vue';
-import fonts from './../assets/js/Fonts.json';
+import {  defineProps } from 'vue';
 const props = defineProps({
   selectedLayerIndex: Number,
   layer: Object,
@@ -29,11 +28,6 @@ const props = defineProps({
 //         // props.layoutTemplate.layers[props.selectedLayerIndex];
 // });
 
-onMounted(() => {
-  // console.log(props.selectedLayerIndex)
-  // console.log(props.selectedLayerIndex.value)
-  //   selectedLayer.value =
-});
 </script>
 
 <style></style>

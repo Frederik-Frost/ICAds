@@ -1,8 +1,8 @@
 <template>
   <div class="">
-    <div class="flex flex-row gap-4">
+    <div class="flex flex-row gap-4 items-center">
       <h3>preview</h3>
-      <div>
+      <div class="text-sm flex flex-row gap-2">
         <button type="button" @click="showGeneratedPreivew = false" :class="{ 'text-primary2': !showGeneratedPreivew }">
           Layout
         </button>
@@ -11,7 +11,7 @@
           @click="(showGeneratedPreivew = true), generatePreview()"
           :class="{ 'text-primary2': showGeneratedPreivew }"
         >
-          Generate preview
+          {{ showGeneratedPreivew && !generating ? 'Regenerate preview' : 'Generate preview' }}
         </button>
       </div>
     </div>
@@ -25,9 +25,8 @@
       >
         <div
           v-if="showGeneratedPreivew"
-          ref="previewimg"
-          :style="{ width: canvasMeasurements?.width + 'px', height: canvasMeasurements?.height + 'px' }"
           class="absolute z-0"
+          :style="{ width: canvasMeasurements?.width + 'px', height: canvasMeasurements?.height + 'px' }"
         >
           <span
             v-if="generating"
@@ -41,7 +40,10 @@
               Could not load the preview image - Some variables might be missing in the available data
             </p>
           </div>
+
+          <div v-if="!generateError && !generating" ref="previewimg"></div>
         </div>
+
         <div v-else>
           <div v-for="(layer, index) in layoutTemplate.layers" :key="index" class="">
             <div v-if="layer.layerType == 'TextLayer'" class="absolute z-0" :style="getTextLayerStyles(layer)">
@@ -65,7 +67,6 @@ const ready = ref(false);
 const props = defineProps({
   layoutTemplate: Object,
   selectedProduct: Object,
-  base64ImgString: String,
 });
 
 const canvasMeasurements = computed(() => {
@@ -144,13 +145,6 @@ onBeforeUnmount(() => {
 });
 
 const showGeneratedPreivew = ref(false);
-// watch(
-//   () => showGeneratedPreivew.value,
-//   (val, oldVal) => {
-//     if (val === true) generatePreview();
-//   }
-// );
-
 const store = useOrgStore();
 const generating = ref(false);
 const generateError = ref(false);
@@ -159,7 +153,7 @@ const generatePreview = () => {
   generating.value = true;
   generateError.value = false;
   store
-    .testGenerateTemp(store.layoutTemplate.export())
+    .generateImagePreview(store.layoutTemplate.export())
     .then((res) => {
       nextTick(() => handleAddPreviewImg(`data:image/png;base64,${res}`));
       generating.value = false;
@@ -171,16 +165,11 @@ const generatePreview = () => {
 };
 const previewimg = ref();
 const handleAddPreviewImg = (baseString) => {
-  EditorHelper.Base64ToImage(baseString, function (img) {
+  EditorHelper.base64ToImage(baseString, function (img) {
     previewimg.value.innerHTML = '';
     previewimg.value.appendChild(img);
   });
 };
-
-// watch(
-//   () => props.base64ImgString,
-//   () => handleAddPreviewImg(props.base64ImgString)
-// );
 </script>
 <style>
 #templateCanvas {

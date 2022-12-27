@@ -60,7 +60,6 @@
 
 <script setup>
 import { ref, onMounted, defineProps, computed } from 'vue';
-import fonts from './../assets/js/Fonts.json';
 const props = defineProps({
   selectedLayerIndex: Number,
   layer: Object,

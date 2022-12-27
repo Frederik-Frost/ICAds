@@ -209,7 +209,7 @@ export const useOrgStore = defineStore({
       });
     },
 
-    testGenerateTemp(template) {
+    generateImagePreview(template) {
       return new Promise((resolve, reject) => {
         // axios.post('editor',{template: template, productData: this.selectedProduct}, {responseType: 'arraybuffer'}).then(res => {
         axios
@@ -252,23 +252,6 @@ export const useOrgStore = defineStore({
           });
       });
     },
-  },
-
-  // testVars(){
-  //   return new Promise((resolve, reject) => {
-      
-  //     axios
-  //       .post('editor', { template: template, productData: this.selectedProduct })
-  //       .then((res) => {
-  //         console.log(res);
-  //         resolve(res.data);
-  //       })
-  //       .catch((e) => {
-  //         console.log(e);
-  //         reject(e);
-  //       });
-  //   });
-  // }
-
+  }
 
 });

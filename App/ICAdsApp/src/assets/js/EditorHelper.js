@@ -1,5 +1,5 @@
 export default {
-  Base64ToImage(base64img, callback) {
+  base64ToImage(base64img, callback) {
     var img = new Image();
     img.onload = function () {
       callback(img);
