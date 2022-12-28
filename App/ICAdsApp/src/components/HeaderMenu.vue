@@ -17,7 +17,7 @@
       </div>
 
       <div class="flex gap-4">
-        <CustomDropdown title="test">
+        <CustomDropdown right>
           <template v-slot:toggle>
             <div class="flex gap-2 text-charcoal">
               <span class="material-symbols-outlined"> people </span>
@@ -25,12 +25,30 @@
               <span class="material-symbols-outlined"> expand_more </span>
             </div>
           </template>
-          <div>
-            <span>item 1</span>
-            <span>item 2</span>
-          </div>
+          <template v-slot:content>
+              <div class="border-b border-b-charcoal50 px-4 py-2 group min-w-[250px]">
+                <p class=" text-xs text-charcoal50">Organization</p>
+                <p class="flex flex-row items-center justify-between  gap-2">
+                  <span class="font-bold text-lg">
+                    {{orgStore.organization.name}}
+                  </span>
+                  <a
+                    @click="editUser()"
+                    tooltip="Edit user"
+                    tooltip-placement="left"
+                    class="opacity-0 group-hover:opacity-100 cursor-pointer"
+                  >
+                    <span class="material-symbols-outlined text-[18px]"> edit </span>
+                  </a>
+                </p>
+              </div>
+            <div>
+              <span>item 1</span>
+              <span>item 2</span>
+            </div>
+          </template>
         </CustomDropdown>
-        <CustomDropdown title="test 2">
+        <CustomDropdown right>
           <template v-slot:toggle>
             <div class="flex gap-2 text-charcoal">
               <span class="material-symbols-outlined"> person </span>
@@ -38,10 +56,32 @@
               <span class="material-symbols-outlined"> expand_more </span>
             </div>
           </template>
-          <div>
-            <span>item 1</span>
-            <span>item 2</span>
-          </div>
+          <template v-slot:content>
+            <div class="min-w-[250px]">
+              <div class="border-b border-b-charcoal50 px-4 py-2 group">
+                <p class=" text-xs text-charcoal50">User</p>
+                <p class="flex flex-row justify-between items-center gap-2">
+                  <span class="font-bold text-lg">
+                    {{ user.firstname + ' ' + user.lastname }}
+                  </span>
+                  <a
+                    @click="editUser()"
+                    tooltip="Edit user"
+                    tooltip-placement="left"
+                    class="opacity-0 group-hover:opacity-100 cursor-pointer"
+                  >
+                    <span class="material-symbols-outlined text-[18px]"> edit </span>
+                  </a>
+                </p>
+              </div>
+              <div class="px-4 py-2 flex flex-col">
+                <button class="opacity-75 hover:opacity-100 flex flex-row items-center">
+                  <span class="text-flame">Logout</span
+                  ><span class="material-symbols-outlined text-flame scale-75"> logout </span>
+                </button>
+              </div>
+            </div>
+          </template>
         </CustomDropdown>
       </div>
     </main>
@@ -76,15 +116,18 @@ const searchProduct = (query) => {
 const getProductVariables = (product) => {
   console.log(product);
   orgStore.$patch((state) => {
-    state.selectedProduct = product
+    state.selectedProduct = product;
   });
-  orgStore.getProductVariables(product.id).then(res => {
-  
+  orgStore.getProductVariables(product.id).then((res) => {
     console.log(res);
   });
 };
 
 const editor = computed(() => props.router.currentRoute.value.path.includes('editor'));
+
+const editUser = () => {
+  console.log('edit the user now');
+};
 </script>
 
 <style></style>

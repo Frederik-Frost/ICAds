@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace ICAds.Controllers
 {
+    [ApiController]
     [Route("[controller]")]
     public class OrganizationController : TokenController
     {
@@ -43,7 +44,26 @@ namespace ICAds.Controllers
             var org = await OrganizationRepository.GetOrganizationFromId(GetOrgId());
             return Ok(org);
         }
- 
+
+        [Authorize]
+        [HttpPut]
+        public async Task<ActionResult<OrganizationModel>> UpdateOrganization(UpdateOrganizationDTO updateOrgData)
+        {
+            bool match = updateOrgData.Id == GetOrgId();
+            if (!match) return BadRequest($"You do not have access to update this organization: {GetOrgId()} : {match}");
+            var org = await OrganizationRepository.UpdateOrganizationData(updateOrgData);
+            return Ok(org);
+        }
+
+        [Authorize]
+        [Route("users")]
+        [HttpGet]
+        public async Task<ActionResult<OrganizationModel>> GetOrganizationUsers()
+        {
+            var org = await OrganizationRepository.GetOrganizationUsers(GetOrgId());
+            return Ok(org);
+        }
+
     }
 }
 

@@ -6,6 +6,7 @@ export const useOrgStore = defineStore({
   id: 'organization',
   state: () => ({
     organization: null,
+    organizationUsers: [],
     layouts: [],
     integrations: [],
     layout: null,
@@ -33,6 +34,20 @@ export const useOrgStore = defineStore({
               reject(e);
             });
         }
+      });
+    },
+
+    updateOrganizationInfo(orgInfo) {
+      console.log(orgInfo);
+      axios.put('organization', { name: orgInfo.name, id: orgInfo.id }).then((res) => {
+        console.log(res);
+        this.organization = res.data;
+      });
+    },
+    getOrganizationUsers() {
+      axios.get('organization/users').then((res) => {
+        console.log(res);
+        this.organizationUsers = res.data;
       });
     },
 
@@ -252,6 +267,5 @@ export const useOrgStore = defineStore({
           });
       });
     },
-  }
-
+  },
 });

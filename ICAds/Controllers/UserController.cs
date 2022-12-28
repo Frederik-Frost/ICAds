@@ -56,6 +56,17 @@ public class UserController: TokenController
         return Ok(user);
     }
 
+    [Route("me")]
+    [HttpPut]
+    [Authorize]
+    public async Task<ActionResult<UserModel>> UpdateUser(UpdateUserDTO updateUserData)
+    {
+        // Get User id from JWT - bearer token
+        if (updateUserData.Id != GetUserId()) return BadRequest("You do not have access to update this user");
+        var updatedUser = await UserRepository.UpdateUserData(updateUserData);
+        return Ok(updatedUser);
+    }
+
     [Route("org")]
     [HttpGet]
     [Authorize]

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net;
 using System.Runtime.Serialization;
+using System.Security.Cryptography;
 using ICAds.Data.DTO;
 using ICAds.Data.Models;
 using ICAds.Security;
@@ -79,6 +80,24 @@ namespace ICAds.Data.Repositories
             {
                 List<UserModel> users = db.Users.ToList();
                 return users;
+            }
+        }
+
+
+        public static async Task<UserModel> UpdateUserData(UpdateUserDTO updateUserDTO)
+        {
+            using (var db = new AppDataContext())
+            {
+                var user = await db.Users.Where(u => u.Id == updateUserDTO.Id).FirstOrDefaultAsync();
+
+                if (user != null)
+                {
+                    user.Email = updateUserDTO.Email;
+                    user.Firstname = updateUserDTO.Firstname;
+                    user.Lastname = updateUserDTO.Lastname;
+                }
+                await db.SaveChangesAsync();
+                return user;
             }
         }
     }

@@ -43,5 +43,28 @@ namespace ICAds.Data.Repositories
             
         }
 
+        public static async Task<OrganizationModel> UpdateOrganizationData(UpdateOrganizationDTO updateOrganizationDTO)
+        {
+            using (var db = new AppDataContext())
+            {
+                var org = await db.Organizations.Where(o => o.Id == updateOrganizationDTO.Id).FirstOrDefaultAsync();
+                if(org != null)
+                {
+                    org.Name = updateOrganizationDTO.Name;
+                }
+                await db.SaveChangesAsync();
+                return org;
+            }
+        }
+        
+
+        public static async Task<List<UserModel>> GetOrganizationUsers(string id)
+        {
+            using (var db = new AppDataContext())
+            {
+                List<UserModel> orgUsers = db.Users.Where(u => u.OrganizationId == id).ToList();
+                return orgUsers;
+            }
+        }
     }
 }
