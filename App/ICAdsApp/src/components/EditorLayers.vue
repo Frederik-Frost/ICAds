@@ -1,11 +1,11 @@
 <template>
-  <div>
-    <h3>Layers</h3>
+  <div class="mt-4 p-2">
+    <h3 class="pl-2">Layers</h3>
     <div class="pb-2">
       <div
         v-for="(layer, index) in layoutTemplate.layers"
         :key="index"
-        class="bg-white p-2 mb-2 rounded shadow cursor-pointer flex flex-row justify-between"
+        class=" p-2 mb-2 rounded shadow cursor-pointer flex flex-row justify-between hover:bg-primary2quarter"
         :class="{ 'selected-layer': selectedLayerIndex == index }"
         @click="$emit('selectLayer', index)"
       >
@@ -20,7 +20,7 @@
 
       <CustomDropdown title="addLayer">
         <template v-slot:toggle>
-          <div class="text-left p-2 rounded shadow w-full text-charcoal bg-white hover:bg-alabaster font-bold">
+          <div class="text-left p-2 rounded shadow w-full text-charcoal bg-white hover:bg-primary2quarter font-bold">
             + Layer
           </div>
         </template>
@@ -31,7 +31,7 @@
               v-for="(type, index) in ['ImageLayer', 'TextLayer', 'ShapeLayer']"
               :key="index"
               @click="$emit('newLayer', type)"
-              class="text-left p-2 hover:bg-alabaster"
+              class="text-left p-2 hover:bg-primary2quarter"
             >
               {{ getPrettyName(type) }}
             </button>

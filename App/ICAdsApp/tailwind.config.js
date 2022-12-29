@@ -17,6 +17,8 @@ module.exports = {
       orangeWeb: '#f6a21c',
       primary1: '#1CCFF6',
       primary2: '#23A9F4',
+      primary2half: "#8BCEF4",
+      primary2quarter: "#CBE6F5",
       secondary1: '#1F34EC',
       secondary2: '#394BEB',
       success: '#4BB543',

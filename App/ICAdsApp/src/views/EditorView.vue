@@ -1,7 +1,8 @@
 <template>
-  <div>
+  <div class="">
     <EditorSubHeader />
-    <main class="grid grid-cols-8 gap-2 max-w-screen-2xl mx-auto mt-8 p-4" v-if="store.layoutTemplate">
+    <!-- grid grid-cols-8 gap-6 max-w-screen-2xl mx-auto mt-8 p-4 -->
+    <main class="flex flex-col sm:grid lg:grid-cols-8 gap-6 max-w-screen-2xl mx-auto mt-8 p-4" v-if="store.layoutTemplate">
       <!-- Image area here  -->
       <EditorPreview
         :layoutTemplate="store.layoutTemplate"
@@ -17,6 +18,8 @@
 
       <!-- Layers area here  -->
       <div class="col-span-2 flex flex-col">
+        <div class="bg-white rounded-b-lg shadow-lg">
+
         <EditorBaseEditor :layout="store.layoutTemplate" />
         <EditorLayers
           :layoutTemplate="store.layoutTemplate"
@@ -33,6 +36,7 @@
             }
           "
         />
+        </div>
       </div>
     </main>
   </div>
@@ -71,4 +75,6 @@ const addLayer = (layerType) => {
 };
 </script>
 
-<style></style>
+<style>
+ 
+</style>

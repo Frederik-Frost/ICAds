@@ -81,7 +81,7 @@
       @apply w-[200px];
     }
     .selected-layer {
-      @apply border border-charcoal shadow-lg;
+      @apply bg-primary2half shadow-lg ;
     }
 
   };

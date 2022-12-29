@@ -1,27 +1,47 @@
 <template>
   <div class="">
-    <div class="flex flex-row gap-4 items-center">
-      <h3>preview</h3>
+    <div class="flex flex-row gap-4 items-center bg-primary2half p-4 rounded-t-lg shadow-md justify-between">
+      <h3 class="text-white">preview</h3>
       <div class="text-sm flex flex-row gap-2">
-        <button type="button" @click="showGeneratedPreivew = false" :class="{ 'text-primary2': !showGeneratedPreivew }">
+        <button
+          type="button"
+          @click="showGeneratedPreivew = false"
+          :class="!showGeneratedPreivew ? ['text-white', 'underline', 'font-bold'] : ['text-primary2quarter']"
+        >
           Layout
         </button>
         <button
           type="button"
           @click="(showGeneratedPreivew = true), generatePreview()"
-          :class="{ 'text-primary2': showGeneratedPreivew }"
+          :class="showGeneratedPreivew ? ['text-white', 'underline', 'font-bold'] : ['text-primary2quarter']"
         >
           {{ showGeneratedPreivew && !generating ? 'Regenerate preview' : 'Generate preview' }}
         </button>
       </div>
     </div>
-    <div class="relative max-h-[700px] flex">
+
+    <div class="relative max-h-[700px] flex bg-white rounded-b-lg shadow-lg p-4">
+      <!-- height: (layoutTemplate.height * factor)+ 'px' -->
       <div
         id="templateCanvas"
         v-if="ready"
         ref="canvas"
-        :style="{ aspectRatio: layoutTemplate.width / layoutTemplate.height, width: layoutTemplate.width + 'px' }"
-        class="border border-charcoal border-dashed overflow-hidden relative"
+        :style="
+          widthIslargest
+            ? [
+                {
+                  aspectRatio: layoutTemplate.width / layoutTemplate.height,
+                  width: layoutTemplate.width * factor + 'px',
+                },
+              ]
+            : [
+                {
+                  aspectRatio: layoutTemplate.height / layoutTemplate.width,
+                  height: layoutTemplate.height * factor + 'px',
+                },
+              ]
+        "
+        class="border border-charcoal border-dashed overflow-hidden relative m-auto "
       >
         <div
           v-if="showGeneratedPreivew"
@@ -72,9 +92,14 @@ const props = defineProps({
 const canvasMeasurements = computed(() => {
   return canvas.value ? canvas.value.getBoundingClientRect() : null;
 });
+const widthIslargest = computed(() => {
+  return props.layoutTemplate.width >= props.layoutTemplate.height;
+});
 // factor = desired width / actual width or desired height / actual height
 const factor = computed(() => {
-  return canvasMeasurements.value ? canvasMeasurements.value.width / props.layoutTemplate.width : 1;
+  if (widthIslargest) {
+    return canvasMeasurements.value ? canvasMeasurements.value.width / props.layoutTemplate.width : 1;
+  } else return canvasMeasurements.value ? canvasMeasurements.value.height / props.layoutTemplate.height : 1;
 });
 
 const getTextLayerStyles = (layer) => {
