@@ -11,7 +11,7 @@ namespace ICAds.Data.Repositories
 {
     public class UserRepository
     {
-        public static async Task<UserModel> CreateUser(UserDTO user, AppDataContext db)
+        public static async Task<UserModel> CreateUser(UserDTO user, string orgId, AppDataContext db)
         {
 
             var hashedPassword = SecurityManager.HashPassword(user.Password);
@@ -23,6 +23,7 @@ namespace ICAds.Data.Repositories
             newUser.Email = user.Email;
             newUser.PasswordHash = hashedPassword.Hash;
             newUser.PasswordSalt = hashedPassword.Salt;
+            newUser.OrganizationId = orgId;
             
             db.Users.Add(newUser);
             await db.SaveChangesAsync();

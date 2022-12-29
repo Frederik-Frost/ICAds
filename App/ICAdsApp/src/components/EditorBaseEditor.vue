@@ -6,14 +6,15 @@
         <!-- <div class="form-group">
             {{layout}}
         </div> -->
+         <div class="form-group">
+            <label for="height">Layout width</label>
+            <input type="number" name="height" v-model="layout.width">
+        </div>
         <div class="form-group">
             <label for="height">Layout height</label>
             <input type="number" name="height" v-model="layout.height">
         </div>
-        <div class="form-group">
-            <label for="height">Layout width</label>
-            <input type="number" name="height" v-model="layout.width">
-        </div>
+       
     </div>
 
 

@@ -25,6 +25,7 @@ namespace ICAds.Data.Repositories
             newUser.PasswordHash = hashedPassword.Hash;
             newUser.PasswordSalt = hashedPassword.Salt;
             newUser.Organization = organization;
+            newUser.IsAdmin = true;
 
             db.Organizations.Add(organization);
             db.Users.Add(newUser);

@@ -17,25 +17,23 @@ public class UserController: TokenController
 
     //public static UserModel user = new UserModel();
 
-    [Route("register")]
-    [HttpPost]
-    public async Task<ActionResult<UserModel>> Register([FromBody] UserDTO request)
-    {
-        if (!EmailValidation.IsValidEmail(request.Email)) return BadRequest("Not an email");
+    //[Route("register")]
+    //[HttpPost]
+    //public async Task<ActionResult<UserModel>> Register([FromBody] UserDTO request)
+    //{
+    //    if (!EmailValidation.IsValidEmail(request.Email)) return BadRequest("Not an email");
 
-        using (var db = new AppDataContext())
-        {
-            UserModel userCheck = await UserRepository.GetUserWithContext(request.Email, db);
-            if (userCheck != null) return BadRequest("User already exists");
-            else
-            {
-                var user = await UserRepository.CreateUser(request, db);
-                return user;
-            }
-        }
-
-
-    }
+    //    using (var db = new AppDataContext())
+    //    {
+    //        UserModel userCheck = await UserRepository.GetUserWithContext(request.Email, db);
+    //        if (userCheck != null) return BadRequest("User already exists");
+    //        else
+    //        {
+    //            var user = await UserRepository.CreateUser(request, db);
+    //            return user;
+    //        }
+    //    }
+    //}
 
     [Route("login")]
     [HttpPost]

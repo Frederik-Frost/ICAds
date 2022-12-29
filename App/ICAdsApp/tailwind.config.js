@@ -19,6 +19,7 @@ module.exports = {
       primary2: '#23A9F4',
       secondary1: '#1F34EC',
       secondary2: '#394BEB',
+      success: '#4BB543',
     },
     fontFamily: {
       primary: ['Roboto', 'sans-serif'],

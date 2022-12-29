@@ -64,6 +64,28 @@ namespace ICAds.Controllers
             return Ok(org);
         }
 
+        [Authorize]
+        [Route("users")]
+        [HttpPost]
+        public async Task<ActionResult<UserModel>> CreateOrganizationUser([FromBody] UserDTO request)
+        {
+
+            if (!EmailValidation.IsValidEmail(request.Email)) return BadRequest("Not an email");
+
+            using (var db = new AppDataContext())
+            {
+                // Check if email exists
+                UserModel userCheck = await UserRepository.GetUserWithContext(request.Email, db);
+                if (userCheck != null) return BadRequest("User already exists");
+                else
+                {
+                    var organizationUser = await UserRepository.CreateUser(request, GetOrgId(), db);
+                    return Ok(organizationUser);
+                }
+            }
+        }
+
+
     }
 }
 

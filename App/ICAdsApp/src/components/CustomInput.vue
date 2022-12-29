@@ -1,7 +1,15 @@
 <template>
   <div class="form-group">
     <label :for="name">{{ label }}</label>
-    <input :type="type" :name="name" :id="id" :value="modelValue" @input="updateValue" :disabled="disabled"/>
+    <input
+      :type="type"
+      :name="name"
+      :id="id"
+      :value="modelValue"
+      @input="updateValue"
+      :disabled="disabled"
+      :autocomplete="type == 'password' ? 'off' : ''"
+    />
   </div>
 </template>
 
@@ -13,12 +21,12 @@ const props = defineProps({
   id: String,
   label: String,
   modelValue: { type: [Number, String] },
-  disabled: Boolean
+  disabled: Boolean,
 });
 const emit = defineEmits();
 const updateValue = (event) => {
-    emit('update:modelValue', event.target.value)
-}
+  emit('update:modelValue', event.target.value);
+};
 </script>
 
 <style></style>

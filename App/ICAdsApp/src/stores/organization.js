@@ -36,7 +36,6 @@ export const useOrgStore = defineStore({
         }
       });
     },
-
     updateOrganizationInfo(orgInfo) {
       console.log(orgInfo);
       axios.put('organization', { name: orgInfo.name, id: orgInfo.id }).then((res) => {
@@ -49,6 +48,11 @@ export const useOrgStore = defineStore({
         console.log(res);
         this.organizationUsers = res.data;
       });
+    },
+    createOrganizationUser(data){
+      return axios.post('organization/users', data).then(res => {
+        this.organizationUsers.push(res.data)
+      })
     },
 
     getLayouts() {

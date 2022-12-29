@@ -9,7 +9,7 @@
         </div>
       </transition>
 
-      <h1 class="text-xl text-charcoal50">{{ title }}</h1>
+      <h1 class="hidden sm:block text-xl text-charcoal50">{{ title }}</h1>
     </div>
     <main class="flex flex-row justify-between items-center" :class="{ 'flex-1': editor }">
       <div v-if="editor" class="ml-4">
@@ -26,25 +26,24 @@
             </div>
           </template>
           <template v-slot:content>
-              <div class="border-b border-b-charcoal50 px-4 py-2 group min-w-[250px]">
-                <p class=" text-xs text-charcoal50">Organization</p>
-                <p class="flex flex-row items-center justify-between  gap-2">
-                  <span class="font-bold text-lg">
-                    {{orgStore.organization.name}}
-                  </span>
-                  <a
-                    @click="editUser()"
-                    tooltip="Edit user"
-                    tooltip-placement="left"
-                    class="opacity-0 group-hover:opacity-100 cursor-pointer"
-                  >
-                    <span class="material-symbols-outlined text-[18px]"> edit </span>
-                  </a>
-                </p>
-              </div>
-            <div>
-              <span>item 1</span>
-              <span>item 2</span>
+            <div class="border-b border-b-charcoal50 px-4 py-2 group min-w-[250px]">
+              <p class="text-xs text-charcoal50">Organization</p>
+              <p class="flex flex-row items-center justify-between gap-2">
+                <span class="font-bold text-lg">
+                  {{ orgStore.organization.name }}
+                </span>
+                <a
+                  @click="editUser()"
+                  tooltip="Edit user"
+                  tooltip-placement="left"
+                  class="opacity-0 group-hover:opacity-100 cursor-pointer"
+                >
+                  <span class="material-symbols-outlined text-[18px]"> edit </span>
+                </a>
+              </p>
+            </div>
+            <div class=" flex flex-col">
+              <router-link :to="{ name: 'account' }" class=" text-charcoal px-4 py-2 hover:bg-hoverWhite"> Manage organization </router-link>
             </div>
           </template>
         </CustomDropdown>
@@ -59,7 +58,7 @@
           <template v-slot:content>
             <div class="min-w-[250px]">
               <div class="border-b border-b-charcoal50 px-4 py-2 group">
-                <p class=" text-xs text-charcoal50">User</p>
+                <p class="text-xs text-charcoal50">User</p>
                 <p class="flex flex-row justify-between items-center gap-2">
                   <span class="font-bold text-lg">
                     {{ user.firstname + ' ' + user.lastname }}
@@ -74,8 +73,10 @@
                   </a>
                 </p>
               </div>
-              <div class="px-4 py-2 flex flex-col">
-                <button class="opacity-75 hover:opacity-100 flex flex-row items-center">
+              <div class="flex flex-col">
+                <router-link :to="{ name: 'account' }" class=" text-charcoal px-4 py-2 hover:bg-hoverWhite"> Manage user </router-link>
+
+                <button class="opacity-75 hover:opacity-100 flex flex-row items-center px-4 py-2 hover:bg-hoverWhite" @click="logout()">
                   <span class="text-flame">Logout</span
                   ><span class="material-symbols-outlined text-flame scale-75"> logout </span>
                 </button>
@@ -94,6 +95,8 @@ import CustomDropdown from './CustomDropdown.vue';
 import SearchDropdown from './SearchDropdown.vue';
 import { useOrgStore } from './../stores/organization';
 import { useUserStore } from './../stores/user';
+import { useMainStore } from './../stores/main';
+const mainStore = useMainStore();
 const orgStore = useOrgStore();
 const userStore = useUserStore();
 const user = computed(() => userStore.user);
@@ -127,6 +130,10 @@ const editor = computed(() => props.router.currentRoute.value.path.includes('edi
 
 const editUser = () => {
   console.log('edit the user now');
+};
+
+const logout = () => {
+  mainStore.logout();
 };
 </script>
 

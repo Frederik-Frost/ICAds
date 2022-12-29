@@ -1,6 +1,6 @@
 <template>
   <main class="max-w-screen-xl mx-auto mt-4 px-4">
-    <div class="flex justify-between items-end mb-4">
+    <div class="block sm:flex justify-between items-end mb-4">
       <div>
         <h1 class="text-4xl">Hey {{ user.firstname }}</h1>
         <p class="text-lg font-bold">Here are your layouts</p>
@@ -11,7 +11,7 @@
         <button class="btn-primary" @click="onAddNewLayout()">+ Layout</button>
       </div>
     </div>
-    <LayoutList />
+    <LayoutList @onCreateLayout="onAddNewLayout()" @onAddData="sidepanel = true" />
     <SidePanel v-if="sidepanel" @close="sidepanel = false">
       <template #content>
         <div class="p-4">
@@ -137,9 +137,5 @@ const onAddNewLayout = () => {
       title: 'New Layout',
     },
   });
-};
-
-const logout = () => {
-  main.logout();
 };
 </script>

@@ -54,5 +54,11 @@
   transform: translateX(-100%) translateY(-50%);
   text-align: left;
 }
+ [tooltip]:not([tooltip=""])[tooltip-placement='top-left']::after {
+  left: 0%;
+  margin-left: -8px;
+  transform: translateX(-100%) translateY(-50%);
+  text-align: left;
+}
 
  

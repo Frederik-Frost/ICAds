@@ -1,6 +1,8 @@
-import { ref, computed } from 'vue';
+import { ref, computed, nextTick } from 'vue';
 import { defineStore } from 'pinia';
 import axios from 'axios';
+import { useUserStore } from './user';
+import { useOrgStore } from './organization';
 
 export const useMainStore = defineStore({
   id: 'main',
@@ -13,57 +15,45 @@ export const useMainStore = defineStore({
   actions: {
     login(credentials) {
       return new Promise((resolve, reject) => {
-        axios.post('users/login', credentials).then(response => {
-            console.log(response)
-            localStorage.setItem('userToken', response.data)
-            this.token = response.data
-            console.log(this.$router)
-            this.$router.push("/")
+        axios
+          .post('users/login', credentials)
+          .then((response) => {
+            console.log(response);
+            localStorage.setItem('userToken', response.data);
+            this.token = response.data;
+            console.log(this.$router);
+            this.$router.push('/');
             resolve(true);
           })
           .catch((e) => {
-            console.log(e)
+            console.log(e);
             reject(e.response.data.message);
           });
       });
     },
-
-    // async login(credentials) {
-    //   try {
-    //     const response = await axios.post('users/login', credentials);
-    //     console.log("Response here - ", response);
-    //   } catch (e) {
-    //     console.log("error here - ", e)
-    //   }
-    // },
-
-    // login(credentials) {
-    //   return new Promise(async (resolve, reject) => {
-    //     axios
-    //       .post('users/login', credentials)
-    //       .then((res) => {
-    //         console.log(res);
-    //         if (res && res.status == 200) {
-    //           localStorage.setItem('userToken', res.data);
-    //           this.token = res.data;
-    //           this.$router.push('/');
-    //           resolve(true);
-    //         } else {
-    //           console.log('Wrong credentials 1');
-    //           reject(res);
-    //         }
-    //       })
-    //       .catch((e) => {
-    //         console.log('Wrong credentials 2');
-    //         reject(e);
-    //       });
-    //   });
-    // },
-
+    
+    signup(info){
+      return axios.post('organization', info)
+    },
+    
     logout() {
-      localStorage.removeItem('userToken');
-      this.token = null;
-      this.$router.push('login');
+      const resetStates = () => {
+        const userStore = useUserStore();
+        const orgStore = useOrgStore();
+        orgStore.$reset();
+        userStore.$reset();
+        this.$reset();
+        location.reload()
+      }
+
+      const goToLogin = (callback) => {
+        localStorage.removeItem('userToken');
+        this.token = null;
+        this.$router.push('login');
+        callback();
+      }
+
+      goToLogin(resetStates);
     },
   },
 });
