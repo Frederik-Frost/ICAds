@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 using SkiaSharp;
 using Newtonsoft.Json;
 using ICSharpCode.SharpZipLib.Zip;
+using ICSharpCode.SharpZipLib.Checksum;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -52,7 +53,7 @@ namespace ICAds.Controllers
 
 
             //ImageProcessor.TestLoop(dummy);
-            
+
             //var res = await ImageProcessor.GenerateFromTemplate(generationData.Template, generationData.ProductData);
             //return res.ToArray();
             return "hello";
@@ -86,23 +87,22 @@ namespace ICAds.Controllers
 
         }
 
+
+        //private Microsoft.AspNetCore.Hosting.IHostingEnvironment IHostingEnv;
+
         [Route("export")]
         [HttpPost]
-        public async Task<byte[]> GenerateZip([FromBody]List<GenerateTemplateDTO> request)
+        public async Task<byte[]> GenerateZip([FromBody] List<GenerateTemplateDTO> request)
         {
-            //var webRoot = _oIHostingEnv.WebRootPath;
-            var fileName = "Export.zip";
-            //var tempOutput = webRoot + "/static/" + fileName;
-            var tempOutput = $"./../images/{GetOrgId()}_{fileName}";
-            using (ZipOutputStream zipOutputStream = new ZipOutputStream(System.IO.File.Create(tempOutput)))
+            Crc32 crc = new Crc32();
+
+            using (MemoryStream zipMemoryStream = new MemoryStream())
             {
+                ZipOutputStream zipOutputStream = new ZipOutputStream(zipMemoryStream);
+
                 zipOutputStream.SetLevel(9);
 
-                byte[] buffer = new byte[4096];
-
                 var imageList = new List<byte[]>();
-
-
                 foreach (GenerateTemplateDTO instance in request)
                 {
                     var imageData = await ImageProcessor.GenerateFromTemplate2(instance.Template, instance.Variables);
@@ -121,21 +121,80 @@ namespace ICAds.Controllers
                     entry.IsUnicodeText = true;
                     zipOutputStream.PutNextEntry(entry);
                     zipOutputStream.Write(imageBytes);
+
+                    crc.Reset();
+                    crc.Update(imageBytes);
+                    entry.Crc = crc.Value;
+                    zipOutputStream.PutNextEntry(entry);
+                    zipOutputStream.Write(imageBytes, 0, imageBytes.Length);
+
+
                     i++;
                 }
 
                 zipOutputStream.Finish();
+
+                byte[] zipByteArray = new byte[zipMemoryStream.Length];
+                zipMemoryStream.Position = 0;
+                zipMemoryStream.Read(zipByteArray, 0, (int)zipMemoryStream.Length);
+
                 zipOutputStream.Flush();
                 zipOutputStream.Close();
 
+                return zipByteArray;
             }
-
-            byte[] finalResult = System.IO.File.ReadAllBytes(tempOutput);
-
-
-            return finalResult;
-            //return File(finalResult, "application/zip", fileName);
         }
+        //{
+        //    //var webRoot = IHostingEnv.WebRootPath;
+        //    var fileName = "Export.zip";
+        //    //var tempOutput = webRoot + "/static/" + fileName;
+        //    var tempOutput = $"./../images/{GetOrgId()}_{fileName}";
+
+        //    using (System.IO.MemoryStream zipMemoryStream = new System.IO.MemoryStream())
+        //    using (ZipOutputStream zipOutputStream = new ZipOutputStream(zipMemoryStream))
+        //    {
+        //        zipOutputStream.SetLevel(9);
+
+        //        byte[] buffer = new byte[4096];
+
+        //        var imageList = new List<byte[]>();
+
+
+        //        foreach (GenerateTemplateDTO instance in request)
+        //        {
+        //            var imageData = await ImageProcessor.GenerateFromTemplate2(instance.Template, instance.Variables);
+
+        //            byte[] imageArray = imageData.ToArray();
+
+        //            imageList.Add(imageArray);
+        //        }
+
+
+        //        int i = 0;
+        //        foreach (byte[] imageBytes in imageList)
+        //        {
+        //            ZipEntry entry = new ZipEntry($"img_{i.ToString()}.png");
+        //            entry.DateTime = DateTime.Now;
+        //            entry.IsUnicodeText = true;
+        //            zipOutputStream.PutNextEntry(entry);
+        //            zipOutputStream.Write(imageBytes);
+        //            i++;
+        //        }
+
+        //        byte[] zipByteArray = new byte[zipOutputStream.Length];
+        //        zipOutputStream.Finish();
+        //        zipOutputStream.Flush();
+        //        zipOutputStream.Close();
+
+        //        return zipByteArray;
+        //    }
+
+        //    //byte[] finalResult = System.IO.File.ReadAllBytes(tempOutput);
+
+
+        //    //return finalResult;
+        //    //return File(finalResult, "application/zip", fileName);
+        //}
     }
 
 

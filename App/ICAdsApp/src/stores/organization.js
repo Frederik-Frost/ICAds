@@ -286,7 +286,9 @@ export const useOrgStore = defineStore({
   //  return axios.post('editor/export',  { template: template, variables: variables}).then(res => {
    return axios.post('editor/export',  data).then(res => {
       console.log(res)
-      EditorHelper.downloadZipFromBase64(res.data, "export.zip")
+      // EditorHelper.downloadZipFromBase64(res.data, "images")
+      EditorHelper.jsDownloadZip(res.data, "images")
+      
     })
   }
     
