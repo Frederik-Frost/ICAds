@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SkiaSharp;
 using Newtonsoft.Json;
+using ICSharpCode.SharpZipLib.Zip;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -83,6 +84,57 @@ namespace ICAds.Controllers
             //}
 
 
+        }
+
+        [Route("export")]
+        [HttpPost]
+        public async Task<byte[]> GenerateZip([FromBody]List<GenerateTemplateDTO> request)
+        {
+            //var webRoot = _oIHostingEnv.WebRootPath;
+            var fileName = "Export.zip";
+            //var tempOutput = webRoot + "/static/" + fileName;
+            var tempOutput = $"./../images/{GetOrgId()}_{fileName}";
+            using (ZipOutputStream zipOutputStream = new ZipOutputStream(System.IO.File.Create(tempOutput)))
+            {
+                zipOutputStream.SetLevel(9);
+
+                byte[] buffer = new byte[4096];
+
+                var imageList = new List<byte[]>();
+
+
+                foreach (GenerateTemplateDTO instance in request)
+                {
+                    var imageData = await ImageProcessor.GenerateFromTemplate2(instance.Template, instance.Variables);
+
+                    byte[] imageArray = imageData.ToArray();
+
+                    imageList.Add(imageArray);
+                }
+
+
+                int i = 0;
+                foreach (byte[] imageBytes in imageList)
+                {
+                    ZipEntry entry = new ZipEntry($"img_{i.ToString()}.png");
+                    entry.DateTime = DateTime.Now;
+                    entry.IsUnicodeText = true;
+                    zipOutputStream.PutNextEntry(entry);
+                    zipOutputStream.Write(imageBytes);
+                    i++;
+                }
+
+                zipOutputStream.Finish();
+                zipOutputStream.Flush();
+                zipOutputStream.Close();
+
+            }
+
+            byte[] finalResult = System.IO.File.ReadAllBytes(tempOutput);
+
+
+            return finalResult;
+            //return File(finalResult, "application/zip", fileName);
         }
     }
 

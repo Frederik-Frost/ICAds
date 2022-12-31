@@ -163,6 +163,14 @@ const removeFromExportList = (index) => {
 
 const exportImages = () => {
   console.log('first');
+  const exportedTemplate = orgStore.layoutTemplate.export();
+  let newList = []
+  exportList.value.forEach(e => {
+    newList.push({ template: exportedTemplate, variables:  e.variables})
+  })
+
+  orgStore.exportImageZip(newList)
+  
 };
 </script>
 

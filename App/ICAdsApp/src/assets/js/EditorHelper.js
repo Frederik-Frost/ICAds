@@ -14,5 +14,14 @@ export default {
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+  },
+
+  downloadZipFromBase64(base64, fileName) {
+    let link = document.createElement('a');
+    link.href = 'data:text/plain;base64,' +base64;
+    link.download = fileName;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   }
 };

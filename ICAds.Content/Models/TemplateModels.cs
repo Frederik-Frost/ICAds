@@ -96,7 +96,12 @@ namespace ICAds.Content.Models
         public List<Variable> Variables { get; set; }
         //public ShopifyProduct ProductData { get; set; }
     }
-    
+
+    public class GenerateMultipleTemplateDTO
+    {
+        public List<GenerateTemplateDTO> Generations { get; set; }
+    }
+
 
 
 }

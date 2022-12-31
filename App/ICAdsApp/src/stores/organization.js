@@ -1,6 +1,7 @@
 import { ref, computed } from 'vue';
 import { defineStore } from 'pinia';
 import axios from 'axios';
+import EditorHelper from '../assets/js/EditorHelper';
 
 export const useOrgStore = defineStore({
   id: 'organization',
@@ -272,9 +273,22 @@ export const useOrgStore = defineStore({
           });
       });
     },
-  },
+   
+    layoutChanges() {
+      this.layoutChanges = true;
+    },
 
-  layoutChanges() {
-    this.layoutChanges = true;
+
+  // exportImageZip(template, variables){
+  exportImageZip(data){
+    console.log(data)
+    // console.log(JSON.stringify(imageData))
+  //  return axios.post('editor/export',  { template: template, variables: variables}).then(res => {
+   return axios.post('editor/export',  data).then(res => {
+      console.log(res)
+      EditorHelper.downloadZipFromBase64(res.data, "export.zip")
+    })
+  }
+    
   },
 });
