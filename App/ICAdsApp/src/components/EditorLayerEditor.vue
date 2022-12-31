@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-white rounded-b-lg shadow-lg">
+  <div class="bg-white rounded-lg shadow-lg">
     <header class="flex flex-row gap-4 items-center bg-primary2half p-4 rounded-t-lg shadow-md justify-between">
       <h3 class="text-white">Layer </h3>
       <p class="text-white">{{ props.selectedLayerIndex != null ? props.selectedLayerIndex + 1 : 'None selected' }}</p>

@@ -2,7 +2,10 @@
   <div class="">
     <EditorSubHeader />
     <!-- grid grid-cols-8 gap-6 max-w-screen-2xl mx-auto mt-8 p-4 -->
-    <main class="flex flex-col sm:grid lg:grid-cols-8 gap-6 max-w-screen-2xl mx-auto mt-8 p-4" v-if="store.layoutTemplate">
+    <main
+      class="flex flex-col sm:grid lg:grid-cols-8 gap-6 max-w-screen-2xl mx-auto mt-8 p-4"
+      v-if="store.layoutTemplate"
+    >
       <!-- Image area here  -->
       <EditorPreview
         :layoutTemplate="store.layoutTemplate"
@@ -18,24 +21,23 @@
 
       <!-- Layers area here  -->
       <div class="col-span-2 flex flex-col">
-        <div class="bg-white rounded-b-lg shadow-lg">
-
-        <EditorBaseEditor :layout="store.layoutTemplate" />
-        <EditorLayers
-          :layoutTemplate="store.layoutTemplate"
-          :selectedLayerIndex="selectedLayerIndex"
-          @selectLayer="
-            (index) => {
-              selectedLayerIndex = index;
-            }
-          "
-          @newLayer="(layerType) => addLayer(layerType)"
-          @removeLayer="
-            (index) => {
-              removeLayer(index);
-            }
-          "
-        />
+        <div class="bg-white rounded-lg shadow-lg">
+          <EditorBaseEditor :layout="store.layoutTemplate" />
+          <EditorLayers
+            :layoutTemplate="store.layoutTemplate"
+            :selectedLayerIndex="selectedLayerIndex"
+            @selectLayer="
+              (index) => {
+                selectedLayerIndex = index;
+              }
+            "
+            @newLayer="(layerType) => addLayer(layerType)"
+            @removeLayer="
+              (index) => {
+                removeLayer(index);
+              }
+            "
+          />
         </div>
       </div>
     </main>
@@ -48,7 +50,7 @@ import EditorPreview from './../components/EditorPreview.vue';
 import EditorLayerEditor from './../components/EditorLayerEditor.vue';
 import EditorLayers from './../components/EditorLayers.vue';
 import EditorBaseEditor from './../components/EditorBaseEditor.vue';
-import { ref, onMounted, nextTick, computed } from 'vue';
+import { ref, onMounted, nextTick, computed, watch } from 'vue';
 import { useOrgStore } from './../stores/organization';
 import Template from './../assets/js/Template';
 import TextLayer from './../assets/js/TextLayer';
@@ -60,6 +62,16 @@ const selectedLayerIndex = ref(null);
 const selectedLayerIndexIsSet = computed(() => {
   return selectedLayerIndex.value != null;
 });
+onMounted(() => {
+  console.log(store.layoutTemplate)
+})
+// watch(
+//   () => store.layoutTemplate,
+//   () => {
+//     console.log("Changes")
+//     store.layoutChanges()
+//   }
+// );
 
 const removeLayer = (index) => {
   selectedLayerIndex.value = 0;
@@ -75,6 +87,4 @@ const addLayer = (layerType) => {
 };
 </script>
 
-<style>
- 
-</style>
+<style></style>

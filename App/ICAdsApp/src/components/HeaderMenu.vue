@@ -9,7 +9,7 @@
         </div>
       </transition>
 
-      <h1 class="hidden sm:block text-xl text-charcoal50">{{ title }}</h1>
+      <h1 class="hidden sm:block text-xl text-charcoal50 pl-4">{{ title }}</h1>
     </div>
     <main class="flex flex-row justify-between items-center" :class="{ 'flex-1': editor }">
       <div v-if="editor" class="ml-4">

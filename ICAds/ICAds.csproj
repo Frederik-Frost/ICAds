@@ -14,6 +14,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
+    <PackageReference Include="SharpZipLib.NETStandard" Version="1.0.7" />
   </ItemGroup>
 
   <ItemGroup>
@@ -31,5 +32,6 @@
     <None Remove="Microsoft.AspNetCore.Authentication.JwtBearer" />
     <None Remove="Swashbuckle.AspNetCore.Filters" />
     <None Remove="Microsoft.EntityFrameworkCore.Design" />
+    <None Remove="SharpZipLib.NETStandard" />
   </ItemGroup>
 </Project>

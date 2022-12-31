@@ -5,12 +5,12 @@
       <input
         type="text"
         class="border-none rounded-none border-b-2"
-        placeholder="Search product data.."
+        placeholder="Search products.."
         v-model="query"
         @input="searchDebounce()"
       />
     </div>
-    <div class="bg-white rounded-lg shadow-md fixed top-10 z-50 min-w-[150px] max-w-[400px]" v-if="showResults">
+    <div class="bg-white rounded-lg shadow-md absolute top-10 z-50 min-w-[150px] max-w-[400px]" v-if="showResults">
       <div class="p-4" v-if="loading">Loading products...</div>
       <div class="p-4" v-else-if="results.length == 0">No products found on search '{{ query }}'</div>
 

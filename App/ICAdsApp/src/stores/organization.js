@@ -13,6 +13,7 @@ export const useOrgStore = defineStore({
     selectedProduct: null,
     layoutTemplate: null,
     productVariables: null,
+    layoutChanges: false,
   }),
 
   getters: () => ({}),
@@ -49,10 +50,10 @@ export const useOrgStore = defineStore({
         this.organizationUsers = res.data;
       });
     },
-    createOrganizationUser(data){
-      return axios.post('organization/users', data).then(res => {
-        this.organizationUsers.push(res.data)
-      })
+    createOrganizationUser(data) {
+      return axios.post('organization/users', data).then((res) => {
+        this.organizationUsers.push(res.data);
+      });
     },
 
     getLayouts() {
@@ -134,10 +135,10 @@ export const useOrgStore = defineStore({
       });
     },
 
-    searchProduct(query) {
+    searchProduct(query, layoutId=null) {
       return new Promise((resolve, reject) => {
         axios
-          .get(`templates/${this.$router.currentRoute.value.params.layoutId}/products/search?query=${query}`)
+          .get(`templates/${layoutId ? layoutId : this.$router.currentRoute.value.params.layoutId}/products/search?query=${query}`)
           .then((res) => {
             console.log(res);
             resolve(res.data);
@@ -145,9 +146,9 @@ export const useOrgStore = defineStore({
       });
     },
 
-    getProduct(id) {
+    getProduct(id, layoutId=null) {
       return new Promise((resolve, reject) => {
-        axios.get(`templates/${this.$router.currentRoute.value.params.layoutId}/products/${id}`).then((res) => {
+        axios.get(`templates/${layoutId ? layoutId : this.$router.currentRoute.value.params.layoutId}/products/${id}`).then((res) => {
           console.log(res);
           this.selectedProduct = res.data.product;
           resolve(this.selectedProduct);
@@ -155,10 +156,10 @@ export const useOrgStore = defineStore({
       });
     },
 
-    getProductVariables(id) {
+    getProductVariables(id, layoutId=null) {
       return new Promise((resolve, reject) => {
         axios
-          .get(`templates/${this.$router.currentRoute.value.params.layoutId}/products/${id}/variables`)
+          .get(`templates/${layoutId ? layoutId : this.$router.currentRoute.value.params.layoutId}/products/${id}/variables`)
           .then((res) => {
             console.log(res);
             this.productVariables = res.data;
@@ -228,11 +229,11 @@ export const useOrgStore = defineStore({
       });
     },
 
-    generateImagePreview(template) {
+    generateImagePreview(template, variables=null) {
       return new Promise((resolve, reject) => {
         // axios.post('editor',{template: template, productData: this.selectedProduct}, {responseType: 'arraybuffer'}).then(res => {
         axios
-          .post('editor/generate', { template: template, variables: this.productVariables })
+          .post('editor/generate', { template: template, variables: variables ? variables : this.productVariables })
           .then((res) => {
             console.log(res);
             resolve(res.data);
@@ -271,5 +272,9 @@ export const useOrgStore = defineStore({
           });
       });
     },
+  },
+
+  layoutChanges() {
+    this.layoutChanges = true;
   },
 });

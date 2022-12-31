@@ -4,7 +4,7 @@
       <div class="flex gap-4">
         <p class="text-lg text-charcoal75">{{ orgStore.layout.name }} -</p>
 
-        <button class="btn-primary text-xs" @click="saveChanges">Save layout</button>
+        <button class="btn-primary text-xs" @click="saveChanges" >Save layout</button>
         <button class="btn-secondary text-xs" @click="browseVariables">Browse variables</button>
         <!-- <CustomDropdown title="browseVariables">
           <template v-slot:toggle>
@@ -15,7 +15,6 @@
           </template>
         </CustomDropdown> -->
       </div>
-
       <p>
         {{ orgStore.selectedProduct ? orgStore.selectedProduct.title : 'No product data loaded' }}
       </p>

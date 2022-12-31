@@ -39,7 +39,7 @@ export default {
         case '/export':
           return 'Export Creatives';
         case '/account':
-          return 'Organization';
+          return 'Account';
         case '/editor':
           return 'Layout editor';
       }

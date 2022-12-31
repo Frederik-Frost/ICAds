@@ -1,5 +1,5 @@
 <template>
-  <select :name="name" :id="id" v-model="selectedId" @change="$emit('updateValue', selectedId);" class="py-2 border border-charcoal50  rounded-md">
+  <select :name="name" :id="id" v-model="selectedId" @change="$emit('updateValue', selectedId);" class="py-2 border border-charcoal50 rounded-md">
     <option value="">none</option>
     <option v-for="integration in orgStore.integrations" :key="integration.id" :value="integration.id">
       {{ integration.name }}
