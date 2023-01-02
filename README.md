@@ -16,7 +16,7 @@ Create a new account in the application or simply use an existing account with t
 
 <strong> Username: user@kea.com</strong> 
 
-<strong> Password: </strong> 
+<strong> Password: </strong> testuser123
 
 A data integration to a Shopify test store can be created with the following information
 
