@@ -17,11 +17,3 @@ Create a new account in the application or simply use an existing account with t
 <strong> Username: user@kea.com</strong> 
 
 <strong> Password: </strong> testuser123
-
-A data integration to a Shopify test store can be created with the following information
-
-<strong> Name: ´Some random name´ </strong> 
-
-<strong> Url: https://ic-marketier.myshopify.com/ </strong> 
-
-<strong> Access token: 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 </strong> 
