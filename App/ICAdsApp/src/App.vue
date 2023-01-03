@@ -22,13 +22,6 @@ import HeaderMenu from './components/HeaderMenu.vue';
 import { ModalsContainer } from 'vue-final-modal';
 export default {
   components: { SideBar, HeaderMenu, ModalsContainer },
-  methods: {
-    // getList() {
-    //   this.axios.get('users/all').then((response) => {
-    //     console.log(response.data);
-    //   });
-    // },
-  },
   computed: {
     headerTitle() {
       const path = this.$router.currentRoute.value.path;
