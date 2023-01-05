@@ -136,10 +136,14 @@ export const useOrgStore = defineStore({
       });
     },
 
-    searchProduct(query, layoutId=null) {
+    searchProduct(query, layoutId = null) {
       return new Promise((resolve, reject) => {
         axios
-          .get(`templates/${layoutId ? layoutId : this.$router.currentRoute.value.params.layoutId}/products/search?query=${query}`)
+          .get(
+            `templates/${
+              layoutId ? layoutId : this.$router.currentRoute.value.params.layoutId
+            }/products/search?query=${query}`
+          )
           .then((res) => {
             console.log(res);
             resolve(res.data);
@@ -147,20 +151,26 @@ export const useOrgStore = defineStore({
       });
     },
 
-    getProduct(id, layoutId=null) {
+    getProduct(id, layoutId = null) {
       return new Promise((resolve, reject) => {
-        axios.get(`templates/${layoutId ? layoutId : this.$router.currentRoute.value.params.layoutId}/products/${id}`).then((res) => {
-          console.log(res);
-          this.selectedProduct = res.data.product;
-          resolve(this.selectedProduct);
-        });
+        axios
+          .get(`templates/${layoutId ? layoutId : this.$router.currentRoute.value.params.layoutId}/products/${id}`)
+          .then((res) => {
+            console.log(res);
+            this.selectedProduct = res.data.product;
+            resolve(this.selectedProduct);
+          });
       });
     },
 
-    getProductVariables(id, layoutId=null) {
+    getProductVariables(id, layoutId = null) {
       return new Promise((resolve, reject) => {
         axios
-          .get(`templates/${layoutId ? layoutId : this.$router.currentRoute.value.params.layoutId}/products/${id}/variables`)
+          .get(
+            `templates/${
+              layoutId ? layoutId : this.$router.currentRoute.value.params.layoutId
+            }/products/${id}/variables`
+          )
           .then((res) => {
             console.log(res);
             this.productVariables = res.data;
@@ -230,7 +240,7 @@ export const useOrgStore = defineStore({
       });
     },
 
-    generateImagePreview(template, variables=null) {
+    generateImagePreview(template, variables = null) {
       return new Promise((resolve, reject) => {
         // axios.post('editor',{template: template, productData: this.selectedProduct}, {responseType: 'arraybuffer'}).then(res => {
         axios
@@ -273,24 +283,18 @@ export const useOrgStore = defineStore({
           });
       });
     },
-   
+
     layoutChanges() {
       this.layoutChanges = true;
     },
 
-
-  // exportImageZip(template, variables){
-  exportImageZip(data){
-    console.log(data)
-    // console.log(JSON.stringify(imageData))
-  //  return axios.post('editor/export',  { template: template, variables: variables}).then(res => {
-   return axios.post('editor/export',  data).then(res => {
-      console.log(res)
-      // EditorHelper.downloadZipFromBase64(res.data, "images")
-      EditorHelper.jsDownloadZip(res.data, "images")
-      
-    })
-  }
-    
+    exportImageZip(data) {
+      console.log(data);
+      return axios.post('editor/export', data).then((res) => {
+        console.log(res);
+        // EditorHelper.downloadZipFromBase64(res.data, "images")
+        EditorHelper.jsDownloadZip(res.data, 'images');
+      });
+    },
   },
 });

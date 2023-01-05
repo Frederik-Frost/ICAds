@@ -16,9 +16,6 @@ const router = createRouter({
     {
       path: '/export',
       name: 'export',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
       component: () => import('../views/ExportView.vue'),
       beforeEnter: (from, to, next) => {
         const store = useOrgStore();
@@ -35,10 +32,8 @@ const router = createRouter({
       name: 'editor',
       component: () => import('../views/EditorView.vue'),
       beforeEnter: (from, to, next) => {
-        console.log(from.params.layoutId)
         const store = useOrgStore();
         store.getLayout(from.params.layoutId).then((res) => {
-          console.log(res);
           store.$patch((state) => state.layoutTemplate = new Template(res.data.template.templateJSON))
           next();
         })

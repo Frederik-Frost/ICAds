@@ -8,6 +8,7 @@ export const useMainStore = defineStore({
   id: 'main',
   state: () => ({
     token: localStorage.getItem('userToken'),
+    loadingRoute: false
   }),
 
   getters: () => ({}),

@@ -2,6 +2,8 @@
 import { RouterLink, RouterView } from 'vue-router';
 import SideBar from './components/SideBar.vue';
 import HeaderMenu from './components/HeaderMenu.vue';
+import { useMainStore } from './stores/main';
+const store = useMainStore();
 // import BaseModal from './components/modals/BaseModal.vue'
 // const $vfm = inject('$vfm')
 </script>
@@ -11,9 +13,18 @@ import HeaderMenu from './components/HeaderMenu.vue';
     <SideBar v-if="showSideBar" />
     <div class="flex-1">
       <HeaderMenu v-if="showHeaderMenu" :title="headerTitle" :router="$router" />
-      <RouterView />
+      <RouterView :class="store.loadingRoute ? ['blur', 'transition-all', 'delay-500'] : []" />
     </div>
-
+    <transition
+      enter-active-class="delay-500"
+      enter-to-class="opacity-100"
+      enter-from-class=" opacity-0"
+      leave-from-class="opacity-0"
+    >
+      <div v-if="store.loadingRoute" class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+        <span class="material-symbols-outlined text-5xl"> pending </span>
+      </div>
+    </transition>
     <!-- <BaseModal/> -->
     <modals-container></modals-container>
   </div>
@@ -46,9 +57,9 @@ export default {
     showHeaderMenu() {
       return !['/login'].includes(this.$router.currentRoute.value.path);
     },
-    path(){
-      return this.$router.currentRoute.value.path
-    }
+    path() {
+      return this.$router.currentRoute.value.path;
+    },
   },
   mounted() {
     // this.getList();

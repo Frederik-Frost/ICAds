@@ -35,6 +35,7 @@ const orgStore = useOrgStore();
 
 // Check for token authorization on each router navigation
 router.beforeEach((to, from, next) => {
+  store.$patch(state => state.loadingRoute = true)
   if (store.token) {
     // CALLING GET USER
     Promise.all([userStore.getUser(), orgStore.getOrganization()]).then((values) => {
@@ -43,6 +44,10 @@ router.beforeEach((to, from, next) => {
   } else if (!['login'].includes(to.name)) next('/login');
   else next();
 });
+
+router.afterEach(() => {
+  store.$patch(state => state.loadingRoute = false)
+})
 
 // HTTP Request settings
 axios.defaults.baseURL = window.location.href.includes("127.0.0.1") ? 'https://localhost:7093/' : 'https://icads-api.azurewebsites.net';

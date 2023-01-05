@@ -5,7 +5,7 @@
       <p class="text-white">{{ props.selectedLayerIndex != null ? props.selectedLayerIndex + 1 : 'None selected' }}</p>
     </header>
     <div v-if="layer">
-      <div class="bg-white p-2 rounded shadow">
+      <div class="bg-white p-2 rounded ">
         <TextLayerEditor v-if="layer.layerType == 'TextLayer'" :layer="layer" class="flex flex-col gap-2" />
         <ImageLayerEditor v-if="layer.layerType == 'ImageLayer'" :layer="layer" class="flex flex-col gap-2" />
         <ShapeLayerEditor v-if="layer.layerType == 'ShapeLayer'" :layer="layer" class="flex flex-col gap-2" />

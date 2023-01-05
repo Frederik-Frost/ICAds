@@ -15,13 +15,11 @@ namespace ICAds.Content.Image
 	public class ImageProcessor
 	{
 
-        public static async Task<SKData> GenerateFromTemplate2(TemplateStructure template, List<Variable> variables)
+        public static async Task<SKData> GenerateFromTemplate(TemplateStructure template, List<Variable> variables)
         {
             // Create canvas with the template width and height first
             SKSurface surface = SKSurface.Create(new SKImageInfo(template.Width, template.Height));
             SKCanvas canvas = surface.Canvas;
-
-
 
             // Process each layer in to an element on the canvas
             foreach (Layer layer in template.Layers)
@@ -42,81 +40,62 @@ namespace ICAds.Content.Image
 
                     // Get variable values from the properties that should be able to take variables
                     string source = ExtractVariableValues(il.Source, variables);
-                    System.Diagnostics.Debug.WriteLine("SOURCE IS");
-                    System.Diagnostics.Debug.WriteLine(source);
 
                     // Handle adding Image layers to the canvas here
                     SKBitmap initialImage = await GetImageFromUrl(source);
-
-
-                    //SKImageInfo imgData = initialImage.Info;
-                    // factor = desired width / actual width or desired height / actual height
-                    double resizeFactor;
-                    // Based on objectfit style Calculate the resizefactor needed for scaling
-                    bool productImageIsLandscape = initialImage.Width >= initialImage.Height;
-                    //bool productImageIsLandscape = imgData.Width >= imgData.Height;
-                    if (il.ObjectFit == "Fit")
+                    if(initialImage.DrawsNothing != true)
                     {
-                        resizeFactor = productImageIsLandscape ? (double)((decimal)il.Width / (decimal)initialImage.Width) : (double)((decimal)il.Height / (decimal)initialImage.Height);
+                        //SKImageInfo imgData = initialImage.Info;
+                        // factor = desired width / actual width or desired height / actual height
+                        double resizeFactor;
+                        // Based on objectfit style Calculate the resizefactor needed for scaling
+                        bool productImageIsLandscape = initialImage.Width >= initialImage.Height;
+                        //bool productImageIsLandscape = imgData.Width >= imgData.Height;
+                        if (il.ObjectFit == "Fit")
+                        {
+                            resizeFactor = productImageIsLandscape ? (double)((decimal)il.Width / (decimal)initialImage.Width) : (double)((decimal)il.Height / (decimal)initialImage.Height);
 
-                    } else
-                    {
-                        resizeFactor = productImageIsLandscape ? (double)((decimal)il.Height / (decimal)initialImage.Height) : (double)((decimal)il.Width / (decimal)initialImage.Width);
-                    }
-                    SKBitmap scaledImage = scaleImageBg(initialImage, resizeFactor);
+                        } else
+                        {
+                            resizeFactor = productImageIsLandscape ? (double)((decimal)il.Height / (decimal)initialImage.Height) : (double)((decimal)il.Width / (decimal)initialImage.Width);
+                        }
+                        SKBitmap scaledImage = scaleImageBg(initialImage, resizeFactor);
 
-                    float cropPosX = 0;
-                    float cropPosY = 0;
+                        float cropPosX = 0;
+                        float cropPosY = 0;
 
-                    switch (il.AlignHorizontal)
-                    {
-                        case "Left":
-                            cropPosX = 0;
-                            break;
-                        case "Center":
-                            cropPosX = -Math.Abs(((float)scaledImage.Width - (float)il.Width) / (float)2); 
-                            break;
-                        case "Right":
-                            cropPosX = -Math.Abs(((float)scaledImage.Width - (float)il.Width));
-                            break;
-                            //case "Left":
-                            //    cropPosX = 0;
-                            //    break;
-                            //case "Center":
-                            //    cropPosX = productImageIsLandscape ? - Math.Abs(((float)scaledImage.Width - (float)il.Width) / (float)2) : Math.Abs(((float)scaledImage.Width - (float)il.Width) / (float)2);
-                            //    break;
-                            //case "Right":
-                            //    cropPosX = productImageIsLandscape  ? - Math.Abs(((float)scaledImage.Width - (float)il.Width)) : Math.Abs(((float)scaledImage.Width - (float)il.Width));
-                            //    break;
-                    }
+                        switch (il.AlignHorizontal)
+                        {
+                            case "Left":
+                                cropPosX = 0;
+                                break;
+                            case "Center":
+                                cropPosX = -Math.Abs(((float)scaledImage.Width - (float)il.Width) / (float)2); 
+                                break;
+                            case "Right":
+                                cropPosX = -Math.Abs(((float)scaledImage.Width - (float)il.Width));
+                                break;
+                        }
 
-                    switch (il.AlignVertical)
-                    {
-                        case "Top":
-                            cropPosY = 0;
-                            break;
-                        case "Center":
-                            cropPosY =  Math.Abs(((float)scaledImage.Height - (float)il.Height) / (float)2);
-                            break;
-                        case "Bottom":
-                            cropPosY =  Math.Abs(((float)scaledImage.Height - (float)il.Height));
-                            break;
-                            //case "Top":
-                            //    cropPosY = 0;
-                            //    break;
-                            //case "Center":
-                            //    cropPosY = productImageIsLandscape ? Math.Abs(((float)scaledImage.Height - (float)il.Height) / (float)2) : - Math.Abs(((float)scaledImage.Height - (float)il.Height) / (float)2);
-                            //    break;
-                            //case "Bottom":
-                            //    cropPosY = productImageIsLandscape ? Math.Abs(((float)scaledImage.Height - (float)il.Height)) : - Math.Abs(((float)scaledImage.Height - (float)il.Height));
-                            //    break;
-                    }
+                        switch (il.AlignVertical)
+                        {
+                            case "Top":
+                                cropPosY = 0;
+                                break;
+                            case "Center":
+                                cropPosY =  Math.Abs(((float)scaledImage.Height - (float)il.Height) / (float)2);
+                                break;
+                            case "Bottom":
+                                cropPosY =  Math.Abs(((float)scaledImage.Height - (float)il.Height));
+                                break;
+                        }
 
-                    SKBitmap cropped = new SKBitmap(new SKImageInfo((int)il.Width, (int)il.Height));
-                    scaledImage.ExtractSubset(cropped, SKRectI.Create((int)cropPosX, (int)cropPosY, (int)il.Width, (int)il.Height));
+                        SKBitmap cropped = new SKBitmap(new SKImageInfo((int)il.Width, (int)il.Height));
+                        scaledImage.ExtractSubset(cropped, SKRectI.Create((int)cropPosX, (int)cropPosY, (int)il.Width, (int)il.Height));
 
-                    // Actually drawing the image to the canvas
-                    canvas.DrawBitmap(cropped, il.PosX, il.PosY);
+                        // Actually drawing the image to the canvas
+                        canvas.DrawBitmap(cropped, il.PosX, il.PosY);
+                    } 
                 }
 
 
@@ -217,98 +196,7 @@ namespace ICAds.Content.Image
             return result.Value;
             
         }
-
-
-
-        public static void TestLoop(TemplateStructure template)
-        {
-            int count = 1;
-            foreach(Layer layer in template.Layers)
-            {
-                ImageLayer il = layer as ImageLayer;
-                if (il != null)
-                {
-                    // Handle adding Image layers to the canvas here
-                    System.Diagnostics.Debug.WriteLine("ITS A IMAGE LAYER");
-                    System.Diagnostics.Debug.WriteLine(il);
-                    System.Diagnostics.Debug.WriteLine(count);
-                }
-                TextLayer tl = layer as TextLayer;
-                if (tl != null)
-                {
-                    // Handle adding Text layers to the canvas here
-                    System.Diagnostics.Debug.WriteLine("ITS A TEXT LAYER");
-                    System.Diagnostics.Debug.WriteLine(tl);
-                    System.Diagnostics.Debug.WriteLine(count);
-                }
-
-                ShapeLayer sl = layer as ShapeLayer;
-                if (sl != null)
-                {
-                    // Handle adding Shape layers to the canvas here
-                    System.Diagnostics.Debug.WriteLine("ITS A SHAPE LAYER");
-                    System.Diagnostics.Debug.WriteLine(sl);
-                    System.Diagnostics.Debug.WriteLine(count);
-                }
-
-                count++;
-            }
-
-
-        }
-
-		//public static async Task<SKData> GenerateFromTemplate(TemplateStructure template, ShopifyProduct productData)
-		//{
-  //          // Create the base from the width and height
-  //          var imgData = productData.Images[0];
-  //          bool productImageIsLandscape = imgData.Width >= imgData.Height;
-            
-  //          SKBitmap imageBg = await GetImageFromUrl(imgData.Src);
-  //          SKBitmap scaledImageBg = scaleImageBg(imageBg, imgData, template.Width, template.Height, productImageIsLandscape);
-
-  //          SKSurface surface = SKSurface.Create(new SKImageInfo(template.Width, template.Height));
-  //          SKCanvas canvas = surface.Canvas;
-
-  //          // TO center image
-  //          float imgX = 0;
-  //          float imgY = 0;
-  //          if (productImageIsLandscape)
-  //          {
-  //              imgX = -Math.Abs(((float)scaledImageBg.Width - (float)template.Width) / (float)2);
-  //              //float imgX = ((float)scaledImageBg.Width - (float)template.Width) / (float)2;
-  //              //float NegX = -Math.Abs(imgX);
-  //          } else
-  //          {
-  //              imgY = -Math.Abs(((float)scaledImageBg.Height - (float)template.Height) / (float)2);
-  //          }
-
-  //          // Actually drawing the image to the canvas
-  //          canvas.DrawBitmap(scaledImageBg, imgX, imgY);
-
-
-
-  //          foreach (Layer l in template.Layers)
-  //          {
-  //              if(l.LayerType == "TextLayer")
-  //              {
-  //                 //canvas = ApplyTextLayerToCanvas(canvas, l);
-  //              }
-  //              System.Diagnostics.Debug.WriteLine(l.LayerType);
-  //              System.Diagnostics.Debug.WriteLine(l);
-  //          }
-
-
-  //          // Print actual image
-  //          SKImage image = surface.Snapshot();
-  //          SKBitmap bitmap = SKBitmap.FromImage(image);
-  //          SKData data = bitmap.Encode(SKEncodedImageFormat.Png, 100);
-
-  //          // 
-  //          //SaveImage(data, "generated.png");
-
-  //          return data;
-  //      }
-            
+        
         public static SKCanvas ApplyTextLayerToCanvas(SKCanvas canvas, TextLayer layer)
         {
             SKPaint paint = new SKPaint();
@@ -349,15 +237,23 @@ namespace ICAds.Content.Image
         {
             HttpClient httpClient = new HttpClient();
             SKBitmap webBitmap;
-            using (Stream stream = await httpClient.GetStreamAsync(url))
-            using (MemoryStream memStream = new MemoryStream())
+            if (url == null || url == "") return new SKBitmap();
+            try
             {
-                await stream.CopyToAsync(memStream);
-                memStream.Seek(0, SeekOrigin.Begin);
-                webBitmap = SKBitmap.Decode(memStream);
-                return webBitmap;
-            }
+                using (Stream stream = await httpClient.GetStreamAsync(url))
+                using (MemoryStream memStream = new MemoryStream())
+                {
+                    await stream.CopyToAsync(memStream);
+                    memStream.Seek(0, SeekOrigin.Begin);
+                    webBitmap = SKBitmap.Decode(memStream);
+                    return webBitmap;
+                }
 
+            }
+            catch (IOException exception)
+            {
+                throw new IOException("Could not load image");
+            }
         }
 
 

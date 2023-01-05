@@ -26,14 +26,24 @@
           <SearchDropdown @update="searchProduct" @select="getProductVariables" :results="products" />
         </div>
 
-        <div ref="layoutlist" class="bg-white flex flex-col flex-auto gap-2 rounded-md shadow mb-4 overflow-auto" :style="{ height: `calc(100vh - ${previewBounds.top + 200}px)` }">
+        <div
+          ref="layoutlist"
+          class="bg-white flex flex-col flex-auto gap-2 rounded-md shadow mb-4 overflow-auto"
+          :style="{ height: `calc(100vh - ${previewBounds.top + 200}px)` }"
+        >
           <h3 class="p-2">Selected for export</h3>
           <div v-if="exportList.length == 0">
             <p class="text-charcoal50 text-xs p-2">No products selected for export...</p>
           </div>
-          <div v-for="(exportable, index) in exportList" :key="index" class="hover:bg-hoverWhite cursor-pointer flex items-center justify-between p-2">
+          <div
+            v-for="(exportable, index) in exportList"
+            :key="index"
+            class="hover:bg-hoverWhite cursor-pointer flex items-center justify-between p-2"
+          >
             <span> {{ exportable.title }} </span>
-            <a @click="removeFromExportList(index)" class="flex items-center opacity-50 hover:opacity-100"><span class="material-symbols-outlined"> close </span></a>
+            <a @click="removeFromExportList(index)" class="flex items-center opacity-50 hover:opacity-100"
+              ><span class="material-symbols-outlined"> close </span></a
+            >
           </div>
         </div>
 
@@ -77,16 +87,23 @@ import EditorHelper from './../assets/js/EditorHelper';
 import SearchDropdown from './../components/SearchDropdown.vue';
 import { ref, onMounted, nextTick, computed, watch } from 'vue';
 import { useOrgStore } from '../stores/organization';
+import { useRouter } from 'vue-router';
+const router = useRouter();
 const orgStore = useOrgStore();
-
 const selectedLayout = ref('');
 const integrationReady = ref(false);
 const loadingTemplate = ref(false);
 const templateIsPresent = ref(false);
+
+onMounted(() => {
+  const initialLayout = router.currentRoute.value.query.initialLayout;
+  if (initialLayout) selectedLayout.value = initialLayout;
+});
 watch(
   () => selectedLayout.value,
   () => {
     console.log(selectedLayout.value);
+    exportList.value = [];
     templateIsPresent.value = false;
     if (selectedLayout.value) loadTemplate(selectedLayout.value);
   }
@@ -152,25 +169,24 @@ const previewBounds = computed(() => {
   return preview.value ? preview.value.getBoundingClientRect() : { top: 0 };
 });
 
-const layoutlist = ref()
+const layoutlist = ref();
 const layoutlistBounds = computed(() => {
   return layoutlist.value ? layoutlist.value.getBoundingClientRect() : { top: 0 };
 });
 
 const removeFromExportList = (index) => {
-  exportList.value.splice(index, 1)
-}
+  exportList.value.splice(index, 1);
+};
 
 const exportImages = () => {
   console.log('first');
   const exportedTemplate = orgStore.layoutTemplate.export();
-  let newList = []
-  exportList.value.forEach(e => {
-    newList.push({ template: exportedTemplate, variables:  e.variables})
-  })
+  let newList = [];
+  exportList.value.forEach((e) => {
+    newList.push({ template: exportedTemplate, variables: e.variables });
+  });
 
-  orgStore.exportImageZip(newList)
-  
+  orgStore.exportImageZip(newList);
 };
 </script>
 

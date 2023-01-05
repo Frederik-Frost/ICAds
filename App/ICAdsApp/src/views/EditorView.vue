@@ -50,7 +50,7 @@ import EditorPreview from './../components/EditorPreview.vue';
 import EditorLayerEditor from './../components/EditorLayerEditor.vue';
 import EditorLayers from './../components/EditorLayers.vue';
 import EditorBaseEditor from './../components/EditorBaseEditor.vue';
-import { ref, onMounted, nextTick, computed, watch } from 'vue';
+import { ref, onMounted, nextTick, computed, watch, watchEffect } from 'vue';
 import { useOrgStore } from './../stores/organization';
 import Template from './../assets/js/Template';
 import TextLayer from './../assets/js/TextLayer';
@@ -64,14 +64,19 @@ const selectedLayerIndexIsSet = computed(() => {
 });
 onMounted(() => {
   console.log(store.layoutTemplate)
+  console.log(store.layoutTemplate.height)
 })
-// watch(
-//   () => store.layoutTemplate,
-//   () => {
-//     console.log("Changes")
-//     store.layoutChanges()
-//   }
-// );
+watch(
+  () => store.layoutTemplate.layers, function() {
+    console.log("Changes")
+    store.layoutChanges()
+  }
+  // () => store.layoutTemplate,
+  // () => {
+  //   console.log("Changes")
+  //   store.layoutChanges()
+  // }
+);
 
 const removeLayer = (index) => {
   selectedLayerIndex.value = 0;
