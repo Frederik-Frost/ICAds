@@ -5,9 +5,14 @@
       <div
         v-for="(layer, index) in layoutTemplate.layers"
         :key="index"
-        class=" p-2 mb-2 rounded shadow cursor-pointer flex flex-row justify-between hover:bg-primary2quarter"
+        class="p-2 mb-2 rounded shadow cursor-pointer flex flex-row justify-between hover:bg-primary2quarter"
         :class="{ 'selected-layer': selectedLayerIndex == index }"
         @click="$emit('selectLayer', index)"
+        draggable="true"
+        @dragstart="startDrag($event, index)"
+        @drop="onDrop($event, index)"
+        @dragover.prevent
+        @dragenter.prevent
       >
         <div>
           <span>Layer {{ index + 1 }} - </span>
@@ -48,6 +53,18 @@ const props = defineProps({
   layoutTemplate: Object,
   selectedLayerIndex: Number,
 });
+
+const startDrag = (e, index) => {
+  e.dataTransfer.dropEffect = 'move';
+  e.dataTransfer.effectAllowed = 'move';
+  e.dataTransfer.setData('layerIndex', index);
+};
+const onDrop = (e, index) => {
+  const draggedLayerIndex = e.dataTransfer.getData('layerIndex');
+  const draggedElement = props.layoutTemplate.layers[draggedLayerIndex];
+  props.layoutTemplate.layers.splice(draggedLayerIndex, 1);
+  props.layoutTemplate.layers.splice(index, 0, draggedElement);
+};
 
 const getPrettyName = (type) => {
   switch (type) {

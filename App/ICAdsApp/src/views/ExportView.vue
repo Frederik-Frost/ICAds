@@ -68,7 +68,7 @@
             :key="preview.id"
             class="col-span-1 p-2 bg-primary2half rounded shadow"
           >
-            <div :id="`previewimg${index}`" class="relative h-full">
+            <div :id="`previewimg${index}`" class="relative h-full bg-white">
               <div class="flex flex-col items-center justify-center h-full">
                 <span class="material-symbols-outlined"> image </span>
                 <p>{{ preview.title }}</p>

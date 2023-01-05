@@ -20,7 +20,7 @@
       </div>
     </div>
 
-    <div class="relative max-h-[700px] flex bg-white rounded-b-lg shadow-lg p-4">
+    <div class="relative max-h-[700px] flex bg-white rounded-b-lg shadow-lg p-4 overflow-auto">
       <!-- height: (layoutTemplate.height * factor)+ 'px' -->
       <div
         id="templateCanvas"
