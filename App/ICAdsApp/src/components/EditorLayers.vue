@@ -48,7 +48,8 @@
 </template>
 <script setup>
 import CustomDropdown from './CustomDropdown.vue';
-import { ref, onMounted, defineProps, computed } from 'vue';
+import { ref, onMounted, defineProps, computed, defineEmits } from 'vue';
+const emit = defineEmits(['selectLayer'])
 const props = defineProps({
   layoutTemplate: Object,
   selectedLayerIndex: Number,
@@ -64,6 +65,7 @@ const onDrop = (e, index) => {
   const draggedElement = props.layoutTemplate.layers[draggedLayerIndex];
   props.layoutTemplate.layers.splice(draggedLayerIndex, 1);
   props.layoutTemplate.layers.splice(index, 0, draggedElement);
+  emit('selectLayer', index)
 };
 
 const getPrettyName = (type) => {

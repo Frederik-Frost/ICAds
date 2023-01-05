@@ -97,7 +97,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, defineProps, computed } from 'vue';
+import { ref, onMounted, defineProps, computed, watch } from 'vue';
 import fonts from './../assets/js/Fonts.json';
 const props = defineProps({
   selectedLayerIndex: Number,

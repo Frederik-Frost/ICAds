@@ -1,11 +1,11 @@
 <template>
   <div class="bg-white rounded-lg shadow-lg">
     <header class="flex flex-row gap-4 items-center bg-primary2half p-4 rounded-t-lg shadow-md justify-between">
-      <h3 class="text-white">Layer </h3>
+      <h3 class="text-white">Layer</h3>
       <p class="text-white">{{ props.selectedLayerIndex != null ? props.selectedLayerIndex + 1 : 'None selected' }}</p>
     </header>
     <div v-if="layer">
-      <div class="bg-white p-2 rounded ">
+      <div class="bg-white p-2 rounded">
         <TextLayerEditor v-if="layer.layerType == 'TextLayer'" :layer="layer" class="flex flex-col gap-2" />
         <ImageLayerEditor v-if="layer.layerType == 'ImageLayer'" :layer="layer" class="flex flex-col gap-2" />
         <ShapeLayerEditor v-if="layer.layerType == 'ShapeLayer'" :layer="layer" class="flex flex-col gap-2" />
@@ -18,10 +18,10 @@
 </template>
 
 <script setup>
-import TextLayerEditor from './TextLayerEditor.vue'
-import ImageLayerEditor from './ImageLayerEditor.vue'
-import ShapeLayerEditor from './ShapeLayerEditor.vue'
-import {  defineProps } from 'vue';
+import TextLayerEditor from './TextLayerEditor.vue';
+import ImageLayerEditor from './ImageLayerEditor.vue';
+import ShapeLayerEditor from './ShapeLayerEditor.vue';
+import { defineProps } from 'vue';
 const props = defineProps({
   selectedLayerIndex: Number,
   layer: Object,
@@ -30,7 +30,6 @@ const props = defineProps({
 //   return props.layoutTemplate ? props.layoutTemplate.value.layers : ''
 //         // props.layoutTemplate.layers[props.selectedLayerIndex];
 // });
-
 </script>
 
 <style></style>
