@@ -70,12 +70,6 @@ namespace ICAds.Controllers
         public async Task<SingleProduct> GetSingleProduct(string productId, string integrationId)
         {
 
-            //var integration = new IntegrationModel();
-            //integration.AccessToken = "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";
-            //integration.Id = "695f2d11-7429-4d22-a736-cb461a1deb04";
-            //integration.OrganizationId = "455ab2b8-6655-4db1-9aaa-5b9f6c4e12eb";
-            //integration.Name = "dev integration";
-            //integration.Url = "ictesting.myshopify.com";
 
             var integration = await IntegrationRepository.GetIntegrationById(integrationId);
             return await new ShopifyService(integration).GetSingleProduct(productId);
@@ -87,12 +81,7 @@ namespace ICAds.Controllers
         {
 
 
-            //var integration = new IntegrationModel();
-            //integration.AccessToken = "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";
-            //integration.Id = "695f2d11-7429-4d22-a736-cb461a1deb04";
-            //integration.OrganizationId = "455ab2b8-6655-4db1-9aaa-5b9f6c4e12eb";
-            //integration.Name = "dev integration";
-            //integration.Url = "ictesting.myshopify.com";
+;
 
             var integration = await IntegrationRepository.GetIntegrationById(integrationId);
             return await new ShopifyService(integration).SearchProducts(query);
