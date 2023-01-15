@@ -83,6 +83,9 @@
     .selected-layer {
       @apply bg-primary2half shadow-lg ;
     }
+    .highlighted-layer > div{ 
+      @apply outline outline-2 outline-primary2;
+    }
 
   };
     

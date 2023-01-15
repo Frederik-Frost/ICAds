@@ -11,6 +11,12 @@
         :layoutTemplate="store.layoutTemplate"
         :selectedProduct="store.selectedProduct"
         class="col-span-4"
+        :selectedLayerIndex="selectedLayerIndex"
+        @selectLayer="
+            (index) => {
+              selectedLayerIndex = index;
+            }
+          "
       />
       <!-- Editing area here  -->
       <EditorLayerEditor

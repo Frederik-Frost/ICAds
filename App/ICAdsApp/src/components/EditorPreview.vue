@@ -41,7 +41,7 @@
                 },
               ]
         "
-        class="border border-charcoal border-dashed overflow-hidden relative m-auto "
+        class="border border-charcoal border-dashed overflow-hidden relative m-auto"
       >
         <div
           v-if="showGeneratedPreivew"
@@ -65,11 +65,22 @@
         </div>
 
         <div v-else>
-          <div v-for="(layer, index) in layoutTemplate.layers" :key="index" class="">
+          <div
+            v-for="(layer, index) in layoutTemplate.layers"
+            :key="index"
+            class="cursor-pointer"
+            @click="$emit('selectLayer', index)"
+            :title="`Layer ${index + 1}`"
+            :class="selectedLayerIndex == index ? ['highlighted-layer'] : []"
+          >
             <div v-if="layer.layerType == 'TextLayer'" class="absolute z-0" :style="getTextLayerStyles(layer)">
               {{ layer.text }}
             </div>
-            <div v-if="layer.layerType == 'ImageLayer'" class="absolute z-0" :style="getImageLayerStyles(layer)"></div>
+            <div v-if="layer.layerType == 'ImageLayer'" class="absolute z-0" :style="getImageLayerStyles(layer)">
+              <div class="flex items-center justify-center h-full">
+                <span class="material-symbols-outlined"> image </span>
+              </div>
+            </div>
             <div v-if="layer.layerType == 'ShapeLayer'" class="absolute z-0" :style="getShapeLayerStyles(layer)"></div>
           </div>
         </div>
@@ -88,6 +99,7 @@ const ready = ref(false);
 const props = defineProps({
   layoutTemplate: Object,
   selectedProduct: Object,
+  selectedLayerIndex: Number,
 });
 
 const canvasMeasurements = computed(() => {
@@ -104,10 +116,10 @@ const factor = computed(() => {
 });
 
 const getFontStyle = (slant) => {
-  const slantVal =  slant ? slant : 0
-  const res = slants.find(s => s.value == slantVal)
-  return res.name
-}
+  const slantVal = slant ? slant : 0;
+  const res = slants.find((s) => s.value == slantVal);
+  return res.name;
+};
 const getTextLayerStyles = (layer) => {
   let styles = {
     top: `${layer.posY * factor.value}px`,
@@ -116,7 +128,7 @@ const getTextLayerStyles = (layer) => {
     fontFamily: `"${layer.fontFamily}"`,
     fontSize: `${layer.textSize * factor.value}px`,
     fontWeight: layer.fontWeight,
-    fontStyle: getFontStyle(layer.fontSlant)
+    fontStyle: getFontStyle(layer.fontSlant),
   };
 
   if (layer.hasBackground) {
@@ -202,6 +214,10 @@ const handleAddPreviewImg = (baseString) => {
     previewimg.value.innerHTML = '';
     previewimg.value.appendChild(img);
   });
+};
+
+const layerClicked = (layer) => {
+  console.log(layer);
 };
 </script>
 <style>
