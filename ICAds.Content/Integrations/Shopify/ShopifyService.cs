@@ -52,11 +52,9 @@ namespace ICAds.Content.Integrations.Shopify
 
         public async Task<GraphProductResponse> GetProductGroup(string collectionType, string collectionValue)
         {
-            string group;
-            if (collectionType == "tags") { group = "tags"; }
-            else group = "product_type";
+            string query = String.IsNullOrEmpty(collectionType) ? "{products(first: 10, reverse:true){edges{node{id, title}}}}" :  "{products(first: 10, query: \"" + collectionType + ":'" + collectionValue + "'" + "\"){edges{node{id, title}}}}";
 
-            var result = await httpClient.PostAsync(getGraphUrl(settings.Url), new StringContent("{products(first: 10, query: \"" + group + ":'" + collectionValue +"'"+"\"){edges{node{id, title}}}}", Encoding.UTF8, "application/graphql"));
+            var result = await httpClient.PostAsync(getGraphUrl(settings.Url), new StringContent(query, Encoding.UTF8, "application/graphql"));
             var json = result.Content.ReadAsStringAsync().Result;
             return JsonConvert.DeserializeObject<GraphProductResponse>(json);
         }

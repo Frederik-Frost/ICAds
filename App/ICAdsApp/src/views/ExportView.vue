@@ -46,7 +46,15 @@
                 :key="index"
                 class="px-2 py-1 hover:bg-hoverWhite cursor-pointer"
               >
-                <a @click="selectProductGroup(selection.node, 'types')">{{ selection.node }}</a>
+                <a @click="selectProductGroup(selection.node, 'product_type')">{{ selection.node }}</a>
+              </div>
+
+              <p class="font-bold text-charcoal50 p-2">Other selection options</p>
+              <div class="px-2 py-1 hover:bg-hoverWhite cursor-pointer">
+                <a @click="selectProductGroup(true, 'is_price_reduced')">Price reduced products</a>
+              </div>
+              <div class="px-2 py-1 hover:bg-hoverWhite cursor-pointer">
+                <a @click="selectProductGroup('', '')">10 Latest products</a>
               </div>
             </template>
           </CustomDropdown>
