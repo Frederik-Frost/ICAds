@@ -19,6 +19,39 @@
           </select>
         </div>
 
+        <div :class="!loadingTemplate && templateIsPresent ? [] : ['opacity-50', 'pointer-events-none']">
+          <CustomDropdown title="quickSelect">
+            <template v-slot:toggle>
+              <div
+                class="text-left p-2 pr-0 rounded shadow w-full text-charcoal border border-charcoal50 mt-2 bg-white hover:bg-primary2quarter flex flex-row justify-between"
+              >
+                <span> Quick select products </span>
+              </div>
+            </template>
+
+            <template v-slot:content>
+              <div class="mb-4">
+                <p class="font-bold text-charcoal50 p-2">Select products with tags</p>
+                <div
+                  v-for="(selection, index) in quickSelectors.data.shop.productTags.edges"
+                  :key="index"
+                  class="px-2 py-1 hover:bg-hoverWhite cursor-pointer"
+                >
+                  <a @click="selectProductGroup(selection.node, 'tags')">{{ selection.node }}</a>
+                </div>
+              </div>
+              <p class="font-bold text-charcoal50 p-2">Select products with types</p>
+              <div
+                v-for="(selection, index) in quickSelectors.data.shop.productTypes.edges"
+                :key="index"
+                class="px-2 py-1 hover:bg-hoverWhite cursor-pointer"
+              >
+                <a @click="selectProductGroup(selection.node, 'types')">{{ selection.node }}</a>
+              </div>
+            </template>
+          </CustomDropdown>
+        </div>
+
         <div
           :class="!loadingTemplate && templateIsPresent ? [] : ['opacity-50', 'pointer-events-none']"
           class="px-2 my-2 bg-white rounded-md border border-charcoal50 hover:shadow focus-within:shadow"
@@ -29,7 +62,7 @@
         <div
           ref="layoutlist"
           class="bg-white flex flex-col flex-auto gap-2 rounded-md shadow mb-4 overflow-auto"
-          :style="{ height: `calc(100vh - ${previewBounds.top + 200}px)` }"
+          :style="{ height: `calc(100vh - ${previewBounds.top + 250}px)` }"
         >
           <h3 class="p-2">Selected for export</h3>
           <div v-if="exportList.length == 0">
@@ -82,6 +115,7 @@
 </template>
 <script setup>
 import IntegrationSelect from './../components/IntegrationSelect.vue';
+import CustomDropdown from './../components/CustomDropdown.vue';
 import Template from './../assets/js/Template';
 import EditorHelper from './../assets/js/EditorHelper';
 import SearchDropdown from './../components/SearchDropdown.vue';
@@ -99,6 +133,7 @@ onMounted(() => {
   const initialLayout = router.currentRoute.value.query.initialLayout;
   if (initialLayout) selectedLayout.value = initialLayout;
 });
+
 watch(
   () => selectedLayout.value,
   () => {
@@ -108,13 +143,21 @@ watch(
     if (selectedLayout.value) loadTemplate(selectedLayout.value);
   }
 );
+
+const quickSelectors = ref({});
 const loadTemplate = (layoutId) => {
   loadingTemplate.value = true;
   orgStore.getLayout(layoutId).then((res) => {
     console.log(res);
     orgStore.$patch((state) => (state.layoutTemplate = new Template(res.data.template.templateJSON)));
-    loadingTemplate.value = false;
-    templateIsPresent.value = true;
+
+    orgStore.getGroups(selectedLayout.value).then((res) => {
+      console.log(res);
+      quickSelectors.value = res.data;
+
+      loadingTemplate.value = false;
+      templateIsPresent.value = true;
+    });
   });
 };
 
@@ -134,6 +177,16 @@ const getProductVariables = (product) => {
     addToExportList(product, res);
   });
 };
+
+
+const selectProductGroup = (val, type) => {
+  console.log(val, type)
+  orgStore.getProductGroup(val, type, selectedLayout.value).then((res) => {
+    res.data.data.products.edges.forEach((n) => {
+      getProductVariables(n.node)
+    })
+  })
+}
 
 const exportList = ref([]);
 const previewRefs = ref([]);

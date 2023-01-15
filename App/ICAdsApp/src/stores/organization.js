@@ -151,6 +151,17 @@ export const useOrgStore = defineStore({
       });
     },
 
+    getGroups(layoutId = null){
+      return axios.get(`templates/${layoutId ? layoutId : this.$router.currentRoute.value.params.layoutId}/collections`)
+    },
+    
+    getProductGroup(value, type, layoutId){
+      console.log(value, type, layoutId)
+      return axios.get(`templates/${layoutId ? layoutId : this.$router.currentRoute.value.params.layoutId}/collection?collectionType=${type}&collectionValue=${value}`)
+    },
+
+
+
     getProduct(id, layoutId = null) {
       return new Promise((resolve, reject) => {
         axios

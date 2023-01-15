@@ -75,54 +75,25 @@ namespace ICAds.Controllers
             return await new ShopifyService(integration).GetSingleProduct(productId);
         }
 
-        [Route("{integrationId}/products/search")]
+        //[Route("{integrationId}/products/search")]
+        //[HttpGet]
+        //public async Task<GraphProductResponse> SearchProducts(string integrationId, string query )
+        //{
+
+        //    var integration = await IntegrationRepository.GetIntegrationById(integrationId);
+        //    return await new ShopifyService(integration).SearchProducts(query);
+        //}
+
+        [Route("{integrationId}/groups")]
         [HttpGet]
-        public async Task<GraphProductResponse> SearchProducts(string integrationId, string query )
+        public async Task<GraphTagsAndTypesResponse> GetTagsAndTypes(string integrationId)
         {
-
-
-;
-
             var integration = await IntegrationRepository.GetIntegrationById(integrationId);
-            return await new ShopifyService(integration).SearchProducts(query);
+            return await new ShopifyService(integration).GetTagsAndTypes();
         }
 
-     
-
-      
-
-
-        // GET: api/values
-        //[HttpGet]
-        //public Task<ShopifyProductListResult> Get()
-        //{
-        //    return new ShopifyService().GetProducts();
-        //}
-
-        //[Route("~/content")]
-        //[HttpPost]
-        //[Consumes("application/json")]
-        //public Task<ShopifyProductListResult> Post([FromBody] string url)
-        //{
-        //    return ShopifyService.GetContent(url);
-        //}
-
-        //[Route("~/search")]
-        //[HttpPost]
-        //[Consumes("application/json")]
-        //public Task<IEnumerable<ShopifyProduct>> Search([FromBody] string searchTerm)
-        //{
-        //    return new ShopifyService().SearchProduct(searchTerm);
-        //}
 
     }
-
-    public class Testbody
-    {
-        public string searchTerm { get; set; }
-        public string id { get; set; }
-    }
-
 }
 
 

@@ -20,14 +20,12 @@
     <None Remove="SkiaSharp.Views.WPF" />
     <None Remove="SkiaSharp.Views.Forms.WPF" />
     <None Remove="Models\" />
-    <None Remove="Image\fonts\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Integrations\" />
     <Folder Include="Integrations\Shopify\" />
     <Folder Include="Image\" />
     <Folder Include="Models\" />
-    <Folder Include="Image\fonts\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="6.0.11" />

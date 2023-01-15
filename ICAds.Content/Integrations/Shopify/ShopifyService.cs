@@ -43,6 +43,24 @@ namespace ICAds.Content.Integrations.Shopify
             return JsonConvert.DeserializeObject<GraphProductResponse>(json);
         }
 
+        public async Task<GraphTagsAndTypesResponse> GetTagsAndTypes()
+        {
+            var result = await httpClient.PostAsync(getGraphUrl(settings.Url), new StringContent("{shop{productTags(first: 100){edges{node}}productTypes(first: 100){edges{node}}}}", Encoding.UTF8, "application/graphql"));
+            var json = result.Content.ReadAsStringAsync().Result;
+            return JsonConvert.DeserializeObject<GraphTagsAndTypesResponse>(json);
+        }
+
+        public async Task<GraphProductResponse> GetProductGroup(string collectionType, string collectionValue)
+        {
+            string group;
+            if (collectionType == "tags") { group = "tags"; }
+            else group = "product_type";
+
+            var result = await httpClient.PostAsync(getGraphUrl(settings.Url), new StringContent("{products(first: 10, query: \"" + group + ":'" + collectionValue +"'"+"\"){edges{node{id, title}}}}", Encoding.UTF8, "application/graphql"));
+            var json = result.Content.ReadAsStringAsync().Result;
+            return JsonConvert.DeserializeObject<GraphProductResponse>(json);
+        }
+
 
         public async Task<List<Variable>> GetProductVariables(string productId)
         {

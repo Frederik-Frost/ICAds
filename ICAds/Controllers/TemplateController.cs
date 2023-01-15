@@ -82,6 +82,26 @@ namespace ICAds.Controllers
         }
 
         [HttpGet]
+        [Route("{templateId}/collections")]
+        public async Task<ActionResult<GraphTagsAndTypesResponse>> GetProductCollections(string templateId )
+        {
+            var template = await TemplateRepository.GetTemplate(GetOrgId(), templateId);
+            if (template == null) return NotFound("Could not find integration");
+
+            return await new ShopifyService(template.Integration).GetTagsAndTypes();
+        }
+
+        [HttpGet]
+        [Route("{templateId}/collection")]
+        public async Task<ActionResult<GraphProductResponse>> GetCollectionResults(string templateId, string collectionType, string collectionValue)
+        {
+            var template = await TemplateRepository.GetTemplate(GetOrgId(), templateId);
+            if (template == null) return NotFound("Could not find integration");
+
+            return await new ShopifyService(template.Integration).GetProductGroup(collectionType, collectionValue);
+        }
+
+        [HttpGet]
         [Route("{templateId}/products/{productId}")]
         public async Task<ActionResult<SingleProduct>> GetProductFromId(string templateId, string productId)
         {
