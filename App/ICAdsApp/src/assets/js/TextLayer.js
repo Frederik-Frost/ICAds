@@ -6,6 +6,9 @@ export default class TextLayer extends Layer {
     this.textSize = layer ? layer.textSize : 20;
     this.textColor = layer ? layer.textColor : '#383838';
     this.fontFamily = layer ? layer.fontFamily : 'Roboto';
+    this.fontWeight = layer ? layer.fontWeight : 400;
+    this.fontSlant = layer ? layer.fontSlant : 0;
+    this.fontWidth = layer ? layer.fontWidth : 5;
     this.posX = layer ? layer.posX : 0;
     this.posY = layer ? layer.posY : 0;
     this.hasBackground = layer ? layer.hasBackground : true;
@@ -25,6 +28,9 @@ export default class TextLayer extends Layer {
       textSize: this.textSize,
       textColor: this.textColor,
       fontFamily: this.fontFamily,
+      fontWeight: this.fontWeight,
+      fontSlant: this.fontSlant,
+      fontWidth: this.fontWidth,
       position: this.position,
       posX: this.posX,
       posY: this.posY,

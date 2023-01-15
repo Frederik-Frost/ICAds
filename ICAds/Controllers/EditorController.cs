@@ -46,23 +46,18 @@ namespace ICAds.Controllers
         public async Task<byte[]> GenerateZip([FromBody] List<GenerateTemplateDTO> request)
         {
             Crc32 crc = new Crc32();
-
             using (MemoryStream zipMemoryStream = new MemoryStream())
             {
                 ZipOutputStream zipOutputStream = new ZipOutputStream(zipMemoryStream);
-
                 zipOutputStream.SetLevel(9);
 
                 var imageList = new List<byte[]>();
                 foreach (GenerateTemplateDTO instance in request)
                 {
                     var imageData = await ImageProcessor.GenerateFromTemplate(instance.Template, instance.Variables);
-
                     byte[] imageArray = imageData.ToArray();
-
                     imageList.Add(imageArray);
                 }
-
 
                 int i = 0;
                 foreach (byte[] imageBytes in imageList)
@@ -70,25 +65,19 @@ namespace ICAds.Controllers
                     ZipEntry entry = new ZipEntry($"img_{i.ToString()}.png");
                     entry.DateTime = DateTime.Now;
                     entry.IsUnicodeText = true;
-                    zipOutputStream.PutNextEntry(entry);
-                    zipOutputStream.Write(imageBytes);
-
                     crc.Reset();
                     crc.Update(imageBytes);
                     entry.Crc = crc.Value;
                     zipOutputStream.PutNextEntry(entry);
                     zipOutputStream.Write(imageBytes, 0, imageBytes.Length);
 
-
                     i++;
                 }
 
                 zipOutputStream.Finish();
-
                 byte[] zipByteArray = new byte[zipMemoryStream.Length];
                 zipMemoryStream.Position = 0;
                 zipMemoryStream.Read(zipByteArray, 0, (int)zipMemoryStream.Length);
-
                 zipOutputStream.Flush();
                 zipOutputStream.Close();
 

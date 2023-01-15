@@ -41,7 +41,10 @@ namespace ICAds.Content.Models
         public string ObjectFit { get; set; }
         public string AlignHorizontal { get; set; }
         public string AlignVertical { get; set; }
-   
+        public int FontWeight { get; set; }
+        public int FontWidth { get; set; }
+        public int FontSlant { get; set; }
+
     }
 
 	public class TextLayer : Layer
@@ -59,6 +62,9 @@ namespace ICAds.Content.Models
 		public string BackgroundStyle { get; set; }
 		public string BackgroundColor { get; set; }
 		public int BorderRadius { get; set; }
+        public int FontWeight { get; set; }
+        public int FontWidth { get; set; }
+        public int FontSlant { get; set; }
     }
 
 	public class ImageLayer : Layer
@@ -91,10 +97,8 @@ namespace ICAds.Content.Models
 
     public class GenerateTemplateDTO
     {
-        
         public TemplateStructure Template { get; set; }
         public List<Variable> Variables { get; set; }
-        //public ShopifyProduct ProductData { get; set; }
     }
 
     public class GenerateMultipleTemplateDTO

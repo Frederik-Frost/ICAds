@@ -17,6 +17,31 @@
           <option v-for="(font, index) in fonts" :key="index" :value="font">{{ font }}</option>
         </select>
       </div>
+      <div class="flex flex-row gap-4 flex-grow">
+        <div class="form-group">
+          <label for="textSize">Font Weight</label>
+          <select
+            v-if="fontWeights"
+            name="fontFamily"
+            v-model="layer.fontWeight"
+            class="p-2 border rounded-md border-charcoal50 hover:border-charcoal focus:border-charcoal focus:outline-none text-sm"
+          >
+            <option v-for="(weight, index) in fontWeights" :key="index" :value="weight">{{ weight }}</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="textSize">Font Style</label>
+          <select
+            v-if="slants"
+            name="fontFamily"
+            v-model="layer.fontSlant"
+            class="p-2 border rounded-md border-charcoal50 hover:border-charcoal focus:border-charcoal focus:outline-none text-sm"
+          >
+            <option v-for="(slant, index) in slants" :key="index" :value="slant.value">{{ slant.name }}</option>
+          </select>
+        </div>
+
+      </div>
       <div class="form-group">
         <label class="cursor-pointer" for="textColor">Text color </label>
         <div class="flex flex-row items-center justify-between gap-2">
@@ -99,6 +124,8 @@
 <script setup>
 import { ref, onMounted, defineProps, computed, watch } from 'vue';
 import fonts from './../assets/js/Fonts.json';
+import fontWeights from './../assets/js/FontWeights.json';
+import slants from './../assets/js/Slants.json';
 const props = defineProps({
   selectedLayerIndex: Number,
   layer: Object,

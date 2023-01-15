@@ -80,6 +80,7 @@
 
 <script setup>
 import EditorHelper from './../assets/js/EditorHelper';
+import slants from './../assets/js/Slants.json';
 import { useOrgStore } from './../stores/organization';
 import { ref, onMounted, defineProps, computed, onBeforeUnmount, nextTick, watch } from 'vue';
 const canvas = ref();
@@ -102,6 +103,11 @@ const factor = computed(() => {
   } else return canvasMeasurements.value ? canvasMeasurements.value.height / props.layoutTemplate.height : 1;
 });
 
+const getFontStyle = (slant) => {
+  const slantVal =  slant ? slant : 0
+  const res = slants.find(s => s.value == slantVal)
+  return res.name
+}
 const getTextLayerStyles = (layer) => {
   let styles = {
     top: `${layer.posY * factor.value}px`,
@@ -109,6 +115,8 @@ const getTextLayerStyles = (layer) => {
     color: layer.textColor,
     fontFamily: `"${layer.fontFamily}"`,
     fontSize: `${layer.textSize * factor.value}px`,
+    fontWeight: layer.fontWeight,
+    fontStyle: getFontStyle(layer.fontSlant)
   };
 
   if (layer.hasBackground) {

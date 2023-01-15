@@ -15,19 +15,9 @@ namespace ICAds.Content.Integrations.Shopify
     public class ShopifyService
     {
 
-        //readonly ShopifySettings settings = new ShopifySettings("https://ictesting.myshopify.com/", "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");
-        //readonly ShopifySettings settings = new ShopifySettings("https://butler-loftet.dk/products.json", "");
         readonly ShopifySettings settings = new ShopifySettings();
         readonly ApiHelper httpClient = new ApiHelper();
         
-
-        //readonly ShopifySettings settings;
-
-        //public ShopifyService(ShopifySettings config)
-        //{
-        //    settings = config;
-        //}
-
         public ShopifyService(IntegrationModel integration)
         {
             settings.AccessToken = integration.AccessToken;

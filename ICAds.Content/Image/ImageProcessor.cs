@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Drawing;
+using System.Net;
 using System.Security.Cryptography;
 using System.Text.RegularExpressions;
 using ICAds.Content.Integrations.Shopify;
@@ -9,6 +10,7 @@ using SkiaSharp;
 using static System.Net.Mime.MediaTypeNames;
 using System.Xml.Linq;
 using System.Collections.Generic;
+using System.Net.Http.Headers;
 
 namespace ICAds.Content.Image
 {
@@ -108,6 +110,9 @@ namespace ICAds.Content.Image
                     tl.TextSize = layer.TextSize;
                     tl.TextColor = layer.TextColor;
                     tl.FontFamily = layer.FontFamily;
+                    tl.FontWeight = layer.FontWeight;
+                    tl.FontWidth = layer.FontWidth;
+                    tl.FontSlant = layer.FontSlant;
                     tl.PosX = layer.PosX;
                     tl.PosY = layer.PosY;
 
@@ -196,13 +201,13 @@ namespace ICAds.Content.Image
             return result.Value;
             
         }
-        
+
         public static SKCanvas ApplyTextLayerToCanvas(SKCanvas canvas, TextLayer layer)
         {
             SKPaint paint = new SKPaint();
             paint.Color = SKColor.Parse(layer.TextColor);
             paint.TextSize = layer.TextSize;
-            paint.Typeface = SKTypeface.FromFamilyName(layer.FontFamily);
+            paint.Typeface = SKTypeface.FromFamilyName(layer.FontFamily, layer.FontWeight, 5, (SKFontStyleSlant)layer.FontSlant);
             paint.IsAntialias = true;
             // Find the text bounds
             SKRect textBounds = new SKRect();

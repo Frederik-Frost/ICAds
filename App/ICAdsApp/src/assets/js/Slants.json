@@ -1,0 +1,14 @@
+[
+    {
+        "name": "Normal",
+        "value": 0
+    },
+    {
+        "name": "Italic",
+        "value": 1
+    },
+    {
+        "name": "Oblique",
+        "value": 2
+    }
+]
