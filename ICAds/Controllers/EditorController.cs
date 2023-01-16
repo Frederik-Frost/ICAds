@@ -51,25 +51,21 @@ namespace ICAds.Controllers
                 ZipOutputStream zipOutputStream = new ZipOutputStream(zipMemoryStream);
                 zipOutputStream.SetLevel(9);
 
+                int i = 0;
                 var imageList = new List<byte[]>();
                 foreach (GenerateTemplateDTO instance in request)
                 {
                     var imageData = await ImageProcessor.GenerateFromTemplate(instance.Template, instance.Variables);
                     byte[] imageArray = imageData.ToArray();
-                    imageList.Add(imageArray);
-                }
-
-                int i = 0;
-                foreach (byte[] imageBytes in imageList)
-                {
+                    
                     ZipEntry entry = new ZipEntry($"img_{i.ToString()}.png");
                     entry.DateTime = DateTime.Now;
                     entry.IsUnicodeText = true;
                     crc.Reset();
-                    crc.Update(imageBytes);
+                    crc.Update(imageArray);
                     entry.Crc = crc.Value;
                     zipOutputStream.PutNextEntry(entry);
-                    zipOutputStream.Write(imageBytes, 0, imageBytes.Length);
+                    zipOutputStream.Write(imageArray, 0, imageArray.Length);
 
                     i++;
                 }
