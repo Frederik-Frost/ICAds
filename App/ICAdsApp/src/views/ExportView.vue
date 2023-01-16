@@ -37,7 +37,7 @@
                   :key="index"
                   class="px-2 py-1 hover:bg-hoverWhite cursor-pointer"
                 >
-                  <a @click="selectProductGroup(selection.node, 'tags')">{{ selection.node }}</a>
+                  <a @click="selectProductGroup(selection.node, 'tag')">{{ selection.node }}</a>
                 </div>
               </div>
               <p class="font-bold text-charcoal50 p-2">Select products with types</p>
